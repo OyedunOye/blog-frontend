@@ -6,13 +6,13 @@ import Categories from "@/components/Categories"
 
 const HomePageScreen = () => {
   return (
-    <div className="mx-[10%] min-h-screen  flex flex-col">
+    <section className="mx-[10%] min-h-screen  flex flex-col">
       <NavBar />
       <Hero />
       <Trends />
       <Categories />
       <Footer />
-    </div>
+    </section>
   )
 }
 

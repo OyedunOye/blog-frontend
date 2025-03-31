@@ -7,7 +7,7 @@ const Trends = () => {
         <h3 className="font-bold text-xl my-6">📈 Trending on Shade's blog</h3>
         <div className='flex w-full'>
             {/* <Image src={author1}></Image> */}
-            <div className='flex flex-wrap justify-between gap-5'>
+            <div className='flex flex-wrap gap-5'>
               {trendingStories.map((story, index)=>(
                 <div key={index} className='flex flex-col p-1 rounded-sm h-auto w-[300px] hover:bg-slate-500'>
                   <div className='flex gap-2 p-1 content-center'>
