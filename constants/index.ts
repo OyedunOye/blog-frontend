@@ -1,6 +1,6 @@
 import { SlSocialInstagram, SlSocialTwitter, SlSocialYoutube  } from "react-icons/sl";
 import { author1, author2, author3, author4, author5, author6, author7, author8, author9, programmingImg, gamingImg, fitnessImg, foodImg, techImg, lifestyleImg, abstractImg, travelImg } from '@/components/assets'
-// import { title } from "process";
+import { article1, article2, article3, article4 } from "@/components/assets";
 
 export const socialMedia = [
     { img: SlSocialTwitter, name: "Twitter", alt: "twitter logo" },
@@ -154,5 +154,47 @@ export const categories = [
         photo: lifestyleImg,
         category: "Lifestyle",
         counter: "28 Articles",
+    }
+]
+
+export const articleMenu = ["All", "Life styles", "Art styles", "Gamming"]
+
+export const articleItems = [
+    {
+        authorPhoto: author9,
+        // title: `UI interactions of the week #${num}`,
+        author: "Kemi Imo",
+        date: "April 24, 2024",
+        category: "Travel, Tech",
+        articlePhoto: article1,
+        title:"An UI/UX case study of an emerging local bicycle brand"
+    },
+    {
+        authorPhoto: author4,
+        title: "How a visual artist redefines success in graphic design",
+        author: "Josh David",
+        date: "February 10, 2025",
+        category: "Art styles",
+        articlePhoto: article2,
+    },
+    {
+        authorPhoto: author7,
+        title: "How to choose the right colors when creating a website?",
+        author: "Fisher Son",
+        date: "August 11, 2022",
+        category: "Tech",
+        articlePhoto: article3,
+    }
+
+]
+
+export const mainLatestArticle = [
+    {
+        authorPhoto: author5,
+        title: "My Google Interview Experience (data analyst)",
+        author: "Mark Lucky",
+        date: "June 20, 2023",
+        category: "Life style",
+        articlePhoto: article4,
     }
 ]

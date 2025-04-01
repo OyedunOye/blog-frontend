@@ -3,12 +3,12 @@ import Image from "next/image"
 
 const Categories = () => {
   return (
-    <div>
-        <h3 className="font-bold text-xl mb-6">Categories</h3>
-    <div className="flex w-full flex-wrap  gap-4">
+    <div className="w-full">
+        <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
+    <div className="flex w-full flex-wrap ">
         {categories.map((category)=>(
 
-            <div key={category.category}className="flex w-90 h-auto gap-2 border cursor-pointer">
+            <div key={category.category}className="flex w-60 h-auto m-3 gap-2 cursor-pointer">
                 <div className="w-[80px] h-[80px]">
 
                 <Image  src={category.photo} alt={category.category} width={80} height={80}/>

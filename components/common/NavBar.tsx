@@ -18,7 +18,7 @@ const NavBar = () => {
             <div className="flex w-[22%] justify-between content-center">
                 <Sun className="content-center flex h-full cursor-pointer"/>
                 <Search className="content-center flex h-full cursor-pointer" />
-                <Button variant='default'className="rounded-full bg-indigo-600">Get Started</Button>
+                <Button variant='default'className="">Get Started</Button>
             </div>
         </nav>
     </div>

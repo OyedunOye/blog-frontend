@@ -3,6 +3,7 @@ import Footer from "@/components/common/Footer"
 import Hero from "@/components/Hero"
 import Trends from "@/components/Trends"
 import Categories from "@/components/Categories"
+import LatestArticles from "@/components/LatestArticles"
 
 const HomePageScreen = () => {
   return (
@@ -11,6 +12,7 @@ const HomePageScreen = () => {
       <Hero />
       <Trends />
       <Categories />
+      <LatestArticles />
       <Footer />
     </section>
   )

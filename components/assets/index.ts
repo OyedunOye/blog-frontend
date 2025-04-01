@@ -15,6 +15,14 @@ import techImg from './techImg.png'
 import lifestyleImg from './lifestyleImg.png'
 import abstractImg from './abstractImg.png'
 import travelImg from './travelImg.png'
+import article1 from './article1Img.png'
+import article2 from './article2Img.png'
+import article3 from './article3Img.png'
+import article4 from './article4Img.png'
+import article5 from './article5Img.png'
+import article6 from './article6Img.png'
+import article7 from './article7Img.png'
+import lightBulbsImg from './lightBulbsImg.png'
 
 export {
     author1,
@@ -33,5 +41,13 @@ export {
     techImg,
     lifestyleImg,
     abstractImg,
-    travelImg
+    travelImg,
+    article1,
+    article2,
+    article3,
+    article4,
+    article5,
+    article6,
+    article7,
+    lightBulbsImg
 }
