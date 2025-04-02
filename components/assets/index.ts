@@ -23,6 +23,15 @@ import article5 from './article5Img.png'
 import article6 from './article6Img.png'
 import article7 from './article7Img.png'
 import lightBulbsImg from './lightBulbsImg.png'
+import trend1 from './trend1.png'
+import trend2 from './trend2.png'
+import trend3 from './trend3.png'
+import trend4 from './trend4.png'
+import writer1 from './writer1.png'
+import writer2 from './writer2.png'
+import writer3 from './writer3.png'
+import writer4 from './writer4.png'
+// import aquaLife from '@/components/assets/aquaLife.mp4'
 
 export {
     author1,
@@ -49,5 +58,14 @@ export {
     article5,
     article6,
     article7,
-    lightBulbsImg
+    lightBulbsImg,
+    trend1,
+    trend2,
+    trend3,
+    trend4,
+    writer1,
+    writer2,
+    writer3,
+    writer4,
+
 }

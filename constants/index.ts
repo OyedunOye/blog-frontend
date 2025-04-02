@@ -1,5 +1,5 @@
 import { SlSocialInstagram, SlSocialTwitter, SlSocialYoutube  } from "react-icons/sl";
-import { author1, author2, author3, author4, author5, author6, author7, author8, author9, programmingImg, gamingImg, fitnessImg, foodImg, techImg, lifestyleImg, abstractImg, travelImg } from '@/components/assets'
+import { author1, author2, author3, author4, author5, author6, author7, author8, author9, programmingImg, gamingImg, fitnessImg, foodImg, techImg, lifestyleImg, abstractImg, travelImg, trend1, trend2, writer1, writer2, writer3 } from '@/components/assets'
 import { article1, article2, article3, article4 } from "@/components/assets";
 
 export const socialMedia = [
@@ -197,4 +197,59 @@ export const mainLatestArticle = [
         category: "Life style",
         articlePhoto: article4,
     }
+]
+
+export const tags = [
+    'Culture', 'Science', 'Technology', 'Medicine', 'Engineering', 'Sound', 'Nature', 'Photography', 'Mineral resources', 'Cloud', 'Design', 'Finance'
+]
+
+export const trendingTopics = [
+    {
+        img: trend1,
+        category: 'Life Style',
+        counter: 6
+    },
+    {
+        img: trend2,
+        category: 'Programming',
+        counter: 15
+    },
+    {
+        img: trend1,
+        category: 'Fitness',
+        counter: 18
+    },
+    {
+        img: trend1,
+        category: 'Interviews',
+        counter: 9
+    }
+]
+
+export const authors = [
+    {
+        img: writer1,
+        name: "Niamh O'Shea",
+        field: "Author Success with Job Interviews"
+    },
+    {
+        img: writer2,
+        name: "Adrian Taylor",
+        field: "Author Salt of the world"
+    },
+    {
+        img: writer3,
+        name: "Akano Grace",
+        field: "Author Financial prudence"
+    },
+    {
+        img: writer1,
+        name: "Olga Jan",
+        field: "Author Best Travel Destinations in Asia"
+    },
+
+]
+
+export const popularPostsList = [
+    
 ]
