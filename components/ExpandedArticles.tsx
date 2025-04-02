@@ -1,11 +1,12 @@
 import { tags } from "@/constants"
 import { AriticleCards } from "./LatestArticles"
 import { Button } from "./ui/button"
+import MaxWidth from "./MaxWidthWrapper"
 
-// import { }
+
 const ExpandedArticles = () => {
   return (
-    <div className="">
+    <MaxWidth className="">
         <div className="flex gap-4">
             <AriticleCards />
             <div className="flex- flex-col w-1/2">
@@ -28,7 +29,7 @@ const ExpandedArticles = () => {
 
             </div>
         </div>
-    </div>
+    </MaxWidth>
   )
 }
 

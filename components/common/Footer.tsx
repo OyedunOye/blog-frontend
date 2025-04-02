@@ -2,11 +2,13 @@ import React from 'react'
 import { categoriesList, ourConditionsList, socialMedia, useCasesList } from '@/constants/index'
 import Logo from '@/public/Logo.png'
 import Image from 'next/image'
+import MaxWidth from '../MaxWidthWrapper'
 
 
 const Footer = () => {
   return (
-    <section className='flex w-full justify-between my-5'>
+    <section className=''>
+      <MaxWidth className='flex-row justify-between py-5 mt-4'>
       <div className='flex flex-col'>
         <Image src={Logo} alt='logo' className="w-30 cursor-pointer mt-2 mb-4"/>
         <ul className='flex flex-col'>
@@ -20,7 +22,7 @@ const Footer = () => {
         <h3 className='font-semibold text-xl capitalize'>Use cases</h3>
           <ul className="">
             {useCasesList.map((usecase)=>(
-              <li key={usecase}>{usecase}</li>
+              <li className='py-1' key={usecase}>{usecase}</li>
             ))}
           </ul>
       </div>
@@ -29,7 +31,7 @@ const Footer = () => {
         <h3 className='font-semibold text-xl capitalize'>categories</h3>
           <ul className="">
             {categoriesList.map((category)=>(
-              <li key={category}>{category}</li>
+              <li className='py-1' key={category}>{category}</li>
             ))}
           </ul>
       </div>
@@ -38,7 +40,7 @@ const Footer = () => {
         <h3 className='font-semibold text-xl capitalize'>Documentation</h3>
           <ul className="">
             {useCasesList.map((item)=>(
-              <li key={item}>{item}</li>
+              <li className='py-1' key={item}>{item}</li>
             ))}
           </ul>
       </div>
@@ -47,11 +49,12 @@ const Footer = () => {
         <h3 className='font-semibold text-xl capitalize'>Our Conditions</h3>
           <ul className="">
             {ourConditionsList.map((condition)=>(
-              <li key={condition}>{condition}</li>
+              <li className='py-1' key={condition}>{condition}</li>
             ))}
           </ul>
       </div>
 
+      </MaxWidth>
     </section>
   )
 }

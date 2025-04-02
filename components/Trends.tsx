@@ -1,17 +1,16 @@
 import Image from 'next/image'
 import { trendingStories} from '../constants/index'
+import MaxWidth from './MaxWidthWrapper'
 
 const Trends = () => {
   return (
-    <div className='mb-8'>
-        <h3 className="font-bold text-xl my-6">📈 Trending on Shade's blog</h3>
+    <MaxWidth className='mb-8 w-full'>
+        <h3 className="font-bold text-xl my-6 ">📈 Trending on Shade's blog</h3>
         <div className='flex w-full'>
-            {/* <Image src={author1}></Image> */}
             <div className='flex flex-wrap gap-5'>
               {trendingStories.map((story, index)=>(
                 <div key={index} className='flex  p-1 rounded-sm h-auto w-[300px] hover:bg-slate-500 cursor-pointer'>
                   <div className='flex gap-2 p-1 content-center'>
-                    {/* <div className=' flex w-[24px] h-[25px]'><div/> */}
                     <div className="flex w-[25px] h-[24px]">
 
                       <Image  src={story.photo} alt={story.title} width={24} height={24} />
@@ -29,9 +28,8 @@ const Trends = () => {
               ))}
             </div>
         </div>
-    </div>
+    </MaxWidth>
   )
 }
 
 export default Trends
-{/* <div className=' '> */}
