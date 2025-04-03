@@ -10,7 +10,7 @@ const NavBar = () => {
   return (
     <nav className=" py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0 bg-white z-99 flex w-full flex-col">
 
-        <MaxWidth className='flex flex-col'>
+        <MaxWidth className='flex flex-col w-full'>
             <div className="flex justify-between">
             <ul className="flex h-8 content-center">
                 <Image src={Logo} alt='logo' className="w-30 cursor-pointer" />

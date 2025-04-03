@@ -8,8 +8,10 @@ interface MaxWidthProps {
 
 const MaxWidth = ({children, className}: MaxWidthProps) => {
   return (
-    <div className={cn('max-lg:max-w-[1366px] flex flex-col justify-center content-center px-16', className)}>
-        {children}
+    <div className='justify-center flex'>
+      <div className={cn('max-w-[1366px] flex flex-col px-16', className)}>
+          {children}
+      </div>
     </div>
   )
 }

@@ -6,7 +6,7 @@ import MaxWidth from './MaxWidthWrapper'
 
 const Hero = () => {
   return (
-    <MaxWidth className='flex flex-wrap w-full pt-10 flex-row border bg-[#F3F4F6]'>
+    <MaxWidth className='flex flex-wrap pt-10 flex-row bg-[#F3F4F6]'>
         <div className='flex flex-1/5 flex-col h-[280px] content-center my-5 py-1 mr-4 gap-6'>
             <h2 className="font-bold text-3xl">👋 Read and share anything.</h2>
             <p>Discover the most outstanding articles in all topics of life. Write your stories and share them.</p>
