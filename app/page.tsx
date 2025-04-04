@@ -14,7 +14,7 @@ const HomePageScreen = () => {
         <Trends />
         <Categories />
         <LatestArticles />
-        {/* <Videos /> */}
+        <Videos />
         <Subscribe />
         <ExpandedArticles />
 

@@ -17,7 +17,7 @@ export const AriticleCards = ()=> {
     return (
         <div className="flex flex-col w-[1/2] gap-4 border rounded-md divide-y">
                         {articleItems.map((item)=> (
-                            <div className='flex w-full h-40 p-2 justify-between'>
+                            <div key={item.title} className='flex w-full h-40 p-2 justify-between'>
                                 <div className="flex flex-col h-auto my-auto content-center gap-3 p-2">
                                     <div className="flex gap-2 text-sm text-gray-500 ">
                                         <Image src={item.authorPhoto} alt={item.author} width={24} height={24} />
@@ -68,9 +68,9 @@ const LatestArticles = () => {
                         <div className="w-[1/2] border rounded-md">
                             <Image src={lightBulbsImg} alt='light image' className='rounded-t-md' />
                                 {mainLatestArticle.map((story) => (
-                                    <div className="flex flex-col m-4 gap-2">
+                                    <div key={story.title} className="flex flex-col m-4 gap-2">
                                         <div className="flex">
-                                            <div key={story.title} className="flex gap-2 text-sm text-gray-500">
+                                            <div className="flex gap-2 text-sm text-gray-500">
                                                 <Image src={story.authorPhoto} alt={story.author} width={24} height={24} />
                                                 <p className=''>{story.author}</p>
                                                 <p className="">{story.date}</p>
