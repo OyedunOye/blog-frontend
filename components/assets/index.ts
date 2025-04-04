@@ -31,7 +31,17 @@ import writer1 from './writer1.png'
 import writer2 from './writer2.png'
 import writer3 from './writer3.png'
 import writer4 from './writer4.png'
-// import aquaLife from '@/components/assets/aquaLife.mp4'
+import popAuth1 from './popAuth1.png'
+import popAuth2 from './popAuth2.png'
+import popAuth3 from './popAuth3.png'
+import popStoryImg1 from './popStoryImg1.png'
+import popStoryImg2 from './popStoryImg2.png'
+import popStoryImg3 from './popStoryImg3.png'
+import articleImg1 from './articleImg1.png'
+import articleImg2 from './articleImg2.png'
+import articleImg3 from './articleImg3.png'
+import articleImg4 from './articleImg4.png'
+
 
 export {
     author1,
@@ -67,5 +77,14 @@ export {
     writer2,
     writer3,
     writer4,
-
+    popAuth1,
+    popAuth2,
+    popAuth3,
+    popStoryImg1,
+    popStoryImg2,
+    popStoryImg3,
+    articleImg1,
+    articleImg2,
+    articleImg3,
+    articleImg4
 }

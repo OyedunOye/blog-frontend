@@ -7,8 +7,8 @@ import MaxWidth from '../MaxWidthWrapper'
 
 const Footer = () => {
   return (
-    <section className=''>
-      <MaxWidth className='flex-row justify-between py-5 mt-4 w-full border'>
+    <footer className='border-t border-indigo-600 my-10'>
+      <MaxWidth className='flex-row justify-between py-5 mt-4 w-full'>
       <div className='flex flex-col'>
         <Image src={Logo} alt='logo' className="w-30 cursor-pointer mt-2 mb-4"/>
         <ul className='flex flex-col'>
@@ -55,7 +55,7 @@ const Footer = () => {
       </div>
 
       </MaxWidth>
-    </section>
+    </footer>
   )
 }
 
