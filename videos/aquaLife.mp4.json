@@ -1,0 +1,16 @@
+{
+    "status":"ready",
+    "originalFilePath":"videos\\aquaLife.mp4",
+    "provider":"mux",
+    "providerMetadata": {
+        "mux":{
+            "uploadId":"W8ucJtHaQF6Iedj8CVyvZcuz9f1TpUwvBMr43xbEfBY",
+            "assetId":"7MxzCX6HBQbsa59VcOmVoDqjNn5lpDmqMsBiA7XjP02k",
+            "playbackId":"KMe2wKllZfYNbe8PRJzgzR1x02YH2BqLwCi9nL3Up02ik"
+            }
+    },
+    "createdAt":1743549925627,
+    "updatedAt":1743549941633,
+    "size":35994064,
+    "sources":[{"src":"https://stream.mux.com/KMe2wKllZfYNbe8PRJzgzR1x02YH2BqLwCi9nL3Up02ik.m3u8","type":"application/x-mpegURL"}],"poster":"https://image.mux.com/KMe2wKllZfYNbe8PRJzgzR1x02YH2BqLwCi9nL3Up02ik/thumbnail.webp","blurDataURL":"data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAABQAgCdASoQAAkAAQAcJbACdDiMxybGqmE+wgAA/vRe/WVIKNiP8KcyCA3Xb9GssTdJknaaGqNLKG87opbZ7Ey4aCdfLtWWj/0tTNSkJCS5i9PmJuhwxkWiP7WoFX0BGrtFZv+3MD/vz9jJ4/lvlZcRYuqth/9Vz3w/71gRAAA="
+    }
