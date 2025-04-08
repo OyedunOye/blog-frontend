@@ -24,7 +24,7 @@ const NavBar = () => {
                 <Button
                   key={menu}
                   variant="ghost"
-                  className="hover:bg-slate-400"
+                  className="hover:bg-[#F3F4F6]"
                 >
                   {menu}
                 </Button>
