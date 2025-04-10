@@ -5,10 +5,13 @@ import LatestArticles from "@/components/Home/LatestArticles";
 import Videos from "@/components/Home/Videos";
 import Subscribe from "@/components/Home/Subscribe";
 import ExpandedArticles from "@/components/Home/ExpandedArticles";
+import NavBar from "@/components/common/NavBar";
+import Footer from "@/components/common/Footer";
 
 const HomePageScreen = () => {
   return (
     <main className="">
+      <NavBar />
       <Hero />
       <Trends />
       <Categories />
@@ -16,6 +19,7 @@ const HomePageScreen = () => {
       <Videos />
       <Subscribe />
       <ExpandedArticles />
+      <Footer />
     </main>
   );
 };

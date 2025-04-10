@@ -3,8 +3,9 @@ import MaxWidth from '../Home/MaxWidthWrapper'
 import LoginButtons from './LoginButtons'
 import LoginForm from './LoginForm'
 import { Button } from '../ui/button'
+import Link from 'next/link'
 
-const LoginPagewCompos = () => {
+const LoginPage = () => {
   return (
     <div className="h-1/2 flex justify-center content-center flex-col">
         <div className="bg-[#F3F4F6] w-full text-center h-56 pt-15 p-2">
@@ -19,7 +20,13 @@ const LoginPagewCompos = () => {
                 <LoginForm />
 
                 {/* <div className="justify-center flex w-full mx-auto"></div> */}
-                <Button variant='ghost' className="mx-auto">New user? Create an account</Button>
+                <Link href={"/signup"} className='justify-center flex'>
+                  <Button variant='ghost' className="mx-auto">New user? Create an account</Button>
+                </Link>
+
+                <Link href={"/"} className='justify-center flex'>
+                  <Button variant='ghost' className="mx-auto">Return home</Button>
+                </Link>
             </div>
         </MaxWidth>
 
@@ -27,4 +34,4 @@ const LoginPagewCompos = () => {
   )
 }
 
-export default LoginPagewCompos
+export default LoginPage

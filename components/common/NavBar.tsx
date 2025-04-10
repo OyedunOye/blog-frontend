@@ -41,9 +41,12 @@ const NavBar = () => {
             <Link href={"/search"}>
               <Search className="content-center flex h-full cursor-pointer" />
             </Link>
-            <Button variant="default" className="">
-              Get Started
-            </Button>
+
+            <Link href={"/login"}>
+              <Button variant="default" className="">
+                Get Started
+              </Button>
+            </Link>
           </div>
         </div>
       </MaxWidth>

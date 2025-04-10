@@ -3,6 +3,7 @@ import MaxWidth from '../Home/MaxWidthWrapper'
 import LoginButtons from './LoginButtons'
 import LoginForm from './LoginForm'
 import { Button } from '../ui/button'
+import Link from 'next/link'
 
 const SignUpPage = () => {
   return (
@@ -19,7 +20,13 @@ const SignUpPage = () => {
                 <LoginForm />
 
                 {/* <div className="justify-center flex w-full mx-auto"></div> */}
-                <Button variant='ghost' className="mx-auto">Already have an account? Sign in</Button>
+                <Link href={"/login"} className='justify-center flex'>
+                    <Button variant='ghost' className="mx-auto">Already have an account? Sign in</Button>
+                </Link>
+
+                <Link href={"/"} className='justify-center flex'>
+                    <Button variant='ghost' className="mx-auto">Return home</Button>
+                </Link>
             </div>
         </MaxWidth>
 

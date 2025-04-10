@@ -74,7 +74,7 @@ export const AriticleCards = () => {
 };
 const LatestArticles = () => {
   return (
-    <section className="">
+    <section className="overflow-x-hidden">
       <MaxWidth className="my-6">
         <div className="flex flex-col w-full ">
           <nav className="flex h-10 content-center gap-3 my-3">
