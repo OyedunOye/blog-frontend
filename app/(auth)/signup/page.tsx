@@ -1,4 +1,4 @@
-import SignUpPage from '@/components/Login/SignUpPage'
+import SignUpPage from '@/components/LoginAndSignUp/SignUpPage'
 import React from 'react'
 
 const SignUpPageScreen = () => {

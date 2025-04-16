@@ -1,9 +1,9 @@
 import React from 'react'
 import MaxWidth from '../Home/MaxWidthWrapper'
 import LoginButtons from './LoginButtons'
-import LoginForm from './LoginForm'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import SignUpForm from './SignUpForm'
 
 const SignUpPage = () => {
   return (
@@ -17,7 +17,7 @@ const SignUpPage = () => {
             <LoginButtons />
 
             <div className="w-1/2 justify-center mx-auto">
-                <LoginForm />
+                <SignUpForm />
 
                 {/* <div className="justify-center flex w-full mx-auto"></div> */}
                 <Link href={"/login"} className='justify-center flex'>
