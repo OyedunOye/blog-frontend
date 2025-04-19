@@ -8,54 +8,20 @@ import { Button } from '../ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage  } from "@/components/ui/form"
 import { Input } from '../ui/input'
 import { useState } from "react"
+import { signUpFormSchema } from "@/zodValidations/auth/constant"
+import { useRegisterUser } from "@/hooks/auth/useRegisterUser"
 
 
-const formSchema = z.object({
-  firstName: z.string().min(2, {
-    message: "Firstname must have at least 2 characters."
-  }).max(30, {
-    message: "Firstname cannot exceed 30 characters."
-  }),
-
-  lastName: z.string().min(2, {
-    message: "Lastname must have at least 2 characters."
-  }).max(30, {
-    message: "Firstname cannot exceed 30 characters."
-  }),
-
-  email: z.string().email({
-    message: "Invalid email address."
-  }),
-
-  password: z.string().min(8, {
-    message: "The password must be at least 8 characters"
-  }),
-
-  confirmPassword: z.string().min(8, {
-    message: "This must match the password provided above"
-  }),
-
-  authorImg: z.any()
-
-  // authorImg: z.any().refine((file) => file?.[0], {
-  //   message: "Profile picture is optional"
-  // })
-
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-})
-
-type SignUpFormData = z.infer<typeof formSchema>
+type SignUpFormData = z.infer<typeof signUpFormSchema>
 
 const SignUpForm = () => {
-
+  const { mutate, isPending, isSuccess, isError, error, data } = useRegisterUser()
 
   // const form = useForm()
   const [profilePreview, setProfilePreview] = useState<string | null>(null)
 
   const form = useForm<SignUpFormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -66,10 +32,28 @@ const SignUpForm = () => {
     },
   })
 
-  const onSubmit = (values: SignUpFormData) => {
+  const onSubmit = async (values: SignUpFormData) => {
+
     console.log(values)
     const file = values.authorImg?.[0]
+
+    try {
+
+      const formData = new FormData()
+      formData.set("firstName", values.firstName)
+      formData.set("lastName", values.lastName)
+      formData.set("email", values.email)
+      formData.set("password", values.password)
+      const res = mutate(formData)
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  // console.log(data)
+  // console.log(error)
+  // console.log(isPending)
 
   return (
     <div>
@@ -137,7 +121,7 @@ const SignUpForm = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Repeat Password</FormLabel>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input placeholder="********" {...field} />
                   </FormControl>

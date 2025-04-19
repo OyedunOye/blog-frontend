@@ -5,29 +5,18 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '../ui/button'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage  } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage  } from "@/components/ui/form"
 import { Input } from '../ui/input'
+import { signUpFormSchema } from "@/zodValidations/auth/constant"
 
 
-const formSchema = z.object({
-
-  email: z.string().email({
-    message: "Invalid email address."
-  }),
-
-  password: z.string().min(8, {
-    message: "The password must be at least 8 characters"
-  })
-
-})
-
-type LoginFormData = z.infer<typeof formSchema>
+type LoginFormData = z.infer<typeof signUpFormSchema>
 
 const LoginForm = () => {
 
 
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       email: '',
       password: '',
