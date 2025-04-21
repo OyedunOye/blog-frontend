@@ -1,20 +1,25 @@
 "use client"
 
+import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '../ui/button'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage  } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage  } from "@/components/ui/form"
 import { Input } from '../ui/input'
 import { useState } from "react"
 import { signUpFormSchema } from "@/zodValidations/auth/constant"
 import { useRegisterUser } from "@/hooks/auth/useRegisterUser"
+import { toasterAlert } from "@/utils"
+import { Loader } from 'lucide-react';
 
 
 type SignUpFormData = z.infer<typeof signUpFormSchema>
 
 const SignUpForm = () => {
+  const router = useRouter()
+
   const { mutate, isPending, isSuccess, isError, error, data } = useRegisterUser()
 
   // const form = useForm()
@@ -46,17 +51,28 @@ const SignUpForm = () => {
       formData.set("password", values.password)
       const res = mutate(formData)
       console.log(res)
+      isSuccess ? toasterAlert(data.message) : ""
+      isSuccess ? router.push("/login") : ""
     } catch (error) {
       console.log(error)
     }
+
   }
 
-  // console.log(data)
-  // console.log(error)
-  // console.log(isPending)
+  console.log(data)
+  console.log(error)
+  console.log(isPending)
 
   return (
     <div>
+      {isPending ? (
+        <div className='flex  min-h-screen  max-sm:w-full sm:px-3'>
+        <div className="flex flex-col items-center justify-center w-full">
+          <Loader className="h-8 w-8 text-white animate-spin" />
+          <p className='text-2xl'>Logging in</p>
+        </div>
+    </div> ) : ""
+      }
       {/* <div className="w-1/2 justify-center mx-auto"> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
