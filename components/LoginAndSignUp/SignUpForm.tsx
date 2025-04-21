@@ -39,8 +39,9 @@ const SignUpForm = () => {
 
   const onSubmit = async (values: SignUpFormData) => {
 
-    console.log(values)
+    // console.log(values)
     const file = values.authorImg?.[0]
+    // const file = values.authorImg[0] && formData.set("authorImg", values.authorImg[0] as File);
 
     try {
 
@@ -49,8 +50,9 @@ const SignUpForm = () => {
       formData.set("lastName", values.lastName)
       formData.set("email", values.email)
       formData.set("password", values.password)
+      formData.set("authorImg", file)
       const res = mutate(formData)
-      console.log(res)
+
       isSuccess ? toasterAlert(data.message) : ""
       isSuccess ? router.push("/login") : ""
     } catch (error) {
@@ -60,18 +62,18 @@ const SignUpForm = () => {
   }
 
   console.log(data)
-  console.log(error)
-  console.log(isPending)
+  // console.log(error)
+  // console.log(isPending)
 
   return (
     <div>
       {isPending ? (
         <div className='flex  min-h-screen  max-sm:w-full sm:px-3'>
-        <div className="flex flex-col items-center justify-center w-full">
-          <Loader className="h-8 w-8 text-white animate-spin" />
-          <p className='text-2xl'>Logging in</p>
-        </div>
-    </div> ) : ""
+          <div className="flex flex-col items-center justify-center w-full">
+            <Loader className="h-8 w-8 text-black animate-spin" />
+            <p className='text-2xl'>Registering</p>
+          </div>
+        </div> ) : ""
       }
       {/* <div className="w-1/2 justify-center mx-auto"> */}
         <Form {...form}>

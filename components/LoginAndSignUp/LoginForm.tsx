@@ -58,7 +58,7 @@ const LoginForm = () => {
       {isPending ? (
         <div className='flex  min-h-screen  max-sm:w-full sm:px-3'>
         <div className="flex flex-col items-center justify-center w-full">
-          <Loader className="h-8 w-8 text-white animate-spin" />
+          <Loader className="h-8 w-8 text-black animate-spin" />
           <p className='text-2xl'>Logging in</p>
         </div>
     </div> ) : ""
