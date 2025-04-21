@@ -2,6 +2,7 @@ import {
   SlSocialInstagram,
   SlSocialTwitter,
   SlSocialYoutube,
+  SlSocialFacebook
 } from "react-icons/sl";
 import {
   author1,
@@ -41,6 +42,13 @@ import {
   articleImg4,
 } from "@/components/assets";
 import { article1, article2, article3, article4 } from "@/components/assets";
+import { FcGoogle } from "react-icons/fc";
+
+export const loginSocialMedia = [
+  {img: SlSocialFacebook, name: "Facebook"},
+  {img: FcGoogle, name: "Google"},
+  {img: SlSocialTwitter, name: "Twitter"}
+]
 
 export const socialMedia = [
   { img: SlSocialTwitter, name: "Twitter", alt: "twitter logo" },

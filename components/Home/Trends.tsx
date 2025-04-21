@@ -12,7 +12,7 @@ const Trends = () => {
             {trendingStories.map((story, index) => (
               <div
                 key={index}
-                className="flex  p-1 rounded-sm h-auto w-[300px] hover:bg-slate-500 cursor-pointer"
+                className="flex  p-1 rounded-sm h-auto w-[300px] hover:bg-[#F3F4F6] cursor-pointer"
               >
                 <div className="flex gap-2 p-1 content-center">
                   <div className="flex w-[25px] h-[24px]">
