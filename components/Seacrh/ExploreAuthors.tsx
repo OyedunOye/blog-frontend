@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";
 
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import { exploreAuthors } from "./data";
 
 const ExploreAuthors = () => {

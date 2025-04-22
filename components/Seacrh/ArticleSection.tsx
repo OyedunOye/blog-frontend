@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/pagination";
 import { articleData } from "./data";
 
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import AvatarRenderer from "../common/Avatar";
 
 const ArticleSection = () => {

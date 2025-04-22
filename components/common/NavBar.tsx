@@ -1,17 +1,26 @@
+"use client";
+
 import { Menu, Search, Sun } from "lucide-react";
 import { Button } from "../ui/button";
 import { NavBarMenuList } from "@/constants";
 import Logo from "@/public/Logo.png";
 import Image from "next/image";
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "./MaxWidthWrapper";
 import Link from "next/link";
-// import { useState } from "react"
+import { useState } from "react";
+import Loading from "./Loader";
 
 const NavBar = () => {
   // const [menu, setMenu] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <nav className=" py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0 bg-white z-99 flex w-full flex-col">
+      {isLoading ? (
+        <Loading className="min-h-screen" message="Loading login page" />
+      ) : (
+        ""
+      )}
       <MaxWidth className="flex flex-col w-full">
         <div className="flex justify-between">
           <ul className="flex h-8 content-center">
@@ -43,7 +52,11 @@ const NavBar = () => {
             </Link>
 
             <Link href={"/login"}>
-              <Button variant="default" className="">
+              <Button
+                onClick={() => setIsLoading(true)}
+                variant="default"
+                className=""
+              >
                 Get Started
               </Button>
             </Link>

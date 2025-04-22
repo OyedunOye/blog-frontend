@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";
 
 import { Button } from "../ui/button";
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import illustration from "../assets/newsletter-illustration.png";
 import { Input } from "../ui/input";
 import { ArrowRight } from "lucide-react";

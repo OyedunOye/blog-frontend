@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import HeroImg from "@/components/assets/heroImg.png";
-import MaxWidth from "./MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 
 const Hero = () => {
   return (

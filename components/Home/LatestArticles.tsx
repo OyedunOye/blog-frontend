@@ -14,7 +14,7 @@ import {
   MessageSquareMore,
 } from "lucide-react";
 import { lightBulbsImg } from "../assets/index";
-import MaxWidth from "./MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 
 export const num = {
   loveCount: 20,

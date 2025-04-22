@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";
 
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import Link from "next/link";
 import Image from "next/image";
 import { exploreTags } from "./data";

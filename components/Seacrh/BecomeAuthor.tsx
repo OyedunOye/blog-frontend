@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";
 
 import { Button } from "../ui/button";
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import illustration from "../assets/author-illustration.png";
 
 const BecomeAuthor = () => {
