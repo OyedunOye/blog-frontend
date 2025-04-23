@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+const schema = z.coerce.string()
+
 
 export const loginFormSchema = z.object({
 
@@ -47,4 +49,22 @@ export const signUpFormSchema = z.object({
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Passwords do not match',
   path: ['confirmPassword'],
+})
+
+export const newBlogFormSchema = z.object({
+
+  title: z.string().min(3, {
+    message: "Blog title cannot be less than 3 characters."
+  }),
+
+  blogContent: z.string().min(8, {
+    message: "The content must be at least 8 characters long."
+  }),
+
+  readTime: z.coerce.number({
+    message: "A positive integer number is required."
+  }),
+
+  articleImg: z.any()
+
 })

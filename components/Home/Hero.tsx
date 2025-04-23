@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import HeroImg from "@/components/assets/heroImg.png";
 import MaxWidth from "../common/MaxWidthWrapper";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -14,9 +15,11 @@ const Hero = () => {
             Discover the most outstanding articles in all topics of life. Write
             your stories and share them.
           </p>
-          <Button variant="default" className="">
-            Getting Started
-          </Button>
+          <Link href={"/blog"}>
+            <Button variant="default" className="">
+              Getting Started
+            </Button>
+          </Link>
         </div>
         <div className="h-[280px] flex">
           <Image
