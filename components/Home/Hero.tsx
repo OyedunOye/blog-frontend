@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -5,7 +7,12 @@ import HeroImg from "@/components/assets/heroImg.png";
 import MaxWidth from "../common/MaxWidthWrapper";
 import Link from "next/link";
 
+// For client-side usage
+import { getCookie } from "cookies-next/client";
+
 const Hero = () => {
+  const token = getCookie("token");
+
   return (
     <section className="w-full bg-[#F3F4F6]">
       <MaxWidth className="flex flex-wrap pt-10 flex-row bg-[#F3F4F6]">
@@ -15,11 +22,22 @@ const Hero = () => {
             Discover the most outstanding articles in all topics of life. Write
             your stories and share them.
           </p>
-          <Link href={"/blog"}>
-            <Button variant="default" className="">
-              Getting Started
-            </Button>
-          </Link>
+          //checks if user is logged in, if so, this button redirects to page to
+          create new blog post. If not logged in, this button redirects the user
+          to the login page.
+          {!token ? (
+            <Link href={"/login"}>
+              <Button variant="default" className="">
+                Create a New Blog
+              </Button>
+            </Link>
+          ) : (
+            <Link href={"/create-blog"}>
+              <Button variant="default" className="">
+                Create a New Blog
+              </Button>
+            </Link>
+          )}
         </div>
         <div className="h-[280px] flex">
           <Image

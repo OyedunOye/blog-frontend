@@ -20,6 +20,9 @@ import { useLogUserIn } from "@/hooks/auth/useLogUserIn";
 import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
 
+// For client-side usage
+import { setCookie } from "cookies-next/client";
+
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 const LoginForm = () => {
@@ -41,6 +44,7 @@ const LoginForm = () => {
       console.log(res);
 
       if (res.token && !isPending) {
+        setCookie("token", res.token);
         toasterAlert(res.message);
         router.push("/");
       }
