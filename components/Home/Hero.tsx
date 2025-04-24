@@ -22,9 +22,7 @@ const Hero = () => {
             Discover the most outstanding articles in all topics of life. Write
             your stories and share them.
           </p>
-          //checks if user is logged in, if so, this button redirects to page to
-          create new blog post. If not logged in, this button redirects the user
-          to the login page.
+          {/* checks if user is logged in, if so, this button redirects to page to create new blog post. If not logged in, this button redirects the user to the login page. */}
           {!token ? (
             <Link href={"/login"}>
               <Button variant="default" className="">
