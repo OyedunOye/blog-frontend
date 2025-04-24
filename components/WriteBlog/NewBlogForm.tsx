@@ -36,7 +36,7 @@ const NewBlogForm = () => {
     defaultValues: {
       title: "",
       blogContent: "",
-      readTime: 0,
+      readTime: "",
       articleImg: undefined,
     },
   });
@@ -48,7 +48,7 @@ const NewBlogForm = () => {
       const formData = new FormData();
       formData.set("title", values.title);
       formData.set("blogContent", values.blogContent);
-      formData.set("readTime", String(values.readTime));
+      formData.set("readTime", values.readTime);
       formData.set("articleImg", file);
 
       const res = await mutateAsync(formData);
