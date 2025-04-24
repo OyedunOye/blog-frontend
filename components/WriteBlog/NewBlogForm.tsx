@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { string, z } from "zod";
+import { z } from "zod";
 
 import { Button } from "../ui/button";
 import {
@@ -17,15 +17,15 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { newBlogFormSchema } from "@/zodValidations/auth/constant";
-import { useLogUserIn } from "@/hooks/auth/useLogUserIn";
 import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
 import { useState } from "react";
+import { useCreateBlog } from "@/hooks/blog/useCreateBlog";
 
 type NewBlogFormData = z.infer<typeof newBlogFormSchema>;
 
 const NewBlogForm = () => {
-  const { isPending, isSuccess, isError, error, mutateAsync } = useLogUserIn();
+  const { isPending, isSuccess, isError, error, mutateAsync } = useCreateBlog();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
 

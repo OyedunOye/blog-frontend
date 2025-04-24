@@ -9,9 +9,21 @@ import Link from "next/link";
 
 // For client-side usage
 import { getCookie } from "cookies-next/client";
+import { useRouter } from "next/navigation";
+import { toasterAlert } from "@/utils";
 
 const Hero = () => {
   const token = getCookie("token");
+
+  const router = useRouter();
+
+  const handleOpenCreateBlogForm = () => {
+    token
+      ? router.push("/create-blog")
+      : toasterAlert(
+          "You are offline. Please login by clicking the 'get started' button on the navigation bar above!"
+        );
+  };
 
   return (
     <section className="w-full bg-[#F3F4F6]">
@@ -22,20 +34,14 @@ const Hero = () => {
             Discover the most outstanding articles in all topics of life. Write
             your stories and share them.
           </p>
-          {/* checks if user is logged in, if so, this button redirects to page to create new blog post. If not logged in, this button redirects the user to the login page. */}
-          {!token ? (
-            <Link href={"/login"}>
-              <Button variant="default" className="">
-                Create a New Blog
-              </Button>
-            </Link>
-          ) : (
-            <Link href={"/create-blog"}>
-              <Button variant="default" className="">
-                Create a New Blog
-              </Button>
-            </Link>
-          )}
+
+          <Button
+            onClick={handleOpenCreateBlogForm}
+            variant="default"
+            className=""
+          >
+            Create a New Blog
+          </Button>
         </div>
         <div className="h-[280px] flex">
           <Image

@@ -9,17 +9,17 @@ interface LoadingProps {
 
 const Loading = ({ message, className }: LoadingProps) => {
   return (
-    // <div className="justify-center gap-8 bg-transparent ">
     <div
       className={cn(
-        "flex flex-col items-center justify-center max-w-[1366px] gap-8 bg-transparent",
+        "flex items-center justify-center gap-8 bg-transparent",
         className
       )}
     >
-      <Loader className="h-8 w-8 text-black animate-spin" />
-      <p className="text-2xl">{message}</p>
+      <MaxWidth className="flex flex-col items-center justify-center gap-8 ">
+        <Loader className="h-8 w-8 text-black animate-spin" />
+        <p className="text-2xl">{message}</p>
+      </MaxWidth>{" "}
     </div>
-    // </div>
   );
 };
 

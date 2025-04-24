@@ -10,11 +10,13 @@ import Link from "next/link";
 import { useState } from "react";
 import Loading from "./Loader";
 import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
-import { getCookie } from "cookies-next/client";
+import { getCookie, deleteCookie } from "cookies-next/client";
+import { toasterAlert } from "@/utils";
 
 const NavBar = () => {
   // const [menu, setMenu] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const token = getCookie("token");
   const userName = () => {
@@ -22,7 +24,7 @@ const NavBar = () => {
       const decoded = getDecodedToken(token);
       console.log(decoded);
       if (decoded !== null) {
-        const name = decoded?.firstName + " " + decoded?.lastName;
+        // const name = decoded?.firstName + " " + decoded?.lastName;
         // let name = decoded?.firstName;
         return decoded?.firstName + " " + decoded?.lastName;
         // console.log("name is", name);
@@ -32,6 +34,13 @@ const NavBar = () => {
     }
   };
 
+  const handleLogOut = () => {
+    setIsLoggingOut(true);
+    deleteCookie("token");
+    toasterAlert("Successfully logged out.");
+    setIsLoggingOut(false);
+  };
+
   return (
     <nav className=" py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0 bg-white z-99 flex w-full flex-col">
       {isLoading ? (
@@ -39,6 +48,13 @@ const NavBar = () => {
       ) : (
         ""
       )}
+
+      {isLoggingOut ? (
+        <Loading className="min-h-screen" message="Logging out" />
+      ) : (
+        ""
+      )}
+
       <MaxWidth className="flex flex-col w-full">
         <div className="flex justify-between">
           <ul className="flex h-8 content-center">
@@ -63,7 +79,7 @@ const NavBar = () => {
                 </div> */}
           </ul>
 
-          <div className="flex w-[22%] justify-between content-center">
+          <div className="flex w-contain justify-between content-center gap-1.5">
             <Sun className="content-center flex h-full cursor-pointer" />
             <Link href={"/search"}>
               <Search className="content-center flex h-full cursor-pointer" />
@@ -71,9 +87,16 @@ const NavBar = () => {
 
             {token ? (
               // <p>Welcome{typeof name === "string" ? name : ""}!</p>
-              <p className="font-bold content-center text-indigo-600">
-                Welcome {userName()}!
-              </p>
+              <div className="flex gap-1.5">
+                <p className="font-bold content-center text-indigo-600">
+                  Welcome {userName()}!
+                </p>
+                <Link href={"/"}>
+                  <Button variant="default" onClick={handleLogOut}>
+                    Log Out
+                  </Button>
+                </Link>
+              </div>
             ) : (
               <Link href={"/login"}>
                 <Button
