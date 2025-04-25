@@ -1,7 +1,7 @@
 import { authors, popularPostsList, tags, trendingTopics } from "@/constants";
 import { AriticleCards } from "./LatestArticles";
 import { Button } from "../ui/button";
-import MaxWidth from "./MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import Image from "next/image";
 import {
   Pagination,

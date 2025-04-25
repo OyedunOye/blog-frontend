@@ -15,53 +15,48 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "../ui/input";
-import { useState } from "react";
-import { signUpFormSchema } from "@/zodValidations/auth/constant";
-import { useRegisterUser } from "@/hooks/auth/useRegisterUser";
+import { Textarea } from "@/components/ui/textarea";
+import { newBlogFormSchema } from "@/zodValidations/auth/constant";
 import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
+import { useState } from "react";
+import { useCreateBlog } from "@/hooks/blog/useCreateBlog";
 
-type SignUpFormData = z.infer<typeof signUpFormSchema>;
+type NewBlogFormData = z.infer<typeof newBlogFormSchema>;
 
-const SignUpForm = () => {
-  const router = useRouter();
-
-  const { mutateAsync, isPending, isSuccess, isError, error } =
-    useRegisterUser();
+const NewBlogForm = () => {
+  const { isPending, isSuccess, isError, error, mutateAsync } = useCreateBlog();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
 
-  const form = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpFormSchema),
+  const router = useRouter();
+
+  const form = useForm<NewBlogFormData>({
+    resolver: zodResolver(newBlogFormSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      authorImg: undefined,
+      title: "",
+      blogContent: "",
+      readTime: "",
+      articleImg: undefined,
     },
   });
 
-  const onSubmit = async (values: SignUpFormData) => {
-    // console.log(values)
-    // note that the values here excludes authorImg(file) string but an array. Therefore, we need to set all required values for the backend in a new FormData() instance.
-
-    const file = values.authorImg?.[0];
+  const onSubmit = async (values: NewBlogFormData) => {
+    const file = values.articleImg?.[0];
 
     try {
       const formData = new FormData();
-      formData.set("firstName", values.firstName);
-      formData.set("lastName", values.lastName);
-      formData.set("email", values.email);
-      formData.set("password", values.password);
-      formData.set("authorImg", file);
+      formData.set("title", values.title);
+      formData.set("blogContent", values.blogContent);
+      formData.set("readTime", values.readTime);
+      formData.set("articleImg", file);
+
       const res = await mutateAsync(formData);
       console.log(res);
 
-      if (res.user && !isPending) {
+      if (res.blog && !isPending) {
         toasterAlert(res.message);
-        router.push("/login");
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -71,18 +66,21 @@ const SignUpForm = () => {
   return (
     <div>
       {isPending ? (
-        <Loading message="Signing up" />
+        <Loading message="Submitting your new blog" />
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="firstName"
+              name="title"
               render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>First name</FormLabel>
+                <FormItem>
+                  <FormLabel>Blog title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Firstname" {...field} />
+                    <Input
+                      placeholder="Write your blog title here"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,12 +89,15 @@ const SignUpForm = () => {
 
             <FormField
               control={form.control}
-              name="lastName"
+              name="blogContent"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last name</FormLabel>
+                  <FormLabel>Blog content</FormLabel>
                   <FormControl>
-                    <Input placeholder="Lastname" {...field} />
+                    <Textarea
+                      placeholder="Write your blog content here"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,12 +106,15 @@ const SignUpForm = () => {
 
             <FormField
               control={form.control}
-              name="email"
+              name="readTime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>Read time (minutes)</FormLabel>
                   <FormControl>
-                    <Input placeholder="example@example.com" {...field} />
+                    <Input
+                      placeholder="Provide the read time for your article"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,38 +123,10 @@ const SignUpForm = () => {
 
             <FormField
               control={form.control}
-              name="password"
+              name="articleImg"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="authorImg"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Profile Picture</FormLabel>
+                  <FormLabel>Article image</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
@@ -171,7 +147,7 @@ const SignUpForm = () => {
             />
 
             <Button variant="default" type="submit" className="w-full mb-5">
-              Continue
+              Submit
             </Button>
           </form>
         </Form>
@@ -180,4 +156,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default NewBlogForm;

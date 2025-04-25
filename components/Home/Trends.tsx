@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { trendingStories } from "../../constants/index";
-import MaxWidth from "./MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 
 const Trends = () => {
   return (

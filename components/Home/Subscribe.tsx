@@ -1,4 +1,4 @@
-import MaxWidth from "./MaxWidthWrapper";
+import MaxWidth from "../common/MaxWidthWrapper";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 

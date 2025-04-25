@@ -7,7 +7,7 @@ import {
 } from "@/constants/index";
 import Logo from "@/public/Logo.png";
 import Image from "next/image";
-import MaxWidth from "../Home/MaxWidthWrapper";
+import MaxWidth from "./MaxWidthWrapper";
 
 const Footer = () => {
   return (

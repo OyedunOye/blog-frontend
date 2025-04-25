@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 
 export const loginFormSchema = z.object({
-
   email: z.string().email({
     message: "Invalid email address."
   }),
@@ -12,6 +11,7 @@ export const loginFormSchema = z.object({
   })
 
 })
+
 
 export const signUpFormSchema = z.object({
   firstName: z.string().min(2, {
@@ -40,11 +40,25 @@ export const signUpFormSchema = z.object({
 
   authorImg: z.any()
 
-  // authorImg: z.any().refine((file) => file?.[0], {
-  //   message: "Profile picture is optional"
-  // })
-
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Passwords do not match',
   path: ['confirmPassword'],
+})
+
+
+export const newBlogFormSchema = z.object({
+  title: z.string().min(3, {
+    message: "Blog title cannot be less than 3 characters."
+  }),
+
+  blogContent: z.string().min(8, {
+    message: "The content must be at least 8 characters long."
+  }),
+
+  readTime: z.string().refine((val)=>/^[1-9]\d*$/.test(val), {
+    message: 'Please enter a positive integer',
+  }),
+
+  articleImg: z.any().refine((file) => file?.[0], 'Blog image is required')
+
 })
