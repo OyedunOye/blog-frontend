@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCookie } from 'cookies-next/server';
 import { decrypt } from "@/app/lib/session";
 import { cookies } from "next/headers";
 
+
 // 1. Specifying protected and public routes
 const protectedRoutes = ["/create-blog"];
-const publicRoutes = ["/", "/login", "/signup"];
+const publicRoutes = ["/", "/login", "/signup", "/search"];
 
 export default async function middleware(req: NextRequest) {
   // 2. Checking if the current route is protected or public
@@ -14,10 +14,10 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   // 3. Decrypting the session from the cookie
-  const cookies = await getCookie("token") as string;
-  const session = decrypt(cookies);
+  const tokenCookie = (await cookies()).get("token")?.value ?? ""
 
-  console.log(session)
+  const session = decrypt(tokenCookie);
+
 
   //   5. Redirecting to / default login page if the admin is not authenticated
   if (
