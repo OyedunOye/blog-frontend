@@ -19,10 +19,10 @@ const NavBar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const token = getCookie("token");
+  // console.log(getDecodedToken(token));
   const userName = () => {
     if (token) {
       const decoded = getDecodedToken(token);
-      console.log(decoded);
       if (decoded !== null) {
         // const name = decoded?.firstName + " " + decoded?.lastName;
         // let name = decoded?.firstName;
@@ -88,7 +88,7 @@ const NavBar = () => {
             {token ? (
               // <p>Welcome{typeof name === "string" ? name : ""}!</p>
               <div className="flex gap-1.5">
-                <p className="font-bold content-center text-indigo-600">
+                <p className="font-bold content-center text-indigo-600 capitalize">
                   Welcome {userName()}!
                 </p>
                 <Link href={"/"}>
