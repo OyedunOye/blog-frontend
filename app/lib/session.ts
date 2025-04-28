@@ -13,7 +13,6 @@ interface TokenPayload {
 export const decrypt = (token: string) => {
   try {
     const decoded = jwtDecode<TokenPayload>(token);
-    console.log(decoded);
     return decoded;
   } catch (error) {
     console.log(error);
