@@ -1,17 +1,37 @@
 "use client";
 
-import { Menu, Search, Sun } from "lucide-react";
-import { Button } from "../ui/button";
-import { NavBarMenuList } from "@/constants";
-import Logo from "@/public/Logo.png";
-import Image from "next/image";
-import MaxWidth from "./MaxWidthWrapper";
-import Link from "next/link";
 import { useState } from "react";
-import Loading from "./Loader";
-import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
+
+import Link from "next/link";
+import Image from "next/image";
 import { getCookie, deleteCookie } from "cookies-next/client";
+import { ChevronDown, Menu, Search, Sun } from "lucide-react";
+
+import { Button } from "../ui/button";
+import Logo from "@/public/Logo.png";
+
+import MaxWidth from "./MaxWidthWrapper";
+import Loading from "./Loader";
+
+import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
+
+import { NavBarMenuList } from "@/constants";
 import { toasterAlert } from "@/utils";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import AvatarRenderer from "./Avatar";
+import { author1 } from "@/components/assets"; // static image
+import { getInitials } from "@/utils/helpers";
 
 const NavBar = () => {
   // const [menu, setMenu] = useState(false)
@@ -19,6 +39,7 @@ const NavBar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const token = getCookie("token");
+
   const userName = () => {
     if (token) {
       const decoded = getDecodedToken(token);
@@ -42,7 +63,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className=" py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0 bg-white z-99 flex w-full flex-col">
+    <nav className=" py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0 bg-white z-50 flex w-full flex-col">
       {isLoading ? (
         <Loading className="min-h-screen" message="Loading login page" />
       ) : (
@@ -86,16 +107,50 @@ const NavBar = () => {
             </Link>
 
             {token ? (
-              // <p>Welcome{typeof name === "string" ? name : ""}!</p>
-              <div className="flex gap-1.5">
-                <p className="font-bold content-center text-indigo-600">
-                  Welcome {userName()}!
-                </p>
-                <Link href={"/"}>
-                  <Button variant="default" onClick={handleLogOut}>
-                    Log Out
-                  </Button>
-                </Link>
+              <div className="ml-4">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="cursor-pointer flex items-center justify-center gap-x-1">
+                      {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
+                      <AvatarRenderer
+                        src={author1.src}
+                        className="h-8 w-8"
+                        fallBack={getInitials(userName()!)}
+                      />
+                      <ChevronDown />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-60 z-[100] mr-4 mt-3">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem className="cursor-pointer">
+                        Profile
+                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
+                        Settings
+                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer">
+                      GitHub
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      Support
+                    </DropdownMenuItem>
+                    <DropdownMenuItem disabled>API</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogOut}
+                      className="cursor-pointer"
+                    >
+                      Log out
+                      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             ) : (
               <Link href={"/login"}>
