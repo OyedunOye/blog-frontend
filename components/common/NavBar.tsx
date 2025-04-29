@@ -38,21 +38,32 @@ const NavBar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
+  // const [activeTab, setActiveTab] = useState<"Home" | "Life Style" | "Template" | "Active Page" | "Other Page">(
+  //   "Home"
+  // );
+
   const token = getCookie("token");
 
   const userName = () => {
     if (token) {
       const decoded = getDecodedToken(token);
-      console.log(decoded);
+      // console.log(decoded);
       if (decoded !== null) {
-        // const name = decoded?.firstName + " " + decoded?.lastName;
-        // let name = decoded?.firstName;
         return decoded?.firstName + " " + decoded?.lastName;
-        // console.log("name is", name);
       } else {
         return "";
       }
     }
+  };
+
+  const picPath = () => {
+    if (token) {
+      const userData = getDecodedToken(token);
+      if (userData?.authorImg !== "") {
+        return "http://localhost:3001/" + userData?.authorImg;
+      }
+    }
+    return "";
   };
 
   const handleLogOut = () => {
@@ -60,6 +71,7 @@ const NavBar = () => {
     deleteCookie("token");
     toasterAlert("Successfully logged out.");
     setIsLoggingOut(false);
+    window.location.reload();
   };
 
   return (
@@ -87,6 +99,7 @@ const NavBar = () => {
               {NavBarMenuList.map((menu) => (
                 <Button
                   key={menu}
+                  // onClick={setActiveTab(menu)}
                   variant="ghost"
                   className="hover:bg-[#F3F4F6]"
                 >
@@ -113,7 +126,8 @@ const NavBar = () => {
                     <button className="cursor-pointer flex items-center justify-center gap-x-1">
                       {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
                       <AvatarRenderer
-                        src={author1.src}
+                        // src={author1.src}
+                        src={picPath()}
                         className="h-8 w-8"
                         fallBack={getInitials(userName()!)}
                       />
