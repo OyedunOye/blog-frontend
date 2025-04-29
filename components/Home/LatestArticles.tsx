@@ -1,10 +1,12 @@
+"use client";
+
 import {
   articleItems,
   articleMenu,
   horizontalArticleCards,
   mainLatestArticle,
 } from "@/constants";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import {
@@ -15,6 +17,7 @@ import {
 } from "lucide-react";
 import { lightBulbsImg } from "../assets/index";
 import MaxWidth from "../common/MaxWidthWrapper";
+import { getAllBlogs } from "@/services/blog.services";
 
 export const num = {
   loveCount: 20,
@@ -23,8 +26,11 @@ export const num = {
 };
 
 export const AriticleCards = () => {
+  useEffect(() => {
+    getAllBlogs().then((data) => console.log(data));
+  }, []);
   return (
-    <div className="flex flex-col w-[1/2] gap-4 border rounded-md divide-y">
+    <div className="flex flex-col flex-1 gap-4 border rounded-md divide-y">
       {articleItems.map((item) => (
         <div key={item.title} className="flex w-full h-40 p-2 justify-between">
           <div className="flex flex-col h-auto my-auto content-center gap-3 p-2">

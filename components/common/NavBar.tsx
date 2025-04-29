@@ -47,7 +47,7 @@ const NavBar = () => {
   const userName = () => {
     if (token) {
       const decoded = getDecodedToken(token);
-      // console.log(decoded);
+      console.log(decoded);
       if (decoded !== null) {
         return decoded?.firstName + " " + decoded?.lastName;
       } else {
@@ -135,27 +135,30 @@ const NavBar = () => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-60 z-[100] mr-4 mt-3">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel>
+                      {userName()}'s Account
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="cursor-pointer">
                         Profile
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                       </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem className="cursor-pointer">
                         Settings
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
+                    {/* <DropdownMenuItem className="cursor-pointer">
                       GitHub
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer">
                       Support
                     </DropdownMenuItem>
                     <DropdownMenuItem disabled>API</DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator /> */}
                     <DropdownMenuItem
                       onClick={handleLogOut}
                       className="cursor-pointer"

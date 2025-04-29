@@ -13,9 +13,9 @@ const HomePageScreen = () => {
     <main className="">
       <NavBar />
       <Hero />
-      <Trends />
-      <Categories />
+      {/* <Trends /> */}
       <LatestArticles />
+      <Categories />
       <Videos />
       <Subscribe />
       <ExpandedArticles />

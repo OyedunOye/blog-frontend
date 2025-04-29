@@ -173,21 +173,21 @@ export const categories = [
     category: "Programming",
     counter: "19 Articles",
   },
-  {
-    photo: gamingImg,
-    category: "Gaming",
-    counter: "26 Articles",
-  },
+  // {
+  //   photo: gamingImg,
+  //   category: "Gaming",
+  //   counter: "26 Articles",
+  // },
   {
     photo: travelImg,
     category: "Travel",
     counter: "53 Articles",
   },
-  {
-    photo: fitnessImg,
-    category: "Gym and Fitness",
-    counter: "87 Articles",
-  },
+  // {
+  //   photo: fitnessImg,
+  //   category: "Gym and Fitness",
+  //   counter: "87 Articles",
+  // },
   {
     photo: foodImg,
     category: "Foods",
@@ -199,15 +199,15 @@ export const categories = [
     counter: "150 Articles",
   },
   {
-    photo: abstractImg,
-    category: "Abstract Art",
-    counter: "14 Articles",
-  },
-  {
     photo: lifestyleImg,
     category: "Lifestyle",
     counter: "28 Articles",
   },
+  {
+    photo: abstractImg,
+    category: "Others",
+    counter: "14 Articles",
+  }
 ];
 
 //This will likely be static data and may end up just living here permanently.

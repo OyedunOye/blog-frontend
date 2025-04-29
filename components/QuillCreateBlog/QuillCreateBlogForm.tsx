@@ -14,6 +14,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 // import dynamic from "next/dynamic";
 import { Input } from "../ui/input";
 import { newBlogFormSchema } from "@/zodValidations/auth/constant";
@@ -80,6 +89,7 @@ const QuillCreateBlogForm = () => {
       title: "",
       blogContent: "",
       readTime: "",
+      category: "",
       articleImg: undefined,
     },
   });
@@ -94,6 +104,7 @@ const QuillCreateBlogForm = () => {
       formData.set("title", values.title);
       formData.set("blogContent", values.blogContent);
       formData.set("readTime", values.readTime);
+      formData.set("category", values.category);
       formData.set("articleImg", file);
 
       const res = await mutateAsync(formData);
@@ -171,6 +182,31 @@ const QuillCreateBlogForm = () => {
                       placeholder="Provide the read time for your article"
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel>Category tag</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Blog Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Programming">Programming</SelectItem>
+                        <SelectItem value="Food">Food</SelectItem>
+                        <SelectItem value="Travel">Travel</SelectItem>
+                        <SelectItem value="Technology">Technology</SelectItem>
+                        <SelectItem value="Lifestyle">Lifestyle</SelectItem>
+                        <SelectItem value="Others">Others</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

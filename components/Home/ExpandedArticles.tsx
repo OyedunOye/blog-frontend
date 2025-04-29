@@ -58,7 +58,7 @@ const ExpandedArticles = () => {
               </div>
             </div>
 
-            <div className="bg-[#F3F4F6] flex-col border p-2 rounded-md ">
+            {/* <div className="bg-[#F3F4F6] flex-col border p-2 rounded-md ">
               <div className="flex justify-between">
                 <h4 className="font-bold text-md">✨ Trending topic</h4>
                 <Button variant="ghost">View all</Button>
@@ -85,7 +85,7 @@ const ExpandedArticles = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             <div className="bg-[#F3F4F6] flex-col border p-2 rounded-md">
               <div className="flex justify-between">
@@ -116,7 +116,7 @@ const ExpandedArticles = () => {
               </div>
             </div>
 
-            <div className="bg-[#F3F4F6] flex-col border p-2 rounded-md">
+            {/* <div className="bg-[#F3F4F6] flex-col border p-2 rounded-md">
               <div className="flex justify-between">
                 <h4 className="font-bold text-md">🎯 Popular Posts</h4>
                 <Button variant="ghost">View all</Button>
@@ -142,7 +142,7 @@ const ExpandedArticles = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </MaxWidth>
