@@ -135,7 +135,7 @@ const NavBar = () => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-60 z-[100] mr-4 mt-3">
-                    <DropdownMenuLabel>
+                    <DropdownMenuLabel className="capitalize">
                       {userName()}'s Account
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
@@ -151,14 +151,7 @@ const NavBar = () => {
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    {/* <DropdownMenuItem className="cursor-pointer">
-                      GitHub
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Support
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled>API</DropdownMenuItem>
-                    <DropdownMenuSeparator /> */}
+
                     <DropdownMenuItem
                       onClick={handleLogOut}
                       className="cursor-pointer"
