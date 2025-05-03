@@ -2,7 +2,6 @@ import axios from 'axios'
 import { getCookie } from "cookies-next/client";
 
 const BASE_URL = 'http://localhost:3001/api/blogs'
-const AUTHOR_URL = 'http://localhost:3001/api/users'
 const token = getCookie("token");
 
 
@@ -26,13 +25,6 @@ export const getAllBlogs = async () => {
     try {
         const res = await axios.get(BASE_URL)
         return res.data
-        // const theBlogs = res.data
-        // for(let i in theBlogs.blogs) {
-        //     let userId = theBlogs.blogs[i].author
-        //     const authorDetails = await axios.get(`AUTHOR_URL/${userId}`)
-        // }
-        // // how to return both theBlogs and accompanying author detail?
-        // return theBlogs 
 
     } catch (error) {
         console.log("An error occured, unable to retrieve your blogs.", error)
@@ -42,11 +34,12 @@ export const getAllBlogs = async () => {
 
 export const getASingleBlog = async (blogId:string) => {
     try {
-        const res = await axios.get(`BASE_URL/${blogId}`)
+        const res = await axios.get(`${BASE_URL}/${blogId}`)
         return res.data
 
     } catch (error) {
         console.log(`An error occured, unable to retrieve this blog with id ${blogId}.`)
+        throw error
     }
 }
 

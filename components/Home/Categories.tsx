@@ -7,7 +7,7 @@ const Categories = () => {
     <section className="w-full bg-[#F3F4F6]">
       <MaxWidth>
         <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
-        <div className="flex w-full flex-wrap justify-evenly">
+        <div className="flex flex-wrap ">
           {categories.map((category) => (
             <div
               key={category.category}

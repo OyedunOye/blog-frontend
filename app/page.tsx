@@ -10,7 +10,7 @@ import Footer from "@/components/common/Footer";
 
 const HomePageScreen = () => {
   return (
-    <main className="">
+    <main className="flex flex-col">
       <NavBar />
       <Hero />
       {/* <Trends /> */}
