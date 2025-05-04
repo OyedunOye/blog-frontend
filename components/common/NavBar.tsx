@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import AvatarRenderer from "./Avatar";
-import { author1 } from "@/components/assets"; // static image
 import { getInitials } from "@/utils/helpers";
 
 const NavBar = () => {
@@ -47,7 +46,6 @@ const NavBar = () => {
   const userName = () => {
     if (token) {
       const decoded = getDecodedToken(token);
-      console.log(decoded);
       if (decoded !== null) {
         return decoded?.firstName + " " + decoded?.lastName;
       } else {
@@ -94,17 +92,19 @@ const NavBar = () => {
             <Link href={"/"}>
               <Image src={Logo} alt="logo" className="w-30 cursor-pointer" />
             </Link>
-            <div className=" max-lg:hidden">
+            <div className=" ">
               {/* <div className=" max-lg:hidden"> */}
               {NavBarMenuList.map((menu) => (
-                <Button
-                  key={menu}
-                  // onClick={setActiveTab(menu)}
-                  variant="ghost"
-                  className="hover:bg-[#F3F4F6]"
-                >
-                  {menu}
-                </Button>
+                <Link href={`#${menu.split(" ")[0].toLowerCase()}`} key={menu}>
+                  <Button
+                    key={menu}
+                    // onClick={setActiveTab(menu)}
+                    variant="ghost"
+                    className="hover:bg-[#F3F4F6]"
+                  >
+                    {menu}
+                  </Button>
+                </Link>
               ))}
             </div>
 
@@ -126,7 +126,6 @@ const NavBar = () => {
                     <button className="cursor-pointer flex items-center justify-center gap-x-1">
                       {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
                       <AvatarRenderer
-                        // src={author1.src}
                         src={picPath()}
                         className="h-8 w-8"
                         fallBack={getInitials(userName()!)}
@@ -169,7 +168,7 @@ const NavBar = () => {
                   variant="default"
                   className=""
                 >
-                  Get Started
+                  Log In
                 </Button>
               </Link>
             )}

@@ -59,10 +59,10 @@ export const socialMedia = [
 // These are the Navbar menus, the name of this array is descriptive
 export const NavBarMenuList = [
   "Home",
-  "Life Style",
-  "Template",
-  "Active Page",
-  "Other Page",
+  "Latest Articles",
+  "Categories",
+  "Subscription",
+  
 ];
 
 //The next 3 consecutive lists are holding the contents for the footer component
@@ -213,47 +213,6 @@ export const categories = [
 //This will likely be static data and may end up just living here permanently.
 export const articleMenu = ["All", "Life styles", "Art styles", "Gamming"];
 
-//This should increase or decrease with time, e.g. when a new article is published or when an article is deleted. This should be fetched from the database and stored in context.
-export const articleItems = [
-  {
-    authorPhoto: author9,
-    // title: `UI interactions of the week #${num}`,
-    author: "Kemi Imo",
-    date: "April 24, 2024",
-    category: "Travel, Tech",
-    articlePhoto: article1,
-    title: "An UI/UX case study of an emerging local bicycle brand",
-  },
-  {
-    authorPhoto: author4,
-    title: "How a visual artist redefines success in graphic design",
-    author: "Josh David",
-    date: "February 10, 2025",
-    category: "Art styles",
-    articlePhoto: article2,
-  },
-  {
-    authorPhoto: author7,
-    title: "How to choose the right colors when creating a website?",
-    author: "Fisher Son",
-    date: "August 11, 2022",
-    category: "Tech",
-    articlePhoto: article3,
-  },
-];
-
-//This will be returned from the database filtered on certain criteria which will return a single object. Therefore, destined for context.
-export const mainLatestArticle = [
-  {
-    authorPhoto: author5,
-    title: "My Google Interview Experience (data analyst)",
-    author: "Mark Lucky",
-    date: "June 20, 2023",
-    category: "Life style",
-    articlePhoto: article4,
-  },
-];
-
 //Do I strictly restrict the tags suitable for this blog site making this list static with no permisssion of submitting stories that doesn't fit the available tag? If yes, this will be home for the tags array.
 export const tags = [
   "Culture",
@@ -343,34 +302,3 @@ export const popularPostsList = [
   },
 ];
 
-//This should be fetched from the database and filtered to return maximum of four objects. It will be stored in context.
-export const horizontalArticleCards = [
-  {
-    articleImg: articleImg1,
-    author: "Kemi Imo",
-    date: "April 24, 2024",
-    authorImg: author4,
-    title: "An UI/UX case study of an emerging local bicycle brand",
-  },
-  {
-    articleImg: articleImg2,
-    author: "Godwin Okon",
-    date: "August 04, 2023",
-    authorImg: author9,
-    title: "Balanced diet for effective nourishment",
-  },
-  {
-    articleImg: articleImg3,
-    author: "John Bull",
-    date: "April 02, 2025",
-    authorImg: author7,
-    title: "Lessons and insights from 8 years of Pixelgrade",
-  },
-  {
-    articleImg: articleImg4,
-    author: "Olga Jan",
-    date: "January 31, 2025",
-    authorImg: author7,
-    title: "Investing due dilligence",
-  },
-];

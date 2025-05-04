@@ -1,5 +1,4 @@
 import { authors, popularPostsList, tags, trendingTopics } from "@/constants";
-import { AriticleCards } from "./LatestArticles";
 import { Button } from "../ui/button";
 import MaxWidth from "../common/MaxWidthWrapper";
 import Image from "next/image";
@@ -12,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { ArticleCards } from "./ArticleCards";
 
 const ExpandedArticles = () => {
   return (
@@ -20,7 +20,7 @@ const ExpandedArticles = () => {
         <h3 className="font-bold text-xl pb-3">🎉 Latest Articles</h3>
         <div className="flex gap-4">
           <div className="">
-            <AriticleCards />
+            <ArticleCards />
             <div className="flex justify-between my-3">
               <Pagination className="justify-start mx-0 w-1/2">
                 <PaginationContent>

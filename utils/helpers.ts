@@ -7,3 +7,12 @@ export const getInitials = (fullName: string): string => {
 
   return (firstInitial + secondInitial).toUpperCase();
 };
+
+export const wordLimit = (title: string): string =>{
+  const numOfWords = title.trim().split(" ").length
+  if (numOfWords > 6) {
+    return title.split(" ").slice(0, 6).join(" ") + "..."
+  } else {
+    return title
+  }
+}

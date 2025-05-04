@@ -21,13 +21,13 @@ const Hero = () => {
     token
       ? router.push("/create-blog")
       : toasterAlert(
-          "You are offline. Please login by clicking the 'get started' button on the navigation bar above!"
+          "You are offline. Please login to be able to create a blog post!"
         );
   };
 
   return (
-    <section className="w-full bg-[#F3F4F6]">
-      <MaxWidth className="flex flex-wrap pt-10 flex-row bg-[#F3F4F6]">
+    <section id="home" className="w-full bg-[#F3F4F6]">
+      <MaxWidth className="w-full flex flex-wrap pt-10 flex-row bg-[#F3F4F6]">
         <div className="flex flex-1/5 flex-col h-[280px] content-center my-5 py-1 mr-4 gap-6">
           <h2 className="font-bold text-3xl">👋 Read and share anything.</h2>
           <p>
@@ -43,11 +43,13 @@ const Hero = () => {
             Create a New Blog
           </Button>
         </div>
-        <div className="h-[280px] flex">
+        <div className="h-full w-2/3 flex">
           <Image
             src={HeroImg}
             alt="hero image"
-            className="content-center my-1"
+            width={200}
+            height={50}
+            className="content-center my-1 w-full h-full object-cover"
           />
         </div>
       </MaxWidth>

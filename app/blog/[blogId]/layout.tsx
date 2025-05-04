@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Single blog page",
-  description: "Read the blog of your choice on this page",
+  description: "Read the full blog of your choice on this page",
 };
 
 export default function SingleBlogPageLayout({

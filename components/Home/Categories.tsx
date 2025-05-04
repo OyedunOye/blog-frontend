@@ -4,7 +4,7 @@ import MaxWidth from "../common/MaxWidthWrapper";
 
 const Categories = () => {
   return (
-    <section className="w-full bg-[#F3F4F6]">
+    <section id="categories" className="w-full bg-[#F3F4F6]">
       <MaxWidth>
         <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
         <div className="flex flex-wrap ">
