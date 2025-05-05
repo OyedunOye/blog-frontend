@@ -30,6 +30,15 @@ export const getAllBlogs = async () => {
         console.log("An error occured, unable to retrieve your blogs.", error)
     }
 }
+export const getBlogCategoryCount = async () => {
+    try {
+        const res = await axios.get(`${BASE_URL}/category-count`)
+        return res.data
+
+    } catch (error) {
+        console.log("An error occured, unable to retrieve blog count by categories.", error)
+    }
+}
 
 
 export const getASingleBlog = async (blogId:string) => {

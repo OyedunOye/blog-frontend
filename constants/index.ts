@@ -190,7 +190,7 @@ export const categories = [
   // },
   {
     photo: foodImg,
-    category: "Foods",
+    category: "Food",
     counter: "118 Articles",
   },
   {
