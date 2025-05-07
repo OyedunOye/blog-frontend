@@ -1,3 +1,5 @@
+import { getDecodedToken } from '@/hooks/getDecodeToken/getDecodedToken';
+import { getCookie } from 'cookies-next/client';
 import { toast } from 'react-toastify';
 
 export const toasterAlert = (message: string)=> toast(message, {
@@ -11,3 +13,37 @@ export const toasterAlert = (message: string)=> toast(message, {
     theme: "light",
     // transition: Bounce,
   });
+
+export function formatDate(isoDateString: string): string {
+    const date = new Date(isoDateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+//alternative to formatDate for my future reference
+export function formatDate2(isoDateString: string): string {
+  const date = new Date(isoDateString);
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+  return formatter.format(date); // e.g., "29 Apr 2025"
+}
+
+const token = getCookie("token");
+
+export const userName = () => {
+  if (token) {
+    const decoded = getDecodedToken(token);
+    console.log(decoded);
+    if (decoded !== null) {
+      return decoded?.firstName + " " + decoded?.lastName;
+    } else {
+      return "";
+    }
+  }
+};

@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import AvatarRenderer from "./Avatar";
-import { author1 } from "@/components/assets"; // static image
 import { getInitials } from "@/utils/helpers";
 
 const NavBar = () => {
@@ -38,21 +37,31 @@ const NavBar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
+  // const [activeTab, setActiveTab] = useState<"Home" | "Life Style" | "Template" | "Active Page" | "Other Page">(
+  //   "Home"
+  // );
+
   const token = getCookie("token");
 
   const userName = () => {
     if (token) {
       const decoded = getDecodedToken(token);
-      console.log(decoded);
       if (decoded !== null) {
-        // const name = decoded?.firstName + " " + decoded?.lastName;
-        // let name = decoded?.firstName;
         return decoded?.firstName + " " + decoded?.lastName;
-        // console.log("name is", name);
       } else {
         return "";
       }
     }
+  };
+
+  const picPath = () => {
+    if (token) {
+      const userData = getDecodedToken(token);
+      if (userData?.authorImg !== "") {
+        return "http://localhost:3001/" + userData?.authorImg;
+      }
+    }
+    return "";
   };
 
   const handleLogOut = () => {
@@ -60,6 +69,7 @@ const NavBar = () => {
     deleteCookie("token");
     toasterAlert("Successfully logged out.");
     setIsLoggingOut(false);
+    window.location.reload();
   };
 
   return (
@@ -82,16 +92,19 @@ const NavBar = () => {
             <Link href={"/"}>
               <Image src={Logo} alt="logo" className="w-30 cursor-pointer" />
             </Link>
-            <div className=" max-lg:hidden">
+            <div className=" ">
               {/* <div className=" max-lg:hidden"> */}
               {NavBarMenuList.map((menu) => (
-                <Button
-                  key={menu}
-                  variant="ghost"
-                  className="hover:bg-[#F3F4F6]"
-                >
-                  {menu}
-                </Button>
+                <Link href={`#${menu.split(" ")[0].toLowerCase()}`} key={menu}>
+                  <Button
+                    key={menu}
+                    // onClick={setActiveTab(menu)}
+                    variant="ghost"
+                    className="hover:bg-[#F3F4F6]"
+                  >
+                    {menu}
+                  </Button>
+                </Link>
               ))}
             </div>
 
@@ -113,7 +126,7 @@ const NavBar = () => {
                     <button className="cursor-pointer flex items-center justify-center gap-x-1">
                       {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
                       <AvatarRenderer
-                        src={author1.src}
+                        src={picPath()}
                         className="h-8 w-8"
                         fallBack={getInitials(userName()!)}
                       />
@@ -121,27 +134,23 @@ const NavBar = () => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-60 z-[100] mr-4 mt-3">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel className="capitalize">
+                      {userName()}'s Account
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="cursor-pointer">
                         Profile
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                       </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem className="cursor-pointer">
                         Settings
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
-                      GitHub
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Support
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled>API</DropdownMenuItem>
-                    <DropdownMenuSeparator />
+
                     <DropdownMenuItem
                       onClick={handleLogOut}
                       className="cursor-pointer"
@@ -159,7 +168,7 @@ const NavBar = () => {
                   variant="default"
                   className=""
                 >
-                  Get Started
+                  Log In
                 </Button>
               </Link>
             )}

@@ -23,26 +23,32 @@ export const createBlog = async (credentials: any) => {
 
 export const getAllBlogs = async () => {
     try {
-        const res = await axios.get(BASE_URL, {
-            headers:{
-                Authorization: `Bearer ${token}`
-            },
-        })
+        const res = await axios.get(BASE_URL)
+        return res.data
+
     } catch (error) {
         console.log("An error occured, unable to retrieve your blogs.", error)
+    }
+}
+export const getBlogCategoryCount = async () => {
+    try {
+        const res = await axios.get(`${BASE_URL}/category-count`)
+        return res.data
+
+    } catch (error) {
+        console.log("An error occured, unable to retrieve blog count by categories.", error)
     }
 }
 
 
 export const getASingleBlog = async (blogId:string) => {
     try {
-        const res = await axios.get(`BASE_URL/${blogId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        const res = await axios.get(`${BASE_URL}/${blogId}`)
+        return res.data
+
     } catch (error) {
         console.log(`An error occured, unable to retrieve this blog with id ${blogId}.`)
+        throw error
     }
 }
 

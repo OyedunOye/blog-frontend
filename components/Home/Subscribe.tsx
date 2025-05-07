@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 
 const Subscribe = () => {
   return (
-    <section className="w-full bg-[#F3F4F6]">
+    <section id="subscription" className="w-full bg-[#F3F4F6]">
       <MaxWidth className="flex justify-center content-center w-full h-50 mb-3 bg-[#F3F4F6]">
         <div className="flex flex-col justify-center mx-10 gap-2">
           <h3 className="font-bold text-xl text-center">

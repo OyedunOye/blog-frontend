@@ -55,8 +55,13 @@ export const newBlogFormSchema = z.object({
     message: "The content must be at least 8 characters long."
   }),
 
+
   readTime: z.string().refine((val)=>/^[1-9]\d*$/.test(val), {
     message: 'Please enter a positive integer',
+  }),
+
+  category: z.string({
+    required_error: "Category is required, please select one"
   }),
 
   articleImg: z.any().refine((file) => file?.[0], 'Blog image is required')

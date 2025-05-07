@@ -5,6 +5,7 @@ export interface MyJwtPayload {
     email: string;
     firstName: string;
     lastName: string;
+    authorImg: string;
     iat: number;
     exp: number;
 }

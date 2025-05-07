@@ -3,12 +3,11 @@ import NavBar from "@/components/common/NavBar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog's creation page",
-  description:
-    "Registered user can write and submit their blog for publishing on this site by filling out this form.",
+  title: "Single blog page",
+  description: "Read the full blog of your choice on this page",
 };
 
-export default function CreateBlogPageLayout({
+export default function SingleBlogPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
