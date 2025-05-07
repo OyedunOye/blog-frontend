@@ -25,6 +25,6 @@
       "./declarations.d.ts"
     ]
   },
-  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "context/AppContext.jsx"],
   "exclude": ["node_modules"]
 }

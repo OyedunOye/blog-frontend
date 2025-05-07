@@ -55,7 +55,7 @@ export const getASingleBlog = async (blogId:string) => {
 
 export const editBlog = async (credentials: any, blogId: string) => {
     try {
-        const res = await axios.patch(`BASE_URL/${blogId}`, credentials, {
+        const res = await axios.patch(`${BASE_URL}/${blogId}`, credentials, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`
