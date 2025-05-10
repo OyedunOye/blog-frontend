@@ -16,3 +16,9 @@ export const wordLimit = (title: string): string =>{
     return title
   }
 }
+
+export const blogReadTime = (blogContent: string): string =>{
+  const numOfWords = blogContent.trim().split(" ").length
+  const read_time_min = Math.ceil(numOfWords/200).toFixed(0)
+  return read_time_min
+}

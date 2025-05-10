@@ -6,21 +6,13 @@ export const AppReducer = (state, action) => {
 
     switch (action.type) {
 
-    // case 'ADD_EXPENSE':
-    //     // action.type = "DONE" //This line of code makes the add_expenses reducer non-functional!
-    //     return {
-    //         ...state,  //return the whole state i.e. currency, budget and expenses list.
-    //         expenses: state.expenses.map(expense =>expense.name === action.payload.name
-    //     ? {... expense, cost: expense.cost + action.payload.cost} : expense
-    //     )}
-
-
     case 'CONFIRM_DELETE':
 
         return{
             ...state,
             deleteModal:action.payload.deleteModal,
-            storedBlogId: action.payload.storedBlogId
+            storedBlogId: action.payload.storedBlogId,
+            singleBlogDetail: action.payload.singleBlogDetail
         }
 
 
@@ -29,7 +21,8 @@ export const AppReducer = (state, action) => {
         return{
             ...state,
             deleteModal:action.payload.deleteModal,
-            storedBlogId: action.payload.storedBlogId
+            storedBlogId: action.payload.storedBlogId,
+            singleBlogDetail: action.payload.singleBlogDetail
         }
 
     case 'OPEN_EDIT_MODAL':
@@ -49,19 +42,19 @@ export const AppReducer = (state, action) => {
             storedBlogId: action.payload.storedBlogId,
             singleBlogDetail: action.payload.singleBlogDetail
         }
+    case 'BLOGCONTENT_WARN':
 
-    // case 'REMOVE_ALLOCATION':
-    //     return {
-    //         ...state,
-    //         expenses: state.expenses.filter(expense=>expense.id !== action.payload)
-    //     }
+        return{
+            ...state,
+            blogContentWarn: action.payload,
+        }
 
 
-    // case 'DARK_MODE':
-    //     return {
-    //         ...state,
-    //         displayMode: action.payload
-    //     }
+    case 'DARK_MODE':
+        return {
+            ...state,
+            displayMode: action.payload
+        }
 
     default:
         return state;
@@ -73,8 +66,8 @@ const initialState = {
     deleteModal: false,
     openEditModal:false,
     storedBlogId: null,
-    singleBlogDetail: null
-    
+    singleBlogDetail: null,
+    blogContentWarn: "No"
 };
 
 //create the context. This is the thing that the components import and use to get the state

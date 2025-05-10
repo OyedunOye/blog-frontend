@@ -95,7 +95,14 @@ const NavBar = () => {
             <div className=" ">
               {/* <div className=" max-lg:hidden"> */}
               {NavBarMenuList.map((menu) => (
-                <Link href={`#${menu.split(" ")[0].toLowerCase()}`} key={menu}>
+                <Link
+                  href={
+                    menu.split(" ")[0].toLowerCase() !== "home"
+                      ? `/${menu.split(" ")[0].toLowerCase()}`
+                      : "/"
+                  }
+                  key={menu}
+                >
                   <Button
                     key={menu}
                     // onClick={setActiveTab(menu)}
@@ -114,10 +121,10 @@ const NavBar = () => {
           </ul>
 
           <div className="flex w-contain justify-between content-center gap-1.5">
-            <Sun className="content-center flex h-full cursor-pointer" />
-            <Link href={"/search"}>
+            {/* <Sun className="content-center flex h-full cursor-pointer" /> */}
+            {/* <Link href={"/search"}>
               <Search className="content-center flex h-full cursor-pointer" />
-            </Link>
+            </Link> */}
 
             {token ? (
               <div className="ml-4">

@@ -2,20 +2,22 @@ import { useContext } from "react";
 import { Button } from "../ui/button";
 import { AppContext } from "@/context/AppContext";
 import { useDeleteABlog } from "@/hooks/blog/useDeleteBlog";
-import { useEditBlog } from "@/hooks/blog/useEditBlog";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
-const Confirmation = () => {
+const DeleteConfirmation = () => {
   const { dispatch, state } = useContext(AppContext);
 
-  // const { data, isLoading, isError, error, isSuccess } =useDeleteABlog(state.storedBlogId);
+  // const { mutateAsync, data, isLoading, isError, error, isSuccess } =useDeleteABlog(state.storedBlogId);
 
-  const { mutateAsync, isSuccess } = useDeleteABlog(state.storedBlogId);
+  const router = useRouter();
+
+  const { mutateAsync, isSuccess, error } = useDeleteABlog();
 
   const handleBackClick = () => {
     let payload = {
       deleteModal: false,
       storedBlogId: null,
+      singleBlogDetail: null,
     };
     dispatch({
       type: "CONFIRM_DONT_DELETE",
@@ -25,29 +27,35 @@ const Confirmation = () => {
 
   const handleDeleteClick = async () => {
     try {
-      // const { mutateAsync, isSuccess } = useDeleteABlog(state.storedBlogId);
       const res = await mutateAsync(state.storedBlogId);
       console.log(res);
       let payload = {
         deleteModal: false,
         storedBlogId: null,
+        singleBlogDetail: null,
       };
       dispatch({
         type: "CONFIRM_DONT_DELETE",
         payload: payload,
       });
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className=" flex fixed top-0 left-0 bg-black/80 w-full h-full z-[80]">
       <div className="justify-center items-center flex border border-white w-full">
-        <div className="w-120 h-60 flex-col flex bg-white gap-20 p-4 rounded-md">
-          <h1 className="text-center font-bold py-3">
-            Are you sure you want to delete this blog? A deleted blog cannot be
-            retrieved.
-          </h1>
+        <div className="w-120 min-h-60 flex-col flex bg-white justify-between p-3 rounded-md">
+          <div className="text-center py-3">
+            <h1 className="font-bold ">
+              Are you sure you want to delete this blog titled
+              {` "${state.singleBlogDetail.title}" with id ${state.storedBlogId}`}
+              ?
+            </h1>
+            <p className="mt-3">A deleted blog cannot be retrieved.</p>
+          </div>
           <div className="content-center justify-center flex  gap-4 max-sm: pb-4">
             <Button
               variant="default"
@@ -70,4 +78,4 @@ const Confirmation = () => {
   );
 };
 
-export default Confirmation;
+export default DeleteConfirmation;

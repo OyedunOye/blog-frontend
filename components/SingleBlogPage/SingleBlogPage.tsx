@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetASingleBlog } from "@/hooks/blog/useGetBlogs";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate } from "@/utils";
 import Loader from "../common/Loader";
@@ -9,7 +9,7 @@ import AvatarRenderer from "../common/Avatar";
 import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
 import { getCookie } from "cookies-next/client";
 import { Button } from "../ui/button";
-import Confirmation from "../modals/DeleteConfirmation";
+import DeleteConfirmation from "../modals/DeleteConfirmation";
 import { AppContext } from "@/context/AppContext";
 import QuillEditBlogModal from "../modals/EditModal";
 
@@ -20,17 +20,16 @@ interface BlogPageProps {
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const { dispatch, state } = useContext(AppContext);
 
-  // const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const { data, isLoading, isError, error, isSuccess } =
     useGetASingleBlog(blogId);
-  console.log(data);
+  // console.log(data);
 
   const token = getCookie("token");
 
   const rightToEditAndDelete = () => {
     if (token && data) {
       const userData = getDecodedToken(token);
-      console.log(userData);
+      // console.log(userData);
       if (userData?.id === data.blog[0].author._id) {
         // console.log("allow to edit");
         return "isAuthor";
@@ -38,12 +37,14 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
         return "Not author";
       }
     }
+    return "Not author";
   };
 
   const handleDeleteClick = () => {
     let payload = {
       storedBlogId: blogId,
       deleteModal: true,
+      singleBlogDetail: data.blog[0],
     };
     dispatch({
       type: "CONFIRM_DELETE",
@@ -63,11 +64,11 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     });
   };
 
-  console.log(state.deleteModal, state.storedBlogId);
+  // console.log(state.deleteModal, state.storedBlogId);
   return (
     <>
       {state.openEditModal ? <QuillEditBlogModal /> : null}
-      {state.deleteModal ? <Confirmation /> : null}
+      {state.deleteModal ? <DeleteConfirmation /> : null}
       {isLoading ? (
         <Loader message="Loading single page" />
       ) : (

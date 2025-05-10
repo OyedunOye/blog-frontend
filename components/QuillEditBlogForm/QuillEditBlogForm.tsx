@@ -25,18 +25,20 @@ import {
 
 // import dynamic from "next/dynamic";
 import { Input } from "../ui/input";
-import { newBlogFormSchema } from "@/zodValidations/auth/constant";
+import {
+  checkContentWordLim,
+  editBlogFormSchema,
+} from "@/zodValidations/auth/constant";
 import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
 import { useContext, useState } from "react";
-import { useCreateBlog } from "@/hooks/blog/useCreateBlog";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { AppContext } from "@/context/AppContext";
 import { useEditBlog } from "@/hooks/blog/useEditBlog";
-import SingleBlogPage from "../SingleBlogPage/SingleBlogPage";
+import { blogReadTime } from "@/utils/helpers";
 
-type NewBlogFormData = z.infer<typeof newBlogFormSchema>;
+type EditBlogFormData = z.infer<typeof editBlogFormSchema>;
 
 const QuillEditBlogForm = () => {
   // const [quillFormValue, setValue] = useState("");
@@ -72,33 +74,35 @@ const QuillEditBlogForm = () => {
     "strike",
     "blockquote",
     "list",
-    "bullet",
+    // "bullet",
     "indent",
     "link",
     "image",
     "color",
-    "clean",
+    // "clean",
   ];
 
-  const { isPending, isSuccess, isError, error, mutateAsync } = useEditBlog();
+  const { isPending, isSuccess, isError, error, mutateAsync, data } =
+    useEditBlog();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const { state, dispatch } = useContext(AppContext);
 
   const router = useRouter();
 
-  const form = useForm<NewBlogFormData>({
-    resolver: zodResolver(newBlogFormSchema),
+  // console.log(state.singleBlogDetail);
+
+  const form = useForm<EditBlogFormData>({
+    resolver: zodResolver(editBlogFormSchema),
     defaultValues: {
       title: state.singleBlogDetail.title,
       blogContent: state.singleBlogDetail.blogContent,
-      readTime: state.singleBlogDetail.readTime,
       category: state.singleBlogDetail.category,
       articleImg: "",
     },
   });
 
-  const onSubmit = async (values: NewBlogFormData) => {
+  const onSubmit = async (values: EditBlogFormData) => {
     const file = values.articleImg?.[0];
 
     console.log("New values are:", values);
@@ -107,35 +111,50 @@ const QuillEditBlogForm = () => {
       const formData = new FormData();
       formData.set("title", values.title);
       formData.set("blogContent", values.blogContent);
-      formData.set("readTime", values.readTime);
+      formData.set("readTime", blogReadTime(values.blogContent));
       formData.set("category", values.category);
       formData.set("articleImg", file);
 
-      const res = await mutateAsync({
-        credentials: formData,
-        blogId: state.storedBlogId,
-      });
-      console.log(res);
+      console.log("formdata are", formData);
 
-      if (res.blog && isSuccess) {
-        const payload = {
-          openEditModal: false,
-          storedBlogId: null,
-          SingleBlogDetail: null,
-        };
+      if (checkContentWordLim(values.blogContent) === "enough") {
         dispatch({
-          type: "CLOSE_EDIT_MODAL",
-          payload: payload,
+          type: "BLOGCONTENT_WARN",
+          payload: "No",
         });
+        const res = await mutateAsync({
+          blogData: formData,
+          blogId: state.singleBlogDetail._id,
+        });
+        console.log(res);
+        // console.log(state.storedBlogId);
+
         toasterAlert(res.message);
-        // router.push("/");
+      }
+      if (checkContentWordLim(values.blogContent) === "notEnough") {
+        dispatch({
+          type: "BLOGCONTENT_WARN",
+          payload: "Yes",
+        });
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(state.singleBlogDetail.category);
+  if (isSuccess && data) {
+    const payload = {
+      openEditModal: false,
+      storedBlogId: null,
+      SingleBlogDetail: null,
+    };
+    dispatch({
+      type: "CLOSE_EDIT_MODAL",
+      payload: payload,
+    });
+  }
+  // console.log(state.singleBlogDetail.category);
+  console.log(state.openEditModal);
 
   return (
     <div>
@@ -187,24 +206,6 @@ const QuillEditBlogForm = () => {
               />
             </div>
 
-            {/* <QuillCompo /> */}
-
-            <FormField
-              control={form.control}
-              name="readTime"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Read time (minutes)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Provide the read time for your article"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="category"
@@ -213,7 +214,7 @@ const QuillEditBlogForm = () => {
                   <FormLabel>Category tag</FormLabel>
                   <FormControl>
                     <Select
-                      // defaultValue={state.singleBlogDetail.category}
+                      defaultValue={state.singleBlogDetail.category}
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className="w-[180px]">
