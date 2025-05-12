@@ -12,9 +12,25 @@ import { Button } from "../ui/button";
 import DeleteConfirmation from "../modals/DeleteConfirmation";
 import { AppContext } from "@/context/AppContext";
 import QuillEditBlogModal from "../modals/EditModal";
+import { Textarea } from "../ui/textarea";
+import { Heart, MessageSquareMore } from "lucide-react";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { useForm } from "react-hook-form";
+import { newCommentFormSchema } from "@/zodValidations/auth/constant";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
 
 interface BlogPageProps {
   blogId: string;
+}
+
+interface EachComment {
+  comment: string;
+  commenter: string;
+  _id: string;
+  commentedAt: Date;
 }
 
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
@@ -24,7 +40,28 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     useGetASingleBlog(blogId);
   // console.log(data);
 
+  const form = useForm<NewCommentFormData>({
+    resolver: zodResolver(newCommentFormSchema),
+    defaultValues: {
+      comment: "",
+    },
+  });
+
+  //pending writing of service to post new comment
+  const onSubmit = async (values: NewCommentFormData) => {
+    console.log("The comment value: ", values);
+  };
   const token = getCookie("token");
+
+  const picPath = () => {
+    if (token) {
+      const userData = getDecodedToken(token);
+      if (userData?.authorImg !== "") {
+        return "http://localhost:3001/" + userData?.authorImg;
+      }
+    }
+    return "";
+  };
 
   const rightToEditAndDelete = () => {
     if (token && data) {
@@ -65,6 +102,8 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   };
 
   // console.log(state.deleteModal, state.storedBlogId);
+
+  data ? console.log(data.blog[0]) : "";
   return (
     <>
       {state.openEditModal ? <QuillEditBlogModal /> : null}
@@ -72,7 +111,11 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       {isLoading ? (
         <Loader message="Loading single page" />
       ) : (
-        <div className=" ">
+        <div
+          className={`pb-15 ${
+            state.appMode === "Dark" ? "bg-black text-white" : ""
+          }`}
+        >
           <div className="w-full mb-6 rounded-sm bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
             <MaxWidth className="min-h-40  w-full flex-row justify-between">
               <div className="flex flex-row-reverse w-full p-2 justify-between">
@@ -144,7 +187,73 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
               className="prose overflow-hidden mt-2"
               dangerouslySetInnerHTML={{ __html: data.blog[0].blogContent }}
             ></div>
-            <p className=""></p>
+            <div className="bg-black h-0.5 my-5 "></div>
+            <div className="flex flex-col ">
+              <div className="flex flex-col">
+                <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
+                  <Button
+                    variant="outline"
+                    className="rounded-full bg-gray-200 h-[80%] "
+                  >
+                    <Heart /> {data.blog[0].loveCount}
+                  </Button>
+                  <div
+                    // variant="outline"
+                    className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14"
+                  >
+                    <MessageSquareMore size={18} className="pb-0.5" />{" "}
+                    <span className="h-fit flex -mt-1 text-sm font-semibold">
+                      {data.blog[0].commentCount}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 h-28 content-center py-1">
+                  {token && picPath() !== "" ? (
+                    <AvatarRenderer src={picPath()} className="h-22 w-22" />
+                  ) : (
+                    <AvatarRenderer
+                      src={"http://localhost:3000/user-dummy.png"}
+                      className="h-20 w-20"
+                    />
+                  )}
+                  {/* <Textarea placeholder="Leave a comment..." /> */}
+                  <Form {...form}>
+                    <form className="w-full">
+                      <FormField
+                        control={form.control}
+                        name="comment"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="">Comment</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className=""
+                                placeholder="Leave a comment..."
+                                {...field}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </form>
+                  </Form>
+                </div>
+                <div className="flex flex-col my-4">
+                  <Button variant="default">Submit</Button>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 mt-5">
+                {data.blog[0].comments.map((eachComment: EachComment) => (
+                  <div
+                    key={eachComment._id}
+                    className="w-full min-h-14 rounded-sm p-1.5 bg-slate-50 shadow-sm"
+                  >
+                    <p className="">{eachComment.comment}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </MaxWidth>
         </div>
       )}
