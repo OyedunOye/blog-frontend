@@ -16,7 +16,7 @@ export default function SingleBlogPageLayout({
     <div className="">
       <NavBar />
       {children}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

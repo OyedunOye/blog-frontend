@@ -4,6 +4,11 @@ import { getCookie } from "cookies-next/client";
 const BASE_URL = 'http://localhost:3001/api/blogs'
 const token = getCookie("token");
 
+interface EditBlogData {
+    blogId: string,
+    blogData:any
+}
+
 
 export const createBlog = async (credentials: any) => {
     try {
@@ -53,9 +58,9 @@ export const getASingleBlog = async (blogId:string) => {
 }
 
 
-export const editBlog = async (credentials: any, blogId: string) => {
+export const editBlog = async ( {blogId, blogData}: EditBlogData) => {
     try {
-        const res = await axios.patch(`BASE_URL/${blogId}`, credentials, {
+        const res = await axios.patch(`${BASE_URL}/${blogId}`, blogData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`
@@ -70,11 +75,12 @@ export const editBlog = async (credentials: any, blogId: string) => {
 
 export const deleteBlog = async (blogId:string) => {
     try {
-        const res = await axios.delete(`BASE_URL/${blogId}`, {
+        const res = await axios.delete(`${BASE_URL}/${blogId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
+        return res.data
 
     } catch (error) {
         console.log(`An error occured, unable to delete blog with id ${blogId}`, error)

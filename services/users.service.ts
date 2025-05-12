@@ -9,3 +9,12 @@ export const createUser = async (credentials: any) => {
         console.log(error)
     }
 }
+
+export const getAllAuthors = async() => {
+    try {
+        const res = await axios.get(`${BASE_URL}/authors`)
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+}

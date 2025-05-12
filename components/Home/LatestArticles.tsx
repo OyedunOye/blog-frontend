@@ -172,9 +172,9 @@ const LatestArticles = () => {
                   <Link
                     key={card.title}
                     href={`/blog/${card._id}`}
-                    className="flex flex-col w-[32%] h-90 gap-2 rounded-md"
+                    className="flex flex-col w-[32%] h-90 gap-2 rounded-md shadow-2xl"
                   >
-                    <div className="flex flex-col w-full h-90 gap-2 border rounded-md ">
+                    <div className="flex flex-col w-full h-90 gap-2 rounded-md ">
                       <div className="flex h-56 w-full">
                         <Image
                           src={"http://localhost:3001/" + card.articleImg}
@@ -217,7 +217,7 @@ const LatestArticles = () => {
                           {formatDate(card.createdAt.toString())}
                         </p>
                       </div>
-                      <h3 className="font-semibold text-lg p-2">
+                      <h3 className="font-semibold  text-lg p-2">
                         {wordLimit(card.title)}
                       </h3>
                     </div>

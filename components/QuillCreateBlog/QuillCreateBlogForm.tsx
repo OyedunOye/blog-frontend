@@ -25,37 +25,48 @@ import {
 
 // import dynamic from "next/dynamic";
 import { Input } from "../ui/input";
-import { newBlogFormSchema } from "@/zodValidations/auth/constant";
+import {
+  checkContentWordLim,
+  newBlogFormSchema,
+} from "@/zodValidations/auth/constant";
 import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useCreateBlog } from "@/hooks/blog/useCreateBlog";
-import ReactQuill from "react-quill-new";
+import ReactQuill, { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { blogReadTime } from "@/utils/helpers";
+import { AppContext } from "@/context/AppContext";
 
 type NewBlogFormData = z.infer<typeof newBlogFormSchema>;
 
 const QuillCreateBlogForm = () => {
-  // const [quillFormValue, setValue] = useState("");
+  // Quill.register()
+  const { dispatch, state } = useContext(AppContext);
+
+  // console.log(Quill.imports);
+
   const modules = {
-    toolbar: {
-      container: [
-        [{ header: [2, 3, 4, false] }],
-        ["bold", "italic", "underline", "blockquote"],
-        [{ color: [] }],
-        [
-          { list: "ordered" },
-          { list: "bullet" },
-          { indent: "-1" },
-          { indent: "+1" },
-        ],
-        ["link", "image"],
-        ["clean"],
+    // toolbar: {
+    toolbar: [
+      // container: [
+      [{ header: [2, 3, 4, false] }],
+      ["bold", "italic", "underline", "blockquote"],
+      [{ color: [] }],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
       ],
+      ["link", "image"],
+      ["clean"],
+      // ],
       //   handlers: {
       //     image: imageHandler,
-      //   },
-    },
+      //   ],
+    ],
+    // }
     clipboard: {
       matchVisual: true,
     },
@@ -69,12 +80,12 @@ const QuillCreateBlogForm = () => {
     "strike",
     "blockquote",
     "list",
-    "bullet",
+    // "bullet",
     "indent",
     "link",
     "image",
     "color",
-    "clean",
+    // "clean",
   ];
 
   const { isPending, isSuccess, isError, error, mutateAsync } = useCreateBlog();
@@ -88,36 +99,61 @@ const QuillCreateBlogForm = () => {
     defaultValues: {
       title: "",
       blogContent: "",
-      readTime: "",
+      // readTime: "",
       category: "",
       articleImg: undefined,
     },
   });
+
+  console.log(state.blogContentWarn);
 
   const onSubmit = async (values: NewBlogFormData) => {
     const file = values.articleImg?.[0];
 
     console.log("values are:", values);
 
+    console.log(state.blogContentWarn);
+
+    // console.log(checkContentWordLim(values.blogContent));
+    // console.log(contentLengthCheck);
+
     try {
       const formData = new FormData();
       formData.set("title", values.title);
       formData.set("blogContent", values.blogContent);
-      formData.set("readTime", values.readTime);
+      formData.set("readTime", blogReadTime(values.blogContent));
       formData.set("category", values.category);
       formData.set("articleImg", file);
 
-      const res = await mutateAsync(formData);
-      console.log(res);
+      // console.log(values.blogContent);
+      console.log(checkContentWordLim(values.blogContent));
+      if (checkContentWordLim(values.blogContent) === "enough") {
+        dispatch({
+          type: "BLOGCONTENT_WARN",
+          payload: "No",
+        });
 
-      if (res.blog && !isPending) {
-        toasterAlert(res.message);
-        router.push("/");
+        const res = await mutateAsync(formData);
+        console.log(res);
+
+        if (res.blog && !isPending) {
+          toasterAlert(res.message);
+          router.push("/");
+        }
+      }
+
+      if (checkContentWordLim(values.blogContent) === "notEnough") {
+        dispatch({
+          type: "BLOGCONTENT_WARN",
+          payload: "Yes",
+        });
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(state.blogContentWarn);
 
   return (
     <div>
@@ -143,14 +179,24 @@ const QuillCreateBlogForm = () => {
               )}
             />
 
-            <div className="mb-16">
+            <div
+              className={`  ${
+                state.blogContentWarn === "Yes" ? " border-red-600" : "mb-16"
+              }`}
+            >
               <FormField
                 control={form.control}
                 name="blogContent"
                 render={({ field }) => (
-                  <FormItem className="">
-                    <FormLabel>Blog content</FormLabel>
-                    <FormControl>
+                  <FormItem className=" border-red-600">
+                    <FormLabel
+                      className={`${
+                        state.blogContentWarn === "Yes" ? "text-red-600" : " "
+                      }`}
+                    >
+                      Blog content
+                    </FormLabel>
+                    <FormControl className="h-[50vh] border-red-600 ">
                       <ReactQuill
                         modules={modules}
                         formats={formats}
@@ -158,9 +204,14 @@ const QuillCreateBlogForm = () => {
                         theme="snow"
                         //  value={quillFormValue}
                         //  onChange={setValue}
-                        className="h-[50vh]"
+                        // className="h-[50vh] border border-red-700"
                         id="blogContent"
                         {...field}
+                        className={`h-[50vh] ${
+                          state.blogContentWarn === "Yes"
+                            ? " border border-red-600"
+                            : " "
+                        }`}
                       />
                     </FormControl>
                     <FormMessage />
@@ -168,10 +219,15 @@ const QuillCreateBlogForm = () => {
                 )}
               />
             </div>
+            {state.blogContentWarn === "Yes" ? (
+              <p className="text-sm text-red-600 mt-12">
+                You need at least 120 words for the blog content
+              </p>
+            ) : null}
 
             {/* <QuillCompo /> */}
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="readTime"
               render={({ field }) => (
@@ -186,7 +242,7 @@ const QuillCreateBlogForm = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="category"

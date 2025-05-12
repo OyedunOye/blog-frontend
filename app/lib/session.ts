@@ -12,9 +12,13 @@ interface TokenPayload {
 
 export const decrypt = (token: string) => {
   try {
+    if (!token || token.split(".").length !== 3) {
+      return null; // Invalid token format
+    }
     const decoded = jwtDecode<TokenPayload>(token);
     return decoded;
   } catch (error) {
-    console.log(error);
+    console.error("Failed to decode token:", error);
+    return null;
   }
 };

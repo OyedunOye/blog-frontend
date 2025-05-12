@@ -29,7 +29,7 @@ const Categories = () => {
             {categories.map(({ category, photo }) => (
               <div
                 key={category}
-                className="flex w-[22%] h-auto m-3 gap-2 cursor-pointer"
+                className="flex w-[22%] h-auto m-3 gap-2 cursor-pointer bg-white rounded-sm shadow-2xl"
               >
                 <div className="w-[80px] h-[80px]">
                   <Image src={photo} alt={category} width={80} height={80} />
