@@ -11,7 +11,7 @@ interface EditBlogData {
 
 interface CreateCommentData {
     blogId: string,
-    comment: string,
+    comment: any,
 }
 
 export const createBlog = async (credentials: any) => {
@@ -95,6 +95,7 @@ export const createBlogComment = async ({blogId, comment}: CreateCommentData) =>
     try {
         const res = await axios.post(`${BASE_URL}/comment/${blogId}`, comment, {
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             }
         })

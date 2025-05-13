@@ -135,19 +135,19 @@ const LatestArticles = () => {
                       </p>
                     </div>
                   </Link>
-                  <div className="flex justify-between text-gray-500 mt-2">
+                  <div className="flex justify-between text-gray-500 mt-4">
                     <div className=" flex gap-2">
                       <Button
                         variant="outline"
-                        className="rounded-full bg-gray-200"
+                        className="rounded-full bg-gray-200 h-[80%]"
                       >
-                        <Heart /> {num.loveCount}
+                        <Heart /> {data.blogs[0].loveCount}
                       </Button>
                       <Button
                         variant="outline"
-                        className="rounded-full bg-gray-200"
+                        className="rounded-full bg-gray-200 h-[80%]"
                       >
-                        <MessageSquareMore /> {num.commentCount}
+                        <MessageSquareMore /> {data.blogs[0].commentCount}
                       </Button>
                     </div>
 
@@ -161,7 +161,6 @@ const LatestArticles = () => {
               </div>
 
               <div className="">
-                {/* <AriticleCards /> */}
                 <ArticleCards />
               </div>
             </div>
