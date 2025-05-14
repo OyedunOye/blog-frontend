@@ -72,7 +72,7 @@ export const editBlog = async ( {blogId, blogData}: EditBlogData) => {
         })
         return res.data
     } catch (error) {
-        console.log("An error occured, unable to update this blog with id ${blogId}.", error)
+        console.log(`An error occured, unable to update this blog with id ${blogId}.`, error)
     }
 }
 

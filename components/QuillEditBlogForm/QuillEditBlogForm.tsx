@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -40,7 +39,11 @@ import { blogReadTime } from "@/utils/helpers";
 
 type EditBlogFormData = z.infer<typeof editBlogFormSchema>;
 
-const QuillEditBlogForm = () => {
+interface EditBlogProps {
+  blogId: string;
+}
+
+const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
   // const [quillFormValue, setValue] = useState("");
   const modules = {
     toolbar: {
@@ -88,8 +91,6 @@ const QuillEditBlogForm = () => {
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const { state, dispatch } = useContext(AppContext);
 
-  const router = useRouter();
-
   // console.log(state.singleBlogDetail);
 
   const form = useForm<EditBlogFormData>({
@@ -109,27 +110,45 @@ const QuillEditBlogForm = () => {
 
     try {
       const formData = new FormData();
-      formData.set("title", values.title);
-      formData.set("blogContent", values.blogContent);
-      formData.set("readTime", blogReadTime(values.blogContent));
-      formData.set("category", values.category);
-      formData.set("articleImg", file);
+      values.title !== "" ? formData.set("title", values.title) : "";
+      values.blogContent !== ""
+        ? formData.set("blogContent", values.blogContent)
+        : "";
+      values.blogContent !== ""
+        ? formData.set("readTime", blogReadTime(values.blogContent))
+        : "";
+      values.category !== "" ? formData.set("category", values.category) : "";
+      values.articleImg !== "" ? formData.set("articleImg", file) : "";
 
-      console.log("formdata are", formData);
+      console.log("formdata are", ...formData);
 
       if (checkContentWordLim(values.blogContent) === "enough") {
         dispatch({
           type: "BLOGCONTENT_WARN",
           payload: "No",
         });
+        console.log(blogId);
+        console.log(state.storedBlogId);
+        console.log(state.singleBlogDetail._id);
         const res = await mutateAsync({
           blogData: formData,
           blogId: state.singleBlogDetail._id,
         });
         console.log(res);
+        if (isSuccess && data) {
+          toasterAlert(res.message);
+          const payload = {
+            openEditModal: false,
+            storedBlogId: null,
+            SingleBlogDetail: null,
+          };
+          dispatch({
+            type: "CLOSE_EDIT_MODAL",
+            payload: payload,
+          });
+          window.location.reload();
+        }
         // console.log(state.storedBlogId);
-
-        toasterAlert(res.message);
       }
       if (checkContentWordLim(values.blogContent) === "notEnough") {
         dispatch({
@@ -142,18 +161,6 @@ const QuillEditBlogForm = () => {
     }
   };
 
-  if (isSuccess && data) {
-    const payload = {
-      openEditModal: false,
-      storedBlogId: null,
-      SingleBlogDetail: null,
-    };
-    dispatch({
-      type: "CLOSE_EDIT_MODAL",
-      payload: payload,
-    });
-  }
-  // console.log(state.singleBlogDetail.category);
   console.log(state.openEditModal);
 
   return (
@@ -214,7 +221,7 @@ const QuillEditBlogForm = () => {
                   <FormLabel>Category tag</FormLabel>
                   <FormControl>
                     <Select
-                      defaultValue={state.singleBlogDetail.category}
+                      // defaultValue={state.singleBlogDetail.category}
                       onValueChange={field.onChange}
                     >
                       <SelectTrigger className="w-[180px]">
