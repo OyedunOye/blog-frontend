@@ -56,8 +56,8 @@ export const newBlogFormSchema = z.object({
   }),
 
 
-  category: z.string({
-    required_error: "Category is required, please select one"
+  category: z.string().min(2,{
+    message: "Category is required, please select one"
   }),
 
   articleImg: z.any().refine((file) => file?.[0], 'Blog image is required')

@@ -23,7 +23,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// import dynamic from "next/dynamic";
 import { Input } from "../ui/input";
 import {
   checkContentWordLim,
@@ -33,7 +32,7 @@ import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
 import { useContext, useState } from "react";
 import { useCreateBlog } from "@/hooks/blog/useCreateBlog";
-import ReactQuill, { Quill } from "react-quill-new";
+import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { blogReadTime } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
@@ -41,10 +40,7 @@ import { AppContext } from "@/context/AppContext";
 type NewBlogFormData = z.infer<typeof newBlogFormSchema>;
 
 const QuillCreateBlogForm = () => {
-  // Quill.register()
   const { dispatch, state } = useContext(AppContext);
-
-  // console.log(Quill.imports);
 
   const modules = {
     // toolbar: {
@@ -99,7 +95,6 @@ const QuillCreateBlogForm = () => {
     defaultValues: {
       title: "",
       blogContent: "",
-      // readTime: "",
       category: "",
       articleImg: undefined,
     },
@@ -126,7 +121,7 @@ const QuillCreateBlogForm = () => {
       formData.set("articleImg", file);
 
       // console.log(values.blogContent);
-      console.log(checkContentWordLim(values.blogContent));
+      // console.log(checkContentWordLim(values.blogContent));
       if (checkContentWordLim(values.blogContent) === "enough") {
         dispatch({
           type: "BLOGCONTENT_WARN",
@@ -134,7 +129,7 @@ const QuillCreateBlogForm = () => {
         });
 
         const res = await mutateAsync(formData);
-        console.log(res);
+        // console.log(res);
 
         if (res.blog && !isPending) {
           toasterAlert(res.message);
@@ -143,6 +138,9 @@ const QuillCreateBlogForm = () => {
       }
 
       if (checkContentWordLim(values.blogContent) === "notEnough") {
+        toasterAlert(
+          "The blog content is not up to the minumum word requirement."
+        );
         dispatch({
           type: "BLOGCONTENT_WARN",
           payload: "Yes",
@@ -153,7 +151,7 @@ const QuillCreateBlogForm = () => {
     }
   };
 
-  console.log(state.blogContentWarn);
+  // console.log(state.blogContentWarn);
 
   return (
     <div>
@@ -179,16 +177,12 @@ const QuillCreateBlogForm = () => {
               )}
             />
 
-            <div
-              className={`  ${
-                state.blogContentWarn === "Yes" ? " border-red-600" : "mb-16"
-              }`}
-            >
+            <div className="mb-16">
               <FormField
                 control={form.control}
                 name="blogContent"
                 render={({ field }) => (
-                  <FormItem className=" border-red-600">
+                  <FormItem className=" ">
                     <FormLabel
                       className={`${
                         state.blogContentWarn === "Yes" ? "text-red-600" : " "
@@ -196,7 +190,7 @@ const QuillCreateBlogForm = () => {
                     >
                       Blog content
                     </FormLabel>
-                    <FormControl className="h-[50vh] border-red-600 ">
+                    <FormControl className="h-[50vh] ">
                       <ReactQuill
                         modules={modules}
                         formats={formats}
@@ -207,42 +201,21 @@ const QuillCreateBlogForm = () => {
                         // className="h-[50vh] border border-red-700"
                         id="blogContent"
                         {...field}
-                        className={`h-[50vh] ${
-                          state.blogContentWarn === "Yes"
-                            ? " border border-red-600"
-                            : " "
-                        }`}
+                        className={`h-[50vh]`}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              {/* </div> */}
+              {state.blogContentWarn === "Yes" ? (
+                <p className="text-sm text-red-600 mt-12">
+                  You need at least 120 words for the blog content
+                </p>
+              ) : null}
             </div>
-            {state.blogContentWarn === "Yes" ? (
-              <p className="text-sm text-red-600 mt-12">
-                You need at least 120 words for the blog content
-              </p>
-            ) : null}
 
-            {/* <QuillCompo /> */}
-
-            {/* <FormField
-              control={form.control}
-              name="readTime"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Read time (minutes)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Provide the read time for your article"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="category"

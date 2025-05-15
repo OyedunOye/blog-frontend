@@ -48,7 +48,7 @@ const LatestArticles = () => {
   const [remainingBlogs, setRemainingBlogs] = useState<BlogType[]>([]);
 
   useEffect(() => {
-    if (data) {
+    if (data && isSuccess) {
       setAllBlogs(data.blogs);
       setRemainingBlogs(data.blogs.slice(4));
     }

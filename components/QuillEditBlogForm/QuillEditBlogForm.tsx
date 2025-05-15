@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,8 +44,7 @@ interface EditBlogProps {
   blogId: string;
 }
 
-const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
-  // const [quillFormValue, setValue] = useState("");
+const QuillEditBlogForm = () => {
   const modules = {
     toolbar: {
       container: [
@@ -85,13 +85,21 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
     // "clean",
   ];
 
-  const { isPending, isSuccess, isError, error, mutateAsync, data } =
-    useEditBlog();
+  const {
+    isPending,
+    isSuccess: editIsSuccess,
+    isError,
+    error,
+    mutateAsync,
+    data,
+  } = useEditBlog();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const { state, dispatch } = useContext(AppContext);
 
-  // console.log(state.singleBlogDetail);
+  const [blogEditContentWarn, setEditBlogContentWarn] = useState<string>("No");
+
+  const router = useRouter();
 
   const form = useForm<EditBlogFormData>({
     resolver: zodResolver(editBlogFormSchema),
@@ -106,7 +114,7 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
   const onSubmit = async (values: EditBlogFormData) => {
     const file = values.articleImg?.[0];
 
-    console.log("New values are:", values);
+    // console.log("New values are:", values);
 
     try {
       const formData = new FormData();
@@ -120,14 +128,11 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
       values.category !== "" ? formData.set("category", values.category) : "";
       values.articleImg !== "" ? formData.set("articleImg", file) : "";
 
-      console.log("formdata are", ...formData);
+      // console.log("formdata are", ...formData);
 
       if (checkContentWordLim(values.blogContent) === "enough") {
-        dispatch({
-          type: "BLOGCONTENT_WARN",
-          payload: "No",
-        });
-        console.log(blogId);
+        setEditBlogContentWarn("No");
+        // console.log(blogId);
         console.log(state.storedBlogId);
         console.log(state.singleBlogDetail._id);
         const res = await mutateAsync({
@@ -135,7 +140,11 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
           blogId: state.singleBlogDetail._id,
         });
         console.log(res);
-        if (isSuccess && data) {
+        console.log(editIsSuccess);
+        if (res) {
+          // checking blogIsSuccess, data and other variables from useEditBlog() not working here. Those are always not
+          // in our desired format before synchronous checks happen at this point. Hence, only res which was awaited
+          //helped me see my desired outcome here.
           toasterAlert(res.message);
           const payload = {
             openEditModal: false,
@@ -146,22 +155,20 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
             type: "CLOSE_EDIT_MODAL",
             payload: payload,
           });
-          window.location.reload();
+          router.push("/");
         }
         // console.log(state.storedBlogId);
       }
       if (checkContentWordLim(values.blogContent) === "notEnough") {
-        dispatch({
-          type: "BLOGCONTENT_WARN",
-          payload: "Yes",
-        });
+        setEditBlogContentWarn("Yes");
+        toasterAlert(
+          "The blog content is not up to the minumum word requirement."
+        );
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(state.openEditModal);
 
   return (
     <div>
@@ -193,15 +200,19 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
                 name="blogContent"
                 render={({ field }) => (
                   <FormItem className="">
-                    <FormLabel>Blog content</FormLabel>
+                    <FormLabel
+                      className={`${
+                        blogEditContentWarn === "Yes" ? "text-red-600" : " "
+                      }`}
+                    >
+                      Blog content
+                    </FormLabel>
                     <FormControl>
                       <ReactQuill
                         modules={modules}
                         formats={formats}
                         placeholder={"Write your blog here."}
                         theme="snow"
-                        //  value={quillFormValue}
-                        //  onChange={setValue}
                         className="h-[50vh]"
                         id="blogContent"
                         {...field}
@@ -211,6 +222,11 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
                   </FormItem>
                 )}
               />
+              {blogEditContentWarn === "Yes" ? (
+                <p className="text-sm text-red-600 mt-12">
+                  You need at least 120 words for the blog content
+                </p>
+              ) : null}
             </div>
 
             <FormField
@@ -221,8 +237,8 @@ const QuillEditBlogForm = ({ blogId }: EditBlogProps) => {
                   <FormLabel>Category tag</FormLabel>
                   <FormControl>
                     <Select
-                      // defaultValue={state.singleBlogDetail.category}
                       onValueChange={field.onChange}
+                      defaultValue={state.singleBlogDetail.category}
                     >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Blog Category" />

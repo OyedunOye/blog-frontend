@@ -7,7 +7,7 @@ import { AppContext } from "@/context/AppContext";
 import QuillEditBlogForm from "../QuillEditBlogForm/QuillEditBlogForm";
 
 const QuillEditBlogModal = () => {
-  const { dispatch, state } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   const handleClickBack = () => {
     let payload = {
@@ -22,24 +22,26 @@ const QuillEditBlogModal = () => {
   };
 
   return (
-    <>
-      <div className="absolute top-0 left-0 bg-black/80 w-full min-h-full z-[80]">
-        <MaxWidth className="h-contain py-5 w-2/3 justify-center bg-white border rounded-lg shadow-md ">
-          <h3 className="font-bold text-xl text-center mb-4">✍️ Edit Blog</h3>
-          <div className="w-4/5 justify-center mx-auto">
+    <div className="fixed top-0 left-0 bg-black/80 w-full h-full z-[50]">
+      <div className=" w-full h-full flex content-center justify-center">
+        <MaxWidth className=" w-2/3 py-10 h-[80%] my-auto justify-center bg-white border content-center rounded-lg overflow-y-auto">
+          <div className="w-4/5 my-10 h-full justify-center mx-auto">
+            <h3 className="font-bold text-xl text-center mb-4">✍️ Edit Blog</h3>
             <QuillEditBlogForm />
 
-            <Button
-              variant="ghost"
-              className="mx-auto justify-center flex"
-              onClick={handleClickBack}
-            >
-              Back
-            </Button>
+            <div className="h-15">
+              <Button
+                variant="ghost"
+                className="mx-auto mb-10 justify-center flex"
+                onClick={handleClickBack}
+              >
+                Back
+              </Button>
+            </div>
           </div>
         </MaxWidth>
       </div>
-    </>
+    </div>
   );
 };
 
