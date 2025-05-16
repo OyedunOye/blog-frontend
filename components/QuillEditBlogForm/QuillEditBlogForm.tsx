@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 import { Input } from "../ui/input";
 import {
   checkContentWordLim,
@@ -32,11 +32,13 @@ import {
 import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
 import { useContext, useState } from "react";
-import ReactQuill from "react-quill-new";
+// import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { AppContext } from "@/context/AppContext";
 import { useEditBlog } from "@/hooks/blog/useEditBlog";
 import { blogReadTime } from "@/utils/helpers";
+import MaxWidth from "../common/MaxWidthWrapper";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 type EditBlogFormData = z.infer<typeof editBlogFormSchema>;
 
@@ -171,7 +173,7 @@ const QuillEditBlogForm = () => {
   };
 
   return (
-    <div>
+    <MaxWidth className="">
       {isPending ? (
         <Loading message="Submitting your new blog" />
       ) : (
@@ -194,7 +196,9 @@ const QuillEditBlogForm = () => {
               )}
             />
 
-            <div className="mb-16">
+            <div
+              className={`${blogEditContentWarn === "Yes" ? "mb-5" : "mb-16"}`}
+            >
               <FormField
                 control={form.control}
                 name="blogContent"
@@ -289,7 +293,7 @@ const QuillEditBlogForm = () => {
           </form>
         </Form>
       )}
-    </div>
+    </MaxWidth>
   );
 };
 

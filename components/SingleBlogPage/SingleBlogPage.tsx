@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useGetASingleBlog } from "@/hooks/blog/useGetBlogs";
 import React, { useContext } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
@@ -20,6 +21,7 @@ import { newCommentFormSchema } from "@/zodValidations/auth/constant";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateBlogComment } from "@/hooks/blog/useCreateBlogComment";
+import "react-quill-new/dist/quill.snow.css";
 
 type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
 
@@ -202,7 +204,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
               {singleBlogData.blog[0].title}
             </h1>
             <div
-              className="prose overflow-hidden mt-2"
+              className="prose prose-lg overflow-hidden mt-2"
               dangerouslySetInnerHTML={{
                 __html: singleBlogData.blog[0].blogContent,
               }}
