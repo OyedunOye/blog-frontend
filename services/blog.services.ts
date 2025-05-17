@@ -9,6 +9,10 @@ interface EditBlogData {
     blogData:any
 }
 
+interface CreateCommentData {
+    blogId: string,
+    comment: any,
+}
 
 export const createBlog = async (credentials: any) => {
     try {
@@ -68,7 +72,7 @@ export const editBlog = async ( {blogId, blogData}: EditBlogData) => {
         })
         return res.data
     } catch (error) {
-        console.log("An error occured, unable to update this blog with id ${blogId}.", error)
+        console.log(`An error occured, unable to update this blog with id ${blogId}.`, error)
     }
 }
 
@@ -84,5 +88,20 @@ export const deleteBlog = async (blogId:string) => {
 
     } catch (error) {
         console.log(`An error occured, unable to delete blog with id ${blogId}`, error)
+    }
+}
+
+export const createBlogComment = async ({blogId, comment}: CreateCommentData) =>{
+    try {
+        const res = await axios.post(`${BASE_URL}/comment/${blogId}`, comment, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+
+    } catch (error) {
+        console.log("An error occured, unable to submit comment", error)
     }
 }

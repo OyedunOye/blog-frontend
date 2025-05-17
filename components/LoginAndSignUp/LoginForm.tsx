@@ -26,7 +26,8 @@ import { setCookie } from "cookies-next/client";
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 const LoginForm = () => {
-  const { isPending, isSuccess, isError, error, mutateAsync } = useLogUserIn();
+  const { isPending, isSuccess, isError, error, mutateAsync, data } =
+    useLogUserIn();
 
   const router = useRouter();
 
@@ -41,7 +42,7 @@ const LoginForm = () => {
   const onSubmit = async (values: LoginFormData) => {
     try {
       const res = await mutateAsync(values);
-      console.log(res);
+      console.log("response is", res);
 
       if (res.token && !isPending) {
         setCookie("token", res.token);
@@ -49,12 +50,26 @@ const LoginForm = () => {
         router.push("/");
       }
     } catch (error) {
+      // if(error?.status?===401)
+      if (data === undefined && !isPending) {
+        toasterAlert(
+          "There is either a mismatch of email and password or, unable to connect to the server. Make sure your internet connection is okay and retry logging in."
+        );
+      }
       console.log(error);
     }
   };
 
+  console.log(isError);
+  console.log(isPending);
+
   return (
     <div>
+      {/* {!isPending && !data && error
+        ? toasterAlert(
+            "There is an error connecting to the server, make sure your internet connection is okay and retry logging in."
+          )
+        : ""} */}
       {isPending ? (
         <Loading message="Logging in" />
       ) : (

@@ -1,17 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import Loading from "../common/Loader";
 // import NewBlogForm from "./NewBlogForm";
 import QuillCreateBlogForm from "./QuillCreateBlogForm";
+import { AppContext } from "@/context/AppContext";
 
 const QuillCreateBlogPage = () => {
   const [homePageLoading, setHomePageLoading] = useState<boolean>(false);
-  // const [signUpPageLoading, setSignUpPageIsLoading] = useState<boolean>(false);
-
+  const { state, dispatch } = useContext(AppContext);
+  const handleClickBack = () => {
+    setHomePageLoading(true);
+    dispatch({
+      type: "BLOGCONTENT_WARN",
+      payload: "No",
+    });
+  };
   console.log("homepageloading", homePageLoading);
 
   return (
@@ -42,7 +49,7 @@ const QuillCreateBlogPage = () => {
 
             <Link href={"/"} className="justify-center flex">
               <Button
-                onClick={() => setHomePageLoading(true)}
+                onClick={handleClickBack}
                 variant="ghost"
                 className="mx-auto"
               >

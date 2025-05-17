@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 import { getCookie, deleteCookie } from "cookies-next/client";
-import { ChevronDown, Menu, Search, Sun } from "lucide-react";
+import { ChevronDown, Menu, Moon, Search, Sun } from "lucide-react";
 
 import { Button } from "../ui/button";
 import Logo from "@/public/Logo.png";
@@ -31,9 +31,10 @@ import {
 
 import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
+import { AppContext } from "@/context/AppContext";
 
 const NavBar = () => {
-  // const [menu, setMenu] = useState(false)
+  const { dispatch, state } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
@@ -72,8 +73,25 @@ const NavBar = () => {
     window.location.reload();
   };
 
+  const handleSwitchToDarkMode = () => {
+    dispatch({
+      type: "DISPLAY_MODE",
+      payload: "Dark",
+    });
+  };
+
+  const handleSwitchToLightMode = () => {
+    dispatch({
+      type: "DISPLAY_MODE",
+      payload: "Light",
+    });
+  };
   return (
-    <nav className=" py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0 bg-white z-50 flex w-full flex-col">
+    <nav
+      className={`py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0  z-50 flex w-full flex-col ${
+        state.appMode === "Dark" ? "bg-black text-white" : "bg-white"
+      }`}
+    >
       {isLoading ? (
         <Loading className="min-h-screen" message="Loading login page" />
       ) : (
@@ -157,7 +175,25 @@ const NavBar = () => {
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
+                    <>
+                      {state.appMode === "Light" ? (
+                        <DropdownMenuItem
+                          onClick={handleSwitchToDarkMode}
+                          className="cursor-pointer"
+                        >
+                          Dark Mode <Moon />
+                        </DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem
+                          onClick={handleSwitchToLightMode}
+                          className="cursor-pointer"
+                        >
+                          Light Mode <Sun />
+                        </DropdownMenuItem>
+                      )}
+                    </>
 
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleLogOut}
                       className="cursor-pointer"

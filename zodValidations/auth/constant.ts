@@ -56,17 +56,14 @@ export const newBlogFormSchema = z.object({
   }),
 
 
-  // readTime: z.string().refine((val)=>/^[1-9]\d*$/.test(val), {
-  //   message: 'Please enter a positive integer',
-  // }),
-
-  category: z.string({
-    required_error: "Category is required, please select one"
+  category: z.string().min(2,{
+    message: "Category is required, please select one"
   }),
 
   articleImg: z.any().refine((file) => file?.[0], 'Blog image is required')
 
 })
+
 export const editBlogFormSchema = z.object({
   title: z.string().min(3, {
     message: "Blog title cannot be less than 3 characters."
@@ -74,14 +71,7 @@ export const editBlogFormSchema = z.object({
 
   blogContent: z.string(),
 
-
-  // readTime: z.string().refine((val)=>/^[1-9]\d*$/.test(val), {
-  //   message: 'Please enter a positive integer',
-  // }),
-
-  category: z.string({
-    required_error: "Category is required, please select one"
-  }),
+  category: z.string(),
 
   articleImg: z.any()
 })
@@ -93,3 +83,9 @@ export const checkContentWordLim = (blogContent:string):string=>{
   }
   return "enough"
 }
+
+export const newCommentFormSchema = z.object({
+  comment: z.string().min(2, {
+    message: "Your comment cannot be less than 2 characters"
+  })
+})

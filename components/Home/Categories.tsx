@@ -5,6 +5,8 @@ import Image from "next/image";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { useGetBlogCategoryCount } from "@/hooks/blog/useGetBlogCategoryCount";
 import Loading from "../common/Loader";
+import { useContext } from "react";
+import { AppContext } from "@/context/AppContext";
 
 interface CategoriesCount {
   Travel: number;
@@ -16,16 +18,45 @@ interface CategoriesCount {
 }
 
 const Categories = () => {
-  const { data, isLoading, isSuccess } = useGetBlogCategoryCount();
+  const { data, isLoading, isSuccess, isError } = useGetBlogCategoryCount();
+  const { state, dispatch } = useContext(AppContext);
   const articleCountFormat = (count: number) =>
     `${count} ${count < 2 ? "article" : "articles"}`;
 
+  // const setServerError = ()=>{
+  //   if (isError){
+  //   dispatch({
+  //       type: "CAN_LOGIN",
+  //       payload: false,
+  //     })
+  //   }
+  // }
+
+  // isSuccess
+  //   ? dispatch({
+  //       type: "CAN_LOGIN",
+  //       payload: true,
+  //     })
+  //   : "";
+
+  // console.log(state.canLogin);
   return (
     <section id="categories" className="w-full bg-[#F3F4F6] py-8">
-      {isSuccess && data ? (
-        <MaxWidth className="w-full">
-          <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
-          <div className="flex flex-wrap w-full">
+      <MaxWidth className="w-full min-h-30">
+        <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
+        {isLoading && !isError ? <Loading message="Loading categories" /> : ""}
+        {isError ? (
+          <div className="flex content-center h-fit justify-center">
+            {/* setServerError() */}
+            <p className="font-bold">
+              Server is unreachable, please try again later.
+            </p>
+          </div>
+        ) : (
+          ""
+        )}
+        {isSuccess && data ? (
+          <div className="flex flex-wrap w-full gap-3">
             {categories.map(({ category, photo }) => (
               <div
                 key={category}
@@ -42,11 +73,12 @@ const Categories = () => {
                 </div>
               </div>
             ))}
+            {/* unsetServerError() */}
           </div>
-        </MaxWidth>
-      ) : (
-        <Loading message="Loading categories" />
-      )}
+        ) : (
+          ""
+        )}
+      </MaxWidth>
     </section>
   );
 };

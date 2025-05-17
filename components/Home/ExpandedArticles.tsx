@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  authors,
+  // authors,
   categories,
-  popularPostsList,
-  trendingTopics,
+  // popularPostsList,
+  // trendingTopics,
 } from "@/constants";
 import { Button } from "../ui/button";
 import MaxWidth from "../common/MaxWidthWrapper";
@@ -47,7 +47,7 @@ interface Authors {
 }
 
 const ExpandedArticles = () => {
-  const { data, isLoading, isSuccess } = useGetAllAuthors();
+  const { data, isLoading, isSuccess, isError } = useGetAllAuthors();
   const [allAuthors, setAllAuthors] = useState<Authors[]>([]);
   const [topFiveAuthors, setTopFiveAuthors] = useState<Authors[]>([]);
 
@@ -76,6 +76,21 @@ const ExpandedArticles = () => {
               </div>
             </div>
 
+            {isLoading && !isError ? (
+              <Loading message="Loading blog's authors section" />
+            ) : (
+              ""
+            )}
+            {isError ? (
+              <div className="flex content-center h-50 py-auto my-20 justify-center">
+                <p className="font-bold">
+                  Server is unreachable, unable to load the author's section at
+                  the moment. Please try again later.
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
             {isSuccess ? (
               <>
                 {data ? (
@@ -121,11 +136,18 @@ const ExpandedArticles = () => {
                     </div>
                   </div>
                 ) : (
-                  <Loading message="No authors are available at the moment!" />
+                  // <Loading message="No authors are available at the moment!" />
+                  <div className="flex content-center h-fit justify-center">
+                    <p className="font-bold">
+                      No authors are available in our server at the moment. You
+                      can register, login and create a blog to be our first
+                      author!
+                    </p>
+                  </div>
                 )}
               </>
             ) : (
-              <Loading message=" Loading author details" />
+              ""
             )}
           </div>
         </MaxWidth>

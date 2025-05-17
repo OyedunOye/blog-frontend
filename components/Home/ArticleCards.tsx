@@ -16,7 +16,6 @@ import Loader from "../common/Loader";
 
 import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
 import { wordLimit } from "@/utils/helpers";
-import { num } from "./LatestArticles";
 
 interface BlogType {
   _id: string;
@@ -26,6 +25,8 @@ interface BlogType {
   category: string;
   articleImg: StaticImageData;
   createdAt: string;
+  loveCount: number;
+  commentCount: number;
   author: {
     authorImg: StaticImageData;
     firstName: string;
@@ -89,13 +90,13 @@ export const ArticleCards = () => {
                         variant="outline"
                         className="rounded-full bg-gray-200 h-[80%] "
                       >
-                        <Heart /> {num.loveCount}
+                        <Heart /> {item.loveCount}
                       </Button>
                       <Button
                         variant="outline"
                         className="rounded-full bg-gray-200 h-[80%] "
                       >
-                        <MessageSquareMore /> {num.commentCount}
+                        <MessageSquareMore /> {item.commentCount}
                       </Button>
                     </div>
 
