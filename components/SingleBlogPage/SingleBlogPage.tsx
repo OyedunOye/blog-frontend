@@ -31,9 +31,12 @@ interface BlogPageProps {
 
 interface EachComment {
   comment: string;
-  commenter: string;
+  commenter: {
+    firstName: string;
+    lastName: string;
+  };
   _id: string;
-  commentedAt: Date;
+  commentedAt: string;
 }
 
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
@@ -45,10 +48,12 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     isError: singleBlogIsError,
     error: singleBlogError,
   } = useGetASingleBlog(blogId);
-  // console.log(data);
+  // console.log(singleBlogData);
 
-  const { isPending, isSuccess, isError, error, mutateAsync } =
+  const { isPending, isSuccess, isError, error, mutateAsync, data } =
     useCreateBlogComment();
+
+  // console.log(data);
 
   const form = useForm<NewCommentFormData>({
     resolver: zodResolver(newCommentFormSchema),
@@ -59,12 +64,15 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
 
   //pending writing of service to post new comment
   const onSubmit = async (values: NewCommentFormData) => {
-    console.log("The comment value: ", values);
+    // console.log("The comment value: ", values);
     try {
       const res = await mutateAsync({ comment: values, blogId: blogId });
-      console.log(res);
+      // console.log(res);
       toasterAlert(res.message);
-      window.location.reload();
+      // window.location.reload();
+      if (res) {
+        form.reset({ comment: "" });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +129,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
 
   // console.log(state.deleteModal, state.storedBlogId);
 
-  singleBlogData ? console.log(singleBlogData.blog[0]) : "";
+  // singleBlogData ? console.log(singleBlogData.blog[0]) : "";
   return (
     <>
       {state.openEditModal ? <QuillEditBlogModal /> : null}
@@ -224,9 +232,18 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14"
                   >
                     <MessageSquareMore size={18} className="pb-0.5" />{" "}
-                    <span className="h-fit flex -mt-1 text-sm font-semibold">
-                      {singleBlogData.blog[0].commentCount}
-                    </span>
+                    {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
+                    {!data ? (
+                      <span className="h-fit flex -mt-1 text-sm font-semibold">
+                        {" "}
+                        {singleBlogData.blog[0].commentCount}
+                      </span>
+                    ) : (
+                      <span className="h-fit flex -mt-1 text-sm font-semibold">
+                        {" "}
+                        {data.updatedBlog.commentCount}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -271,16 +288,49 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                 </div>
               </div>
               <div className="flex flex-col gap-2 mt-10">
-                {singleBlogData.blog[0].comments.map(
-                  (eachComment: EachComment) => (
-                    <div
-                      key={eachComment._id}
-                      className="w-full min-h-14 rounded-sm p-1.5 bg-slate-50 shadow-sm"
-                    >
-                      <p className="">{eachComment.comment}</p>
-                    </div>
-                  )
-                )}
+                {/* trying to populate the comments display from updated comments returned on submitting a new comment but data's commenter obj returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
+                {!data
+                  ? singleBlogData.blog[0].comments.map(
+                      (eachComment: EachComment) => (
+                        <div
+                          key={eachComment._id}
+                          className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm"
+                        >
+                          <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
+                            <p className="capitalize">
+                              {eachComment.commenter.firstName +
+                                " " +
+                                eachComment.commenter.lastName}
+                            </p>
+                            <p className="">
+                              {formatDate(eachComment.commentedAt)}
+                            </p>
+                          </div>
+                          <p className="">{eachComment.comment}</p>
+                        </div>
+                      )
+                    )
+                  : data.updatedBlog.comments.map(
+                      (eachComment: EachComment) => (
+                        <div
+                          key={eachComment._id}
+                          className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm"
+                        >
+                          <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
+                            <p className="capitalize">
+                              {/* firstName and lastName update lagging sometimes and showing undefined, how to make sure it is always correct on first attempt? */}
+                              {eachComment.commenter.firstName +
+                                " " +
+                                eachComment.commenter.lastName}
+                            </p>
+                            <p className="">
+                              {formatDate(eachComment.commentedAt)}
+                            </p>
+                          </div>
+                          <p className="">{eachComment.comment}</p>
+                        </div>
+                      )
+                    )}
               </div>
             </div>
           </MaxWidth>

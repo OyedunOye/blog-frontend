@@ -85,7 +85,7 @@ export const checkContentWordLim = (blogContent:string):string=>{
 }
 
 export const newCommentFormSchema = z.object({
-  comment: z.string().min(2, {
+  comment: z.string().max(250).min(2, {
     message: "Your comment cannot be less than 2 characters"
   })
 })
