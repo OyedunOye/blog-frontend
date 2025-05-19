@@ -64,6 +64,7 @@ export const getASingleBlog = async (blogId:string) => {
 
 export const editBlog = async ( {blogId, blogData}: EditBlogData) => {
     try {
+        console.log("token is ", token)
         const res = await axios.patch(`${BASE_URL}/${blogId}`, blogData, {
             headers: {
                 "Content-Type": "multipart/form-data",

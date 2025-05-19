@@ -212,7 +212,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
               {singleBlogData.blog[0].title}
             </h1>
             <div
-              className="prose prose-lg overflow-hidden mt-2"
+              className="prose prose-lg ql-editor overflow-hidden mt-2"
               dangerouslySetInnerHTML={{
                 __html: singleBlogData.blog[0].blogContent,
               }}
