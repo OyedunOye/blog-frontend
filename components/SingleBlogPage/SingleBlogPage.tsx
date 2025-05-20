@@ -21,6 +21,7 @@ import { newCommentFormSchema } from "@/zodValidations/auth/constant";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateBlogComment } from "@/hooks/blog/useCreateBlogComment";
+import { useToggleLoveABlog } from "@/hooks/blog/useToggleLoveABlog";
 import "react-quill-new/dist/quill.snow.css";
 
 type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
@@ -53,6 +54,13 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const { isPending, isSuccess, isError, error, mutateAsync, data } =
     useCreateBlogComment();
 
+  const {
+    data: toggleLike,
+    mutateAsync: toggleLikeMutateAsync,
+    error: toggleLikeError,
+    isSuccess: toggleLikeSuccess,
+  } = useToggleLoveABlog();
+
   // console.log(data);
 
   const form = useForm<NewCommentFormData>({
@@ -73,6 +81,16 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       if (res) {
         form.reset({ comment: "" });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onLove = async () => {
+    try {
+      const res = await toggleLikeMutateAsync(blogId);
+      console.log(res);
+      toasterAlert(res.message);
     } catch (error) {
       console.log(error);
     }
@@ -127,6 +145,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     });
   };
 
+  // console.log(toggleLike);
   // console.log(state.deleteModal, state.storedBlogId);
 
   // singleBlogData ? console.log(singleBlogData.blog[0]) : "";
@@ -224,8 +243,12 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   <Button
                     variant="outline"
                     className="rounded-full bg-gray-200 h-[80%] "
+                    onClick={onLove}
                   >
-                    <Heart /> {singleBlogData.blog[0].loveCount}
+                    <Heart />{" "}
+                    {!toggleLike
+                      ? singleBlogData.blog[0].loveCount
+                      : toggleLike.updatedBlog.loveCount}
                   </Button>
                   <div
                     // variant="outline"
