@@ -1,18 +1,18 @@
-import axios from 'axios'
+import axios from "axios";
 import { getCookie } from "cookies-next/client";
 
-// const BASE_URL = 'http://localhost:3001/api/blogs'
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const token = getCookie("token");
 
 interface EditBlogData {
-    blogId: string,
-    blogData:any
+  blogId: string;
+  blogData: any;
 }
 
 interface CreateCommentData {
-    blogId: string,
-    comment: any,
+  blogId: string;
+  comment: any;
 }
 
 export const createBlog = async (credentials: any) => {
