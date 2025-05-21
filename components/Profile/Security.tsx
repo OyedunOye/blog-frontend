@@ -103,7 +103,7 @@ const Security = () => {
             )}
           />
           <Button variant="default" type="submit" className=" mb-5">
-            Update Profile
+            Update Password
           </Button>
         </form>
       </Form>
