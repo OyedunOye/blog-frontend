@@ -165,13 +165,13 @@ const NavBar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="cursor-pointer">
-                        Profile
+                        <Link href={"/profile"}>Profile</Link>
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem className="cursor-pointer">
-                        Settings
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                        <Link href={"/create-blog"}>Create Blog</Link>
+                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
