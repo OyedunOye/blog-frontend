@@ -11,11 +11,13 @@ import {
   MessageSquareMore,
   User2,
 } from "lucide-react";
-import { formatDate } from "@/utils";
+import { formatDate, loggedInUserId } from "@/utils";
 import Loader from "../common/Loader";
 
 import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
 import { wordLimit } from "@/utils/helpers";
+import { getCookie } from "cookies-next/client";
+import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
 
 interface BlogType {
   _id: string;
@@ -27,6 +29,7 @@ interface BlogType {
   createdAt: string;
   loveCount: number;
   commentCount: number;
+  loves: [string];
   author: {
     authorImg: StaticImageData;
     firstName: string;
@@ -40,12 +43,16 @@ export const ArticleCards = () => {
   const [topTwoToFourBlogs, setTopTwoToFourBlogs] = useState<BlogType[]>([]);
   //   console.log(topTwoToFourBlogs);
 
+  const token = getCookie("token");
+
   useEffect(() => {
     if (data) {
       setDataDuplicate(data.blogs),
         setTopTwoToFourBlogs(data.blogs.slice(1, 4));
     }
   }, [data]);
+
+  // console.log(loggedInUser());
 
   return (
     <div className="w-full">
@@ -82,22 +89,32 @@ export const ArticleCards = () => {
                     <p className="">{formatDate(item.createdAt)}</p>
                     <p className="">🏷️ {item.category}</p>
                   </div>
-                  <p className="font-semibold">{wordLimit(item.title)}</p>
+                  <p className="font-semibold h-40 border">
+                    {wordLimit(item.title)}
+                  </p>
 
                   <div className="flex justify-between text-gray-500 w-full ">
                     <div className=" flex gap-2 content-center ">
-                      <Button
-                        variant="outline"
-                        className="rounded-full bg-gray-200 h-[80%] "
+                      <div className="flex rounded-full justify-center p-3 gap-3 content-center bg-gray-200 h-[80%] w-20">
+                        {item.loves.indexOf(loggedInUserId()!) !== -1 ? (
+                          <Heart color="red" fill="red" className="-mt-1" />
+                        ) : (
+                          <Heart className="-mt-1" />
+                        )}
+                        <span className="h-fit flex -mt-1.5 text-md font-semibold">
+                          {item.loveCount}
+                        </span>
+                      </div>
+                      <div
+                        // variant="outline"
+                        // className="rounded-full bg-gray-200 h-[80%] "
+                        className="flex rounded-full justify-center p-3 gap-3 content-center bg-gray-200 h-[80%] w-20"
                       >
-                        <Heart /> {item.loveCount}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="rounded-full bg-gray-200 h-[80%] "
-                      >
-                        <MessageSquareMore /> {item.commentCount}
-                      </Button>
+                        <MessageSquareMore className="-mt-1" />{" "}
+                        <span className="h-fit flex -mt-1.5 text-md font-semibold">
+                          {item.commentCount}
+                        </span>
+                      </div>
                     </div>
 
                     <div className="flex content-center gap-2">
