@@ -120,8 +120,3 @@ export const editPasswordFormSchema = z.object({
     message: "This must match the password provided above",
   }),
 });
-
-  comment: z.string().max(250).min(2, {
-    message: "Your comment cannot be less than 2 characters"
-  })
-})
