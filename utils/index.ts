@@ -47,3 +47,13 @@ export const userName = () => {
     }
   }
 };
+
+export const loggedInUserId = () => {
+    if (token) {
+      const userDetails = getDecodedToken(token);
+      // toggleLike.updatedBlog.loves.indexOf(userDetails.id) !== -1
+      return userDetails?.id;
+    } else {
+      return null;
+    }
+  };

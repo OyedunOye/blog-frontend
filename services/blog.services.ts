@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { getCookie } from "cookies-next/client";
 
-const BASE_URL = 'http://localhost:3001/api/blogs'
+// const BASE_URL = 'http://localhost:3001/api/blogs'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const token = getCookie("token");
 
 interface EditBlogData {
@@ -16,7 +17,7 @@ interface CreateCommentData {
 
 export const createBlog = async (credentials: any) => {
     try {
-        const res = await axios.post(BASE_URL, credentials, {
+        const res = await axios.post(`${BASE_URL}blogs`, credentials, {
             headers:{
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`
@@ -32,7 +33,8 @@ export const createBlog = async (credentials: any) => {
 
 export const getAllBlogs = async () => {
     try {
-        const res = await axios.get(BASE_URL)
+        console.log(`${BASE_URL}blogs`)
+        const res = await axios.get(`${BASE_URL}blogs`)
         return res.data
 
     } catch (error) {
@@ -41,7 +43,7 @@ export const getAllBlogs = async () => {
 }
 export const getBlogCategoryCount = async () => {
     try {
-        const res = await axios.get(`${BASE_URL}/category-count`)
+        const res = await axios.get(`${BASE_URL}blogs/category-count`)
         return res.data
 
     } catch (error) {
@@ -52,7 +54,7 @@ export const getBlogCategoryCount = async () => {
 
 export const getASingleBlog = async (blogId:string) => {
     try {
-        const res = await axios.get(`${BASE_URL}/${blogId}`)
+        const res = await axios.get(`${BASE_URL}blogs/${blogId}`)
         return res.data
 
     } catch (error) {
@@ -64,7 +66,8 @@ export const getASingleBlog = async (blogId:string) => {
 
 export const editBlog = async ( {blogId, blogData}: EditBlogData) => {
     try {
-        const res = await axios.patch(`${BASE_URL}/${blogId}`, blogData, {
+        console.log("token is ", token)
+        const res = await axios.patch(`${BASE_URL}blogs/${blogId}`, blogData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`
@@ -79,7 +82,7 @@ export const editBlog = async ( {blogId, blogData}: EditBlogData) => {
 
 export const deleteBlog = async (blogId:string) => {
     try {
-        const res = await axios.delete(`${BASE_URL}/${blogId}`, {
+        const res = await axios.delete(`${BASE_URL}blogs/${blogId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -93,7 +96,7 @@ export const deleteBlog = async (blogId:string) => {
 
 export const createBlogComment = async ({blogId, comment}: CreateCommentData) =>{
     try {
-        const res = await axios.post(`${BASE_URL}/comment/${blogId}`, comment, {
+        const res = await axios.post(`${BASE_URL}blogs/comment/${blogId}`, comment, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
@@ -103,5 +106,24 @@ export const createBlogComment = async ({blogId, comment}: CreateCommentData) =>
 
     } catch (error) {
         console.log("An error occured, unable to submit comment", error)
+    }
+}
+
+export const toggleLoveABlog = async (blogId: string) =>{
+    try {
+        console.log("token is ", token)
+        const res = await axios.patch(`${BASE_URL}blogs/love/${blogId}`, 
+            {}, //no request body
+            {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+
+    } catch (error) {
+        console.log("An error occured, unable to submit comment", error)
+        throw error
     }
 }

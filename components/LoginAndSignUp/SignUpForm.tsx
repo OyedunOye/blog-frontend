@@ -124,7 +124,7 @@ const SignUpForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" {...field} />
+                    <Input type="password" placeholder="********" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +138,7 @@ const SignUpForm = () => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" {...field} />
+                    <Input type="password" placeholder="********" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
