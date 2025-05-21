@@ -98,7 +98,7 @@ const LatestArticles = () => {
                 </ul>
               </nav>
               <div className=" flex w-full gap-2 justify-between">
-                <div className="flex-1/2 border rounded-md flex flex-col">
+                <div className="w-[48%] border rounded-md flex flex-col">
                   <Link href={`/blog/${data.blogs[0]._id}`}>
                     <div className="w-full">
                       <Image
@@ -193,7 +193,7 @@ const LatestArticles = () => {
                   </div>
                 </div>
 
-                <div className="">
+                <div className="w-[53%]">
                   <ArticleCards />
                 </div>
               </div>

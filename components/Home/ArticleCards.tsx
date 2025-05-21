@@ -89,9 +89,7 @@ export const ArticleCards = () => {
                     <p className="">{formatDate(item.createdAt)}</p>
                     <p className="">🏷️ {item.category}</p>
                   </div>
-                  <p className="font-semibold h-40 border">
-                    {wordLimit(item.title)}
-                  </p>
+                  <p className="font-semibold ">{wordLimit(item.title)}</p>
 
                   <div className="flex justify-between text-gray-500 w-full ">
                     <div className=" flex gap-2 content-center ">
