@@ -59,9 +59,46 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     mutateAsync: toggleLikeMutateAsync,
     error: toggleLikeError,
     isSuccess: toggleLikeSuccess,
+    isPending: toggleLikeIsPending,
   } = useToggleLoveABlog();
 
-  // console.log(data);
+  console.log(toggleLike);
+
+  const currentUserLoveStatus = () => {
+    if (token) {
+      const userDetails = getDecodedToken(token);
+      // console.log(userDetails);
+      if (toggleLike && toggleLikeSuccess) {
+        console.log(toggleLike.updatedBlog.loves);
+        if (
+          userDetails &&
+          toggleLike.updatedBlog.loves.indexOf(userDetails.id) !== -1
+        ) {
+          console.log("loved");
+          return "loved";
+        } else {
+          console.log("unloved");
+          return "unloved";
+        }
+      }
+
+      if (!toggleLikeIsPending && singleBlogData) {
+        console.log(singleBlogData.blog[0].loves);
+        if (
+          userDetails &&
+          singleBlogData.blog[0].loves.indexOf(userDetails.id) !== -1
+        ) {
+          console.log("loved");
+          return "loved";
+        } else {
+          console.log("unloved");
+          return "unloved";
+        }
+      }
+    }
+    console.log("not authenticated");
+    return "not authenticated";
+  };
 
   const form = useForm<NewCommentFormData>({
     resolver: zodResolver(newCommentFormSchema),
@@ -145,10 +182,6 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     });
   };
 
-  // console.log(toggleLike);
-  // console.log(state.deleteModal, state.storedBlogId);
-
-  // singleBlogData ? console.log(singleBlogData.blog[0]) : "";
   return (
     <>
       {state.openEditModal ? <QuillEditBlogModal /> : null}
@@ -240,20 +273,34 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
             <div className="flex flex-col ">
               <div className="flex flex-col mb-3">
                 <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
-                  <Button
-                    variant="outline"
-                    className="rounded-full bg-gray-200 h-[80%] "
-                    onClick={onLove}
-                  >
-                    <Heart />{" "}
-                    {!toggleLike
-                      ? singleBlogData.blog[0].loveCount
-                      : toggleLike.updatedBlog.loveCount}
-                  </Button>
-                  <div
-                    // variant="outline"
-                    className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14"
-                  >
+                  {!toggleLike ? (
+                    <Button
+                      variant="outline"
+                      className="rounded-full bg-gray-200 h-[80%] "
+                      onClick={onLove}
+                    >
+                      {currentUserLoveStatus() === "loved" ? (
+                        <Heart color="red" fill="red" />
+                      ) : (
+                        <Heart />
+                      )}
+                      {singleBlogData.blog[0].loveCount}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      className="rounded-full bg-gray-200 h-[80%] "
+                      onClick={onLove}
+                    >
+                      {currentUserLoveStatus() === "loved" ? (
+                        <Heart color="red" fill="red" />
+                      ) : (
+                        <Heart />
+                      )}
+                      {toggleLike.updatedBlog.loveCount}
+                    </Button>
+                  )}
+                  <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14">
                     <MessageSquareMore size={18} className="pb-0.5" />{" "}
                     {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
                     {!data ? (

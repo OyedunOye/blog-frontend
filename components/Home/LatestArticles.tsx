@@ -13,7 +13,7 @@ import {
   User2,
 } from "lucide-react";
 import MaxWidth from "../common/MaxWidthWrapper";
-import { formatDate } from "@/utils";
+import { formatDate, loggedInUserId } from "@/utils";
 import Loader from "../common/Loader";
 
 import DotDivider from "../common/DotDivider";
@@ -163,18 +163,25 @@ const LatestArticles = () => {
                     </Link>
                     <div className="flex justify-between text-gray-500 mt-4">
                       <div className=" flex gap-2">
-                        <Button
-                          variant="outline"
-                          className="rounded-full bg-gray-200 h-[80%]"
-                        >
-                          <Heart /> {data.blogs[0].loveCount}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          className="rounded-full bg-gray-200 h-[80%]"
-                        >
-                          <MessageSquareMore /> {data.blogs[0].commentCount}
-                        </Button>
+                        {/* checking if the logged in user's id is existing in loves array. If so, they have liked and this is highlighted with red fill for the love icon */}
+
+                        <div className="flex rounded-full justify-center p-3 gap-3 content-center bg-gray-200 h-[80%] w-20">
+                          {data.blogs[0].loves.indexOf(loggedInUserId()!) !==
+                          -1 ? (
+                            <Heart color="red" fill="red" className="-mt-1" />
+                          ) : (
+                            <Heart className="-mt-1" />
+                          )}
+                          <span className="h-fit flex -mt-1.5 text-md font-semibold">
+                            {data.blogs[0].loveCount}
+                          </span>
+                        </div>
+                        <div className="flex rounded-full justify-center p-3 gap-3 content-center bg-gray-200 h-[80%] w-20">
+                          <MessageSquareMore className="-mt-1" />
+                          <span className="h-fit flex -mt-1.5 text-md font-semibold">
+                            {data.blogs[0].commentCount}
+                          </span>
+                        </div>
                       </div>
 
                       <div className="flex content-center gap-2">
