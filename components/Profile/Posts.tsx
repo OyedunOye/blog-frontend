@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Button } from "../ui/button";
 import {
   Pagination,
@@ -11,99 +11,164 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import Loading from "../common/Loader";
+import { limContentToThirtyWords } from "@/utils/helpers";
+import Link from "next/link";
+import { useContext, useState } from "react";
+import { AppContext } from "@/context/AppContext";
+import SelectedBlogDeleteConfirmation from "./SelectedBlogDelConfirm";
+
+interface BlogType {
+  _id: string;
+  title: string;
+  blogContent: string;
+  readTime: string;
+  category: string;
+  articleImg: StaticImageData;
+  createdAt: string;
+  author: {
+    authorImg: StaticImageData;
+    firstName: string;
+    lastName: string;
+  };
+}
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const Posts = () => {
-  const num = 7; // Get from logged in user blog
+  const { data, isLoading, isSuccess, error, isError } = useGetAUser();
+  const { state, dispatch } = useContext(AppContext);
 
-  const dummyData = [
-    {
-      id: "1",
-      title: "The Art of Programming",
-      descrription:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem error molestiae suscipit? Non commodi, perspiciatis facere laudantium sunt accusantium qui et nesciunt numquam! Blanditiis doloribus minus laborum vel! Voluptas, incidunt? ...",
-    },
-    {
-      id: "2",
-      title: "Being Resolute",
-      descrription:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem error molestiae suscipit? Non commodi, perspiciatis facere laudantium sunt accusantium qui et nesciunt numquam! Blanditiis doloribus minus laborum vel! Voluptas, incidunt? ...",
-    },
-    {
-      id: "3",
-      title: "Console dot log - The saver of Men",
-      descrription:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem error molestiae suscipit? Non commodi, perspiciatis facere laudantium sunt accusantium qui et nesciunt numquam! Blanditiis doloribus minus laborum vel! Voluptas, incidunt? ...",
-    },
-  ];
+  const [currentBlogId, setCurrentBlogId] = useState<string | null>(null);
+  const [currentBlogTitle, setCurrentBlogTitle] = useState<null | string>(null);
+
+  const handleDeleteClick = () => {
+    let payload = {
+      deleteModal: true,
+      // currentBlogId:
+    };
+    dispatch({
+      type: "CONFIRM_DELETE",
+      payload: payload,
+    });
+  };
+
+  console.log(data);
+
   return (
-    <div className="w-full flex flex-col gap-y-6">
-      <h5 className="text-sm text-gray-600">
-        You have created{" "}
-        <span className="font-semibold text-gray-800">{num} </span>
-        Posts
-      </h5>
+    <>
+      {state.deleteModal ? <SelectedBlogDeleteConfirmation /> : null}
+      {isLoading && !isError ? <Loading message="Loading your posts" /> : ""}
+      {isError ? (
+        <div className="flex content-center h-full py-auto my-20 justify-center">
+          <p className="font-bold">
+            Server is unreachable, unable to load the blog section at the
+            moment. Please try again later.
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
 
-      <div className="flex flex-col gap-y-8 w-full">
-        {dummyData.map((data) => (
-          <div
-            key={data.id}
-            className="bg-gray-200 w-full p-5 flex gap-x-10 rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
-          >
-            <div className="w-[20%]">
-              <Image
-                src={"/user-dummy.png"}
-                alt="blog cover image"
-                height={860}
-                width={848}
-                className="object-cover"
-              />
+      {isSuccess && data ? (
+        <div className="w-full flex flex-col gap-y-6">
+          <h5 className="text-sm text-gray-600">
+            You have posted{" "}
+            <span className="font-semibold text-gray-800">
+              {data.user.blogs.length}{" "}
+            </span>
+            blog{data.user.blogs.length > 1 ? "s" : ""}
+          </h5>
+          {data.user.blogs.length < 1 ? (
+            <div className=" flex-col border h-90 rounded-md shadow-sm gap-5 p-2">
+              <p className="font-bold capitalize">
+                Hello {data.user.firstName} {data.user.lastName}!
+              </p>
+              <p className="mt-3">
+                You have not created any blog yet, you can create your first
+                blog today by clicking{" "}
+                <Link href={"/create-blog"} className="text-blue-600 underline">
+                  this link
+                </Link>
+                .
+              </p>
             </div>
-            <div className="w-[75%] flex flex-col gap-y-4">
-              <h4 className="text-lg font-bold">{data.title}</h4>
-              <p className="text-gray-600 text-sm">{data.descrription}</p>
+          ) : (
+            <>
+              <div className="flex flex-col gap-y-8 w-full">
+                {data.user.blogs.map((blog: BlogType) => (
+                  <div
+                    key={blog._id}
+                    className="bg-gray-200 w-200 p-5 flex gap-x-10 rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
+                  >
+                    <div className="w-[20%]">
+                      <Image
+                        src={`${BASE_URL}` + blog.articleImg}
+                        alt="blog cover image"
+                        height={860}
+                        width={848}
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="w-[75%] flex flex-col gap-y-4">
+                      <h4 className="text-lg font-bold">{blog.title}</h4>
+                      <p
+                        className="text-gray-600 text-sm"
+                        dangerouslySetInnerHTML={{
+                          __html: limContentToThirtyWords(blog.blogContent),
+                        }}
+                      ></p>
 
-              <div className="flex items-center justify-end gap-x-4 mt-5">
-                <Button
-                  variant="default"
-                  className="bg-green-400 hover:bg-green-300 rounded-md w-30"
-                  onClick={() => {}}
-                >
-                  Edit Blog
-                </Button>
-                <Button
-                  variant="destructive"
-                  className="cursor-pointer"
-                  onClick={() => {}}
-                >
-                  Delete Blog
-                </Button>
+                      <div className="flex items-center justify-end gap-x-4 mt-5">
+                        <Link href={`/blog/${blog._id}`}>
+                          <Button
+                            variant="default"
+                            className="bg-green-400 hover:bg-green-300 rounded-md w-30"
+                          >
+                            Edit Blog
+                          </Button>
+                        </Link>
+                        <Button
+                          variant="destructive"
+                          className="cursor-pointer"
+                          onClick={handleDeleteClick}
+                        >
+                          Delete Blog
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      <div className="flex justify-between mt-6 pr-4">
-        <Pagination className="justify-start mx-0 w-1/2">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              <div className="flex justify-between mt-6 pr-4">
+                <Pagination className="justify-start mx-0 w-1/2">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
 
-        <Button variant="default">See more</Button>
-      </div>
-    </div>
+                <Button variant="default">See more</Button>
+              </div>
+            </>
+          )}
+        </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 

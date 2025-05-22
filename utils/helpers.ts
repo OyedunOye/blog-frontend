@@ -22,3 +22,11 @@ export const blogReadTime = (blogContent: string): string =>{
   const read_time_min = Math.ceil(numOfWords/200).toFixed(0)
   return read_time_min
 }
+
+export const limContentToThirtyWords = (blogContent: string): string => {
+  const numOfWords = blogContent.trim().split(" ").length;
+  if (numOfWords > 20) {
+    return blogContent.split(" ").slice(0, 30).join(" ") + "..."
+  }
+  return blogContent;
+};

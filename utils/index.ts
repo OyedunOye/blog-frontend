@@ -37,7 +37,7 @@ export function formatDate2(isoDateString: string): string {
 
 const cookies = new Cookies(null, { path: "/" });
 
-const getToken = async () => {
+export const getToken = async () => {
   const token = await cookies.get("token");
   return token;
 };
