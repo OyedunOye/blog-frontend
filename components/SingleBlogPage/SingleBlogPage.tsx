@@ -63,6 +63,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   } = useToggleLoveABlog();
 
   console.log(toggleLike);
+  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   const currentUserLoveStatus = () => {
     if (token) {
@@ -138,7 +139,8 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     if (token) {
       const userData = getDecodedToken(token);
       if (userData?.authorImg !== "") {
-        return "http://localhost:3001/" + userData?.authorImg;
+        // return "http://localhost:3001/" + userData?.authorImg;
+        return `${baseUrl}${userData?.authorImg}`;
       }
     }
     return "";
