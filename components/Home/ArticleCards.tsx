@@ -45,6 +45,8 @@ export const ArticleCards = () => {
 
   const token = getCookie("token");
 
+  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+
   useEffect(() => {
     if (data) {
       setDataDuplicate(data.blogs),
@@ -70,7 +72,8 @@ export const ArticleCards = () => {
                     {item.author.authorImg ? (
                       <div className="w-6 h-6 rounded-sm">
                         <Image
-                          src={"http://localhost:3001/" + item.author.authorImg}
+                          // src={"http://localhost:3001/" + item.author.authorImg}
+                          src={`${baseUrl}${item.author.authorImg}`}
                           alt={item.author.firstName}
                           width={24}
                           height={24}
@@ -125,7 +128,8 @@ export const ArticleCards = () => {
 
                 <div className="w-40 h-30 content-center rounded-md">
                   <Image
-                    src={"http://localhost:3001/" + item.articleImg}
+                    // src={"http://localhost:3001/" + item.articleImg}
+                    src={`${baseUrl}${item.articleImg}`}
                     alt={item.title}
                     className="mb-3 w-full h-full object-cover rounded-md"
                     width={144}

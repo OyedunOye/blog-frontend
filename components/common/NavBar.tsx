@@ -43,6 +43,7 @@ const NavBar = () => {
   // );
 
   const token = getCookie("token");
+  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   const userName = () => {
     if (token) {
@@ -59,11 +60,14 @@ const NavBar = () => {
     if (token) {
       const userData = getDecodedToken(token);
       if (userData?.authorImg !== "") {
-        return "http://localhost:3001/" + userData?.authorImg;
+        // return "http://localhost:3001/" + userData?.authorImg;
+        return `${baseUrl}${userData?.authorImg}`;
       }
     }
     return "";
   };
+
+  console.log(picPath());
 
   const handleLogOut = () => {
     setIsLoggingOut(true);

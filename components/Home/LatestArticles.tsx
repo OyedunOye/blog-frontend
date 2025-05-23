@@ -54,6 +54,8 @@ const LatestArticles = () => {
     }
   }, [data]);
 
+  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+
   return (
     <section id="latest" className="mb-6 ">
       <MaxWidth className="my-6 w-full min-h-60">
@@ -102,9 +104,10 @@ const LatestArticles = () => {
                   <Link href={`/blog/${data.blogs[0]._id}`}>
                     <div className="w-full">
                       <Image
-                        src={
-                          "http://localhost:3001/" + data.blogs[0].articleImg
-                        }
+                        // src={
+                        //   "http://localhost:3001/" + data.blogs[0].articleImg
+                        // }
+                        src={`${baseUrl}${data.blogs[0].articleImg}`}
                         alt={data.blogs[2].title}
                         width={90}
                         height={40}
@@ -124,10 +127,11 @@ const LatestArticles = () => {
                             {data.blogs[0].author.authorImg ? (
                               <div className="h-6 w-6 border rounded-sm">
                                 <Image
-                                  src={
-                                    "http://localhost:3001/" +
-                                    data.blogs[0].author.authorImg
-                                  }
+                                  // src={
+                                  //   "http://localhost:3001/" +
+                                  //   data.blogs[0].author.authorImg
+                                  // }
+                                  src={`${baseUrl}${data.blogs[0].author.authorImg}`}
                                   alt={data.blogs[0].author.firstName}
                                   width={24}
                                   height={24}
@@ -209,7 +213,8 @@ const LatestArticles = () => {
                       <div className="flex flex-col w-full h-90 gap-2 rounded-md ">
                         <div className="flex h-56 w-full">
                           <Image
-                            src={"http://localhost:3001/" + card.articleImg}
+                            // src={"http://localhost:3001/" + card.articleImg}
+                            src={`${baseUrl}${card.articleImg}`}
                             alt={card.title}
                             width={288}
                             height={250}
@@ -222,10 +227,11 @@ const LatestArticles = () => {
                             {card.author.authorImg ? (
                               <div className="h-6 w-6 border rounded-sm">
                                 <Image
-                                  src={
-                                    "http://localhost:3001/" +
-                                    card.author.authorImg
-                                  }
+                                  // src={
+                                  //   "http://localhost:3001/" +
+                                  //   card.author.authorImg
+                                  // }
+                                  src={`${baseUrl}${card.author.authorImg}`}
                                   alt={card.author.firstName}
                                   width={26}
                                   height={26}
