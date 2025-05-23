@@ -8,7 +8,6 @@ import {
 } from "@/constants";
 import { Button } from "../ui/button";
 import MaxWidth from "../common/MaxWidthWrapper";
-import Image, { StaticImageData } from "next/image";
 import {
   Pagination,
   PaginationContent,
@@ -40,7 +39,7 @@ interface Authors {
   firstName: string;
   lastName: string;
   email: string;
-  authorImg: StaticImageData;
+  authorImg: string;
   createdAt: string;
   updatedAt: string;
   blogs: Blogs[];
@@ -50,6 +49,8 @@ const ExpandedArticles = () => {
   const { data, isLoading, isSuccess, isError } = useGetAllAuthors();
   const [allAuthors, setAllAuthors] = useState<Authors[]>([]);
   const [topFiveAuthors, setTopFiveAuthors] = useState<Authors[]>([]);
+
+  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   useEffect(() => {
     if (data) {
@@ -105,9 +106,7 @@ const ExpandedArticles = () => {
                           <div className="flex gap-4 content-center">
                             {author.authorImg ? (
                               <AvatarRenderer
-                                src={
-                                  "http://localhost:3001/" + author.authorImg
-                                }
+                                src={baseUrl + author.authorImg}
                                 className="w-20 h-20"
                               />
                             ) : (

@@ -34,7 +34,7 @@ interface BlogType {
   };
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
 const Posts = () => {
   const { data, isLoading, isSuccess, error, isError } = useGetAUser();
@@ -102,13 +102,13 @@ const Posts = () => {
                     key={blog._id}
                     className="bg-gray-200 w-200 p-5 flex gap-x-10 rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
                   >
-                    <div className="w-[20%]">
+                    <div className="w-[20%] h-50">
                       <Image
-                        src={`${BASE_URL}` + blog.articleImg}
+                        src={`${baseUrl}` + blog.articleImg}
                         alt="blog cover image"
                         height={860}
                         width={848}
-                        className="object-cover"
+                        className="object-cover h-38 rounded-sm"
                       />
                     </div>
                     <div className="w-[75%] flex flex-col gap-y-4">

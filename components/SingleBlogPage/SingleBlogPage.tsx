@@ -237,10 +237,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                 <div className="p-2 flex flex-col gap-2">
                   {singleBlogData.blog[0].author.authorImg ? (
                     <AvatarRenderer
-                      src={
-                        "http://localhost:3001/" +
-                        singleBlogData.blog[0].author.authorImg
-                      }
+                      src={baseUrl + singleBlogData.blog[0].author.authorImg}
                       className="h-30 w-30"
                     />
                   ) : (
