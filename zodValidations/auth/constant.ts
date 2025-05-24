@@ -91,20 +91,18 @@ export const newCommentFormSchema = z.object({
   }),
 });
 
-export const editFormSchema = z.object({
-  firstName: z.string().min(3, {
-    message: "First name cannot be less than 3 characters.",
+export const editUserProfileFormSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name cannot be less than 2 characters.",
   }),
 
-  lastName: z.string().min(8, {
-    message: "The content must be at least 8 characters long.",
+  lastName: z.string().min(2, {
+    message: "First name cannot be less than 2 characters.",
   }),
 
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
+  email: z.string().email(),
 
-  authorImg: z.any().refine((file) => file?.[0], "Blog image is required"),
+  authorImg: z.any(),
 });
 
 export const editPasswordFormSchema = z.object({
@@ -116,7 +114,10 @@ export const editPasswordFormSchema = z.object({
     message: "The password must be at least 8 characters",
   }),
 
-  confirmNewPassword: z.string().min(8, {
-    message: "This must match the password provided above",
-  }),
+  confirmNewPassword: z.string()
+})
+// .refine((conf) => conf===newPassword, "This must match the password provided above"),
+.refine((data) => data.newPassword === data.confirmNewPassword, {
+  message: "Passwords do not match",
+  path: ["confirmNewPassword"],
 });
