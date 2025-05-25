@@ -157,12 +157,12 @@ const LatestArticles = () => {
                           </div>
                         </div>
 
-                        <h3 className="font-semibold text-lg">
+                        {/* <h3 className="font-semibold text-lg">
                           UI Interactions of the week #1
-                        </h3>
-                        <p className="text-sm text-gray-500">
+                        </h3> */}
+                        <h3 className="text-lg font-bold text-gray-500">
                           {wordLimit(data.blogs[0].title)}
-                        </p>
+                        </h3>
                       </div>
                     </Link>
                     <div className="flex justify-between text-gray-500 mt-4">

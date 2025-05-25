@@ -22,6 +22,7 @@ import { useGetAllAuthors } from "@/hooks/authors/useGetAllAuthors";
 import Loading from "../common/Loader";
 import AvatarRenderer from "../common/Avatar";
 import { useEffect, useState } from "react";
+import { getInitials } from "@/utils/helpers";
 
 interface Blogs {
   // blogs: {
@@ -107,7 +108,10 @@ const ExpandedArticles = () => {
                             {author.authorImg ? (
                               <AvatarRenderer
                                 src={baseUrl + author.authorImg}
-                                className="w-20 h-20"
+                                fallBack={getInitials(
+                                  author.firstName + " " + author.lastName
+                                )}
+                                className="w-20 h-20 bg-white text-3xl"
                               />
                             ) : (
                               <AvatarRenderer
