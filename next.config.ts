@@ -15,6 +15,10 @@ const nextConfig = {
         port: "3001",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "*", // Allow images from all domains
+      },
     ],
   },
 };

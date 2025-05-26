@@ -47,6 +47,12 @@ export const AppReducer = (state, action) => {
         canLogin: action.payload,
       };
 
+    case "PROFILE_DATA_STORAGE":
+      return {
+        ...state,
+        profileData: action.payload,
+      };
+
     case "DISPLAY_MODE":
       return {
         ...state,
@@ -67,6 +73,7 @@ const initialState = {
   blogContentWarn: "No",
   appMode: "Light",
   canLogin: false,
+  profileData: null,
 };
 
 //create the context. This is the thing that the components import and use to get the state

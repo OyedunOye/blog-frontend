@@ -16,11 +16,19 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import ToggleSwitch from "./ToggleSwitch";
 import { useState } from "react";
+import { useChangePassword } from "@/hooks/auth/useChangePassword";
+import { toasterAlert } from "@/utils";
+import { useRouter } from "next/navigation";
 
 type PasswordFormData = z.infer<typeof editPasswordFormSchema>;
 
 const Security = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false);
+
+  const { mutateAsync, isPending, isSuccess, isError, error } =
+    useChangePassword();
+
+  const router = useRouter();
 
   const form = useForm<PasswordFormData>({
     resolver: zodResolver(editPasswordFormSchema),
@@ -34,6 +42,13 @@ const Security = () => {
   const onSubmit = async (values: PasswordFormData) => {
     try {
       console.log(values);
+      const res = await mutateAsync(values);
+      console.log("response is", res);
+
+      if (res.user && !isPending) {
+        toasterAlert(res.message);
+        router.push("/");
+      }
     } catch (error) {
       console.log(error);
     }

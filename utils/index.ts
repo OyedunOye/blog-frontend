@@ -1,5 +1,6 @@
 import { getDecodedToken } from '@/hooks/getDecodeToken/getDecodedToken';
-import { getCookie } from 'cookies-next/client';
+// import { getCookie } from 'cookies-next/client';
+import Cookies from "universal-cookie";
 import { toast } from 'react-toastify';
 
 export const toasterAlert = (message: string)=> toast(message, {
@@ -34,7 +35,16 @@ export function formatDate2(isoDateString: string): string {
   return formatter.format(date); // e.g., "29 Apr 2025"
 }
 
-const token = getCookie("token");
+const cookies = new Cookies(null, { path: "/" });
+
+export const getToken = async () => {
+  const token = await cookies.get("token");
+  return token;
+};
+
+const token = await getToken();
+
+// const token = getCookie("token");
 
 export const userName = () => {
   if (token) {

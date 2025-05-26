@@ -23,6 +23,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateBlogComment } from "@/hooks/blog/useCreateBlogComment";
 import { useToggleLoveABlog } from "@/hooks/blog/useToggleLoveABlog";
 import "react-quill-new/dist/quill.snow.css";
+import { Avatar } from "../ui/avatar";
+import { getInitials } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
 
 type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
 
@@ -35,6 +38,7 @@ interface EachComment {
   commenter: {
     firstName: string;
     lastName: string;
+    authorImg: string;
   };
   _id: string;
   commentedAt: string;
@@ -42,6 +46,8 @@ interface EachComment {
 
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const { dispatch, state } = useContext(AppContext);
+
+  const router = useRouter();
 
   const {
     data: singleBlogData,
@@ -125,6 +131,12 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   };
 
   const onLove = async () => {
+    if (!token) {
+      toasterAlert(
+        "You are offline, please login to be able to like this blog."
+      );
+      router.push("/login");
+    }
     try {
       const res = await toggleLikeMutateAsync(blogId);
       console.log(res);
@@ -237,11 +249,13 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                 <div className="p-2 flex flex-col gap-2">
                   {singleBlogData.blog[0].author.authorImg ? (
                     <AvatarRenderer
-                      src={
-                        "http://localhost:3001/" +
-                        singleBlogData.blog[0].author.authorImg
-                      }
-                      className="h-30 w-30"
+                      src={baseUrl + singleBlogData.blog[0].author.authorImg}
+                      fallBack={getInitials(
+                        singleBlogData.blog[0].author.firstName +
+                          " " +
+                          singleBlogData.blog[0].author.lastName
+                      )}
+                      className="h-30 w-30 text-4xl"
                     />
                   ) : (
                     <AvatarRenderer
@@ -365,20 +379,44 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   ? singleBlogData.blog[0].comments.map(
                       (eachComment: EachComment) => (
                         <div
+                          className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm "
                           key={eachComment._id}
-                          className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm"
                         >
-                          <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
-                            <p className="capitalize">
-                              {eachComment.commenter.firstName +
-                                " " +
-                                eachComment.commenter.lastName}
-                            </p>
-                            <p className="">
-                              {formatDate(eachComment.commentedAt)}
-                            </p>
+                          <div className="flex">
+                            <div className="">
+                              {eachComment.commenter.authorImg !== "" ? (
+                                <AvatarRenderer
+                                  src={
+                                    baseUrl + eachComment.commenter.authorImg
+                                  }
+                                  fallBack={getInitials(
+                                    eachComment.commenter.firstName +
+                                      " " +
+                                      eachComment.commenter.lastName
+                                  )}
+                                  className="h-8 w-8"
+                                />
+                              ) : (
+                                <AvatarRenderer
+                                  src={"http://localhost:3000/user-dummy.png"}
+                                  className="h-8 w-8"
+                                />
+                              )}
+                            </div>
+                            <div className="flex flex-col pl-2">
+                              <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
+                                <p className="capitalize">
+                                  {eachComment.commenter.firstName +
+                                    " " +
+                                    eachComment.commenter.lastName}
+                                </p>
+                                <p className="">
+                                  {formatDate(eachComment.commentedAt)}
+                                </p>
+                              </div>
+                              <p className="">{eachComment.comment}</p>
+                            </div>
                           </div>
-                          <p className="">{eachComment.comment}</p>
                         </div>
                       )
                     )

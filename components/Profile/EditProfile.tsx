@@ -6,7 +6,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { CameraIcon } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Form,
   FormControl,
@@ -15,15 +15,29 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { editFormSchema } from "@/zodValidations/auth/constant";
+import { editUserProfileFormSchema } from "@/zodValidations/auth/constant";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import { AppContext } from "@/context/AppContext";
+import { useUpdateUserProfile } from "@/hooks/authors/useUpdateUserProfile";
+import { toasterAlert } from "@/utils";
+import { useRouter } from "next/navigation";
 
-type EditProfileFormData = z.infer<typeof editFormSchema>;
+type EditProfileFormData = z.infer<typeof editUserProfileFormSchema>;
+
+const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
 const EditProfile = () => {
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<File | "">("");
+
+  const { dispatch, state } = useContext(AppContext);
+
+  const { mutateAsync, isPending, isSuccess, isError, error } =
+    useUpdateUserProfile();
+
+  const router = useRouter();
 
   // Display image chosen temporarily
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,18 +49,43 @@ const EditProfile = () => {
   };
 
   const form = useForm<EditProfileFormData>({
-    resolver: zodResolver(editFormSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      authorImg: undefined,
-    },
+    resolver: zodResolver(editUserProfileFormSchema),
+    defaultValues: state.profileData?.user
+      ? {
+          firstName: state.profileData.user.firstName,
+          lastName: state.profileData.user.lastName,
+          email: state.profileData.user.email,
+          authorImg: "",
+        }
+      : {
+          firstName: "",
+          lastName: "",
+          email: "",
+          authorImg: "",
+        },
   });
 
+  console.log(profileImage);
+
   const onSubmit = async (values: EditProfileFormData) => {
+    console.log("The values are", values);
     try {
-      console.log(values);
+      // const file = values.authorImg?.[0];
+      // console.log(file);
+
+      const formData = new FormData();
+      values.firstName !== ""
+        ? formData.set("firstName", values.firstName)
+        : "";
+      values.lastName !== "" ? formData.set("lastName", values.lastName) : "";
+      values.email !== "" ? formData.set("email", values.email) : "";
+      profileImage !== "" ? formData.set("articleImg", profileImage) : "";
+      const res = await mutateAsync(formData);
+
+      if (res.user && !isPending) {
+        toasterAlert(res.message);
+        router.push("/");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +106,8 @@ const EditProfile = () => {
         >
           {/* Get Image from user's profile -> objectUrl | authorImg */}
           {/* That means user-dummy would be the image of the user or a blank screen */}
+          {/* Nice implementation! But how do I preview the existing picture in users profile?? */}
+          {/* How do I differentiate between when the user wants to remove the existing profile picture and when they want to keep it? */}
           {objectUrl && (
             <Image
               src={objectUrl ? objectUrl : "/user-dummy.png"}

@@ -32,6 +32,7 @@ import {
 import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
 
 const NavBar = () => {
   const { dispatch, state } = useContext(AppContext);
@@ -67,7 +68,7 @@ const NavBar = () => {
     return "";
   };
 
-  console.log(picPath());
+  // console.log(picPath());
 
   const handleLogOut = () => {
     setIsLoggingOut(true);
@@ -82,6 +83,20 @@ const NavBar = () => {
       type: "DISPLAY_MODE",
       payload: "Dark",
     });
+  };
+
+  const { data, isSuccess, error, isError } = useGetAUser();
+
+  const handleProfileClick = () => {
+    if (data && isSuccess) {
+      // const payload = {
+      //   profileData: data}
+      console.log(data);
+      dispatch({
+        type: "PROFILE_DATA_STORAGE",
+        payload: data,
+      });
+    }
   };
 
   const handleSwitchToLightMode = () => {
@@ -169,7 +184,9 @@ const NavBar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="cursor-pointer">
-                        <Link href={"/profile"}>Profile</Link>
+                        <Link onClick={handleProfileClick} href={"/profile"}>
+                          Profile
+                        </Link>
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />

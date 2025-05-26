@@ -100,7 +100,7 @@ const LatestArticles = () => {
                 </ul>
               </nav>
               <div className=" flex w-full gap-2 justify-between">
-                <div className="flex-1/2 border rounded-md flex flex-col">
+                <div className="w-[48%] border rounded-md flex flex-col">
                   <Link href={`/blog/${data.blogs[0]._id}`}>
                     <div className="w-full">
                       <Image
@@ -157,12 +157,12 @@ const LatestArticles = () => {
                           </div>
                         </div>
 
-                        <h3 className="font-semibold text-lg">
+                        {/* <h3 className="font-semibold text-lg">
                           UI Interactions of the week #1
-                        </h3>
-                        <p className="text-sm text-gray-500">
+                        </h3> */}
+                        <h3 className="text-lg font-bold text-gray-500">
                           {wordLimit(data.blogs[0].title)}
-                        </p>
+                        </h3>
                       </div>
                     </Link>
                     <div className="flex justify-between text-gray-500 mt-4">
@@ -197,7 +197,7 @@ const LatestArticles = () => {
                   </div>
                 </div>
 
-                <div className="">
+                <div className="w-[53%]">
                   <ArticleCards />
                 </div>
               </div>
