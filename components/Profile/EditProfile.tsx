@@ -91,6 +91,8 @@ const EditProfile = () => {
     }
   };
 
+  console.log(objectUrl);
+
   return (
     <div className="flex flex-col gap-y-6">
       <h5 className="text-lg font-semibold">Update your profile info</h5>
@@ -99,18 +101,25 @@ const EditProfile = () => {
         <div
           className={cn(
             "relative w-full h-[85%] transition-all",
-            objectUrl
+            objectUrl || state.profileData.user.authorImg
               ? "rounded-full flex items-center justify-center border border-[#a8a5a5f5]"
               : "bg-[#D9D9D9] hover:shadow-md"
           )}
         >
           {/* Get Image from user's profile -> objectUrl | authorImg */}
           {/* That means user-dummy would be the image of the user or a blank screen */}
-          {/* Nice implementation! But how do I preview the existing picture in users profile?? */}
-          {/* How do I differentiate between when the user wants to remove the existing profile picture and when they want to keep it? */}
-          {objectUrl && (
+          {/* Nice implementation! But how do I preview the existing picture in users profile?? Now implemented*/}
+          {/* How do I differentiate between when the user wants to remove the existing profile picture and when they want to keep it? 
+          We could add a checkbox for this. */}
+          {(objectUrl || state.profileData.user.authorImg) && (
             <Image
-              src={objectUrl ? objectUrl : "/user-dummy.png"}
+              src={
+                objectUrl
+                  ? objectUrl
+                  : state.profileData.user.authorImg
+                  ? baseUrl + state.profileData.user.authorImg
+                  : "http://localhost:3000/user-dummy.png"
+              }
               alt="Profile avatar"
               width={140}
               height={140}

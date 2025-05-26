@@ -17,7 +17,7 @@ import { limContentToThirtyWords } from "@/utils/helpers";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { AppContext } from "@/context/AppContext";
-import SelectedBlogDeleteConfirmation from "./SelectedBlogDelConfirm";
+import DeleteConfirmation from "../modals/DeleteConfirmation";
 
 interface BlogType {
   _id: string;
@@ -40,13 +40,11 @@ const Posts = () => {
   const { data, isLoading, isSuccess, error, isError } = useGetAUser();
   const { state, dispatch } = useContext(AppContext);
 
-  const [currentBlogId, setCurrentBlogId] = useState<string | null>(null);
-  const [currentBlogTitle, setCurrentBlogTitle] = useState<null | string>(null);
-
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (blogData: BlogType) => {
     let payload = {
       deleteModal: true,
-      // currentBlogId:
+      storedBlogId: blogData._id,
+      singleBlogDetail: blogData,
     };
     dispatch({
       type: "CONFIRM_DELETE",
@@ -58,7 +56,7 @@ const Posts = () => {
 
   return (
     <>
-      {state.deleteModal ? <SelectedBlogDeleteConfirmation /> : null}
+      {state.deleteModal ? <DeleteConfirmation /> : null}
       {isLoading && !isError ? <Loading message="Loading your posts" /> : ""}
       {isError ? (
         <div className="flex content-center h-full py-auto my-20 justify-center">
@@ -132,7 +130,7 @@ const Posts = () => {
                         <Button
                           variant="destructive"
                           className="cursor-pointer"
-                          onClick={handleDeleteClick}
+                          onClick={() => handleDeleteClick(blog)}
                         >
                           Delete Blog
                         </Button>
