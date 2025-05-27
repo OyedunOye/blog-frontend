@@ -15,7 +15,7 @@ import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import Loading from "../common/Loader";
 import { limContentToThirtyWords } from "@/utils/helpers";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
 import DeleteConfirmation from "../modals/DeleteConfirmation";
 
@@ -52,7 +52,7 @@ const Posts = () => {
     });
   };
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <>
@@ -61,8 +61,8 @@ const Posts = () => {
       {isError ? (
         <div className="flex content-center h-full py-auto my-20 justify-center">
           <p className="font-bold">
-            Server is unreachable, unable to load the blog section at the
-            moment. Please try again later.
+            Server is unreachable, unable to load your blogs at the moment.
+            Please try again later.
           </p>
         </div>
       ) : (

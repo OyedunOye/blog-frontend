@@ -71,7 +71,7 @@ const Security = () => {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="*******"
+                    placeholder="******"
                     {...field}
                     className="w-full"
                   />
@@ -107,7 +107,7 @@ const Security = () => {
                 <FormLabel>Confirm New Password</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="*****"
+                    placeholder="******"
                     type="password"
                     {...field}
                     className="w-full"

@@ -32,7 +32,7 @@ import {
 import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
-import { useGetAUser } from "@/hooks/authors/useGetAUser";
+// import { useGetAUser } from "@/hooks/authors/useGetAUser";
 
 const NavBar = () => {
   const { dispatch, state } = useContext(AppContext);
@@ -61,7 +61,6 @@ const NavBar = () => {
     if (token) {
       const userData = getDecodedToken(token);
       if (userData?.authorImg !== "") {
-        // return "http://localhost:3001/" + userData?.authorImg;
         return `${baseUrl}${userData?.authorImg}`;
       }
     }
@@ -85,19 +84,19 @@ const NavBar = () => {
     });
   };
 
-  const { data, isSuccess, error, isError } = useGetAUser();
+  // const { data, isSuccess, error, isError } = useGetAUser();
 
-  const handleProfileClick = () => {
-    if (data && isSuccess) {
-      // const payload = {
-      //   profileData: data}
-      console.log(data);
-      dispatch({
-        type: "PROFILE_DATA_STORAGE",
-        payload: data,
-      });
-    }
-  };
+  // const handleProfileClick = () => {
+  //   if (data && isSuccess) {
+  //     // const payload = {
+  //     //   profileData: data}
+  //     console.log(data);
+  //     dispatch({
+  //       type: "PROFILE_DATA_STORAGE",
+  //       payload: data,
+  //     });
+  //   }
+  // };
 
   const handleSwitchToLightMode = () => {
     dispatch({
@@ -184,9 +183,7 @@ const NavBar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="cursor-pointer">
-                        <Link onClick={handleProfileClick} href={"/profile"}>
-                          Profile
-                        </Link>
+                        <Link href={"/profile"}>Profile</Link>
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
