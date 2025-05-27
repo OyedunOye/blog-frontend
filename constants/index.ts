@@ -59,8 +59,8 @@ export const socialMedia = [
 export const NavBarMenuList = [
   "Home",
   "Discover",
-  "Categories",
-  "Subscription",
+  // "Categories",
+  // "Subscription",
 
 ];
 

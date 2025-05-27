@@ -23,6 +23,8 @@ import { AppContext } from "@/context/AppContext";
 import { useUpdateUserProfile } from "@/hooks/authors/useUpdateUserProfile";
 import { toasterAlert } from "@/utils";
 import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Value } from "@radix-ui/react-select";
 
 type EditProfileFormData = z.infer<typeof editUserProfileFormSchema>;
 
@@ -31,6 +33,7 @@ const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 const EditProfile = () => {
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | "">("");
+  const [deleteProfilePic, setDeleteProfilePic] = useState<boolean>(false);
 
   const { dispatch, state } = useContext(AppContext);
 
@@ -43,6 +46,7 @@ const EditProfile = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     setProfileImage(file);
     const imageUrl = URL.createObjectURL(file);
     setObjectUrl(imageUrl);
@@ -55,7 +59,8 @@ const EditProfile = () => {
           firstName: state.profileData.user.firstName,
           lastName: state.profileData.user.lastName,
           email: state.profileData.user.email,
-          authorImg: "",
+          authorImg: state.profileData.user.authorImg,
+          removeProfilePic: false,
         }
       : {
           firstName: "",
@@ -79,7 +84,14 @@ const EditProfile = () => {
         : "";
       values.lastName !== "" ? formData.set("lastName", values.lastName) : "";
       values.email !== "" ? formData.set("email", values.email) : "";
-      profileImage !== "" ? formData.set("articleImg", profileImage) : "";
+      profileImage !== "" && !values.removeProfilePic
+        ? formData.set("authorImg", profileImage)
+        : values.removeProfilePic
+        ? formData.set("authorImg", "")
+        : "";
+      console.log(values.removeProfilePic);
+      console.log(...formData);
+
       const res = await mutateAsync(formData);
 
       if (res.user && !isPending) {
@@ -90,8 +102,10 @@ const EditProfile = () => {
       console.log(error);
     }
   };
+  console.log(form.getValues("removeProfilePic"));
 
-  console.log(objectUrl);
+  const del = () => console.log(form.getValues("removeProfilePic"));
+  del();
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -151,9 +165,33 @@ const EditProfile = () => {
         </div>
         <p className="">Upload Picture</p>
       </div>
+      {/* <div className="flex flex-col -mt-4 gap-2">
+        <label htmlFor="deleteProfilePic" className=" ">
+          Remove profile picture entirely
+        </label>
+        <Checkbox id="deleteProfilePic" />
+      </div> */}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="">
+            <FormField
+              control={form.control}
+              name="removeProfilePic"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel>Remove profile picture entirely</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+
           <div className="w-full flex items-center justify-between">
             <div className="w-[48%]">
               <FormField

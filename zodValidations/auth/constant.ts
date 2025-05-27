@@ -103,6 +103,8 @@ export const editUserProfileFormSchema = z.object({
   email: z.string().email(),
 
   authorImg: z.any(),
+
+  removeProfilePic: z.boolean().default(false).optional(),
 });
 
 export const editPasswordFormSchema = z.object({
