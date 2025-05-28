@@ -1,11 +1,11 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { getCookie, deleteCookie } from "cookies-next/client";
-import { ChevronDown, Menu, Moon, Search, Sun } from "lucide-react";
+import Cookies from "universal-cookie";
+import { ChevronDown, LoaderCircle, Moon, Sun } from "lucide-react";
 
 import { Button } from "../ui/button";
 import Logo from "@/public/Logo.png";
@@ -34,17 +34,32 @@ import { getInitials } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
 import { useGetAUser } from "@/hooks/authors/useGetAUser";
 
+const cookies = new Cookies(null, { path: "/" });
+
 const NavBar = () => {
   const { dispatch, state } = useContext(AppContext);
+
+  const [token, setToken] = useState<string | undefined>("");
+  const [gettingToken, setGettingToken] = useState<boolean>(true);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
-  // const [activeTab, setActiveTab] = useState<"Home" | "Life Style" | "Template" | "Active Page" | "Other Page">(
-  //   "Home"
-  // );
+  // const token = getCookie("token");
 
-  const token = getCookie("token");
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+
+  useEffect(() => {
+    const getToken = async () => {
+      if (typeof window !== "undefined") {
+        const token = await cookies.get("token");
+        setToken(token);
+        setGettingToken(false);
+      }
+    };
+
+    getToken();
+  }, []);
 
   const userName = () => {
     if (token) {
@@ -72,7 +87,8 @@ const NavBar = () => {
 
   const handleLogOut = () => {
     setIsLoggingOut(true);
-    deleteCookie("token");
+    cookies.remove("token");
+    // deleteCookie("token");
     toasterAlert("Successfully logged out.");
     setIsLoggingOut(false);
     window.location.reload();
@@ -85,7 +101,7 @@ const NavBar = () => {
     });
   };
 
-  const { data, isSuccess, error, isError } = useGetAUser();
+  const { data, isSuccess } = useGetAUser();
 
   const handleProfileClick = () => {
     if (data && isSuccess) {
@@ -158,83 +174,89 @@ const NavBar = () => {
           </ul>
 
           <div className="flex w-contain justify-between content-center gap-1.5">
-            {/* <Sun className="content-center flex h-full cursor-pointer" /> */}
-            {/* <Link href={"/search"}>
-              <Search className="content-center flex h-full cursor-pointer" />
-            </Link> */}
-
-            {token ? (
-              <div className="ml-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="cursor-pointer flex items-center justify-center gap-x-1">
-                      {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
-                      <AvatarRenderer
-                        src={picPath()}
-                        className="h-8 w-8"
-                        fallBack={getInitials(userName()!)}
-                      />
-                      <ChevronDown />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-60 z-[100] mr-4 mt-3">
-                    <DropdownMenuLabel className="capitalize">
-                      {userName()}'s Account
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem className="cursor-pointer">
-                        <Link onClick={handleProfileClick} href={"/profile"}>
-                          Profile
-                        </Link>
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="cursor-pointer">
-                        <Link href={"/create-blog"}>Create Blog</Link>
-                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <>
-                      {state.appMode === "Light" ? (
-                        <DropdownMenuItem
-                          onClick={handleSwitchToDarkMode}
-                          className="cursor-pointer"
-                        >
-                          Dark Mode <Moon />
-                        </DropdownMenuItem>
-                      ) : (
-                        <DropdownMenuItem
-                          onClick={handleSwitchToLightMode}
-                          className="cursor-pointer"
-                        >
-                          Light Mode <Sun />
-                        </DropdownMenuItem>
-                      )}
-                    </>
-
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleLogOut}
-                      className="cursor-pointer"
-                    >
-                      Log out
-                      <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+            {gettingToken ? (
+              <div>
+                <LoaderCircle className="text-gray-400 animate-spin" />
               </div>
             ) : (
-              <Link href={"/login"}>
-                <Button
-                  onClick={() => setIsLoading(true)}
-                  variant="default"
-                  className=""
-                >
-                  Log In
-                </Button>
-              </Link>
+              <>
+                {token ? (
+                  <div className="ml-4">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="cursor-pointer flex items-center justify-center gap-x-1">
+                          {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
+                          <AvatarRenderer
+                            src={picPath()}
+                            className="h-8 w-8"
+                            fallBack={getInitials(userName()!)}
+                          />
+                          <ChevronDown />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-60 z-[100] mr-4 mt-3">
+                        <DropdownMenuLabel className="capitalize">
+                          {userName()}&apos;s Account
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link
+                              onClick={handleProfileClick}
+                              href={"/profile"}
+                            >
+                              Profile
+                            </Link>
+                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href={"/create-blog"}>Create Blog</Link>
+                            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                        <DropdownMenuSeparator />
+                        <>
+                          {state.appMode === "Light" ? (
+                            <DropdownMenuItem
+                              onClick={handleSwitchToDarkMode}
+                              className="cursor-pointer"
+                            >
+                              Dark Mode <Moon />
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              onClick={handleSwitchToLightMode}
+                              className="cursor-pointer"
+                            >
+                              Light Mode <Sun />
+                            </DropdownMenuItem>
+                          )}
+                        </>
+
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={handleLogOut}
+                          className="cursor-pointer"
+                        >
+                          Log out
+                          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                ) : (
+                  <Link href={"/login"}>
+                    <Button
+                      onClick={() => setIsLoading(true)}
+                      variant="default"
+                      className=""
+                    >
+                      Log In
+                    </Button>
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </div>

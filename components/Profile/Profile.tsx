@@ -3,15 +3,16 @@
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { Book, LayoutDashboard, LockIcon, User2 } from "lucide-react";
+import { Book, LayoutDashboard, LockIcon, Settings, User2 } from "lucide-react";
 import Dashboard from "./Dashboard";
 import Posts from "./Posts";
 import EditProfile from "./EditProfile";
 import Security from "./Security";
+import DeleteAccount from "./DeleteAccount";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<
-    "DASHBOARD" | "POSTS" | "PROFILE" | "SECURITY"
+    "DASHBOARD" | "POSTS" | "PROFILE" | "SECURITY" | "DELETE"
   >("DASHBOARD");
 
   return (
@@ -58,12 +59,23 @@ const Profile = () => {
             <LockIcon />
             <span className="font-semibold text-sm">Security</span>
           </button>
+          <button
+            onClick={() => setActiveTab("DELETE")}
+            className={cn(
+              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200",
+              activeTab === "DELETE" && "bg-gray-200"
+            )}
+          >
+            <Settings />
+            <span className="font-semibold text-sm">Management</span>
+          </button>
         </div>
         <div className="w-full">
           {activeTab === "DASHBOARD" && <Dashboard />}
           {activeTab === "POSTS" && <Posts />}
           {activeTab === "PROFILE" && <EditProfile />}
           {activeTab === "SECURITY" && <Security />}
+          {activeTab === "DELETE" && <DeleteAccount />}
         </div>
       </div>
     </div>
