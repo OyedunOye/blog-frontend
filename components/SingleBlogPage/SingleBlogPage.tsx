@@ -118,7 +118,10 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const onSubmit = async (values: NewCommentFormData) => {
     // console.log("The comment value: ", values);
     try {
-      const res = await mutateAsync({ comment: values, blogId: blogId });
+      const res = await mutateAsync({
+        comment: values.comment,
+        blogId: blogId,
+      });
       // console.log(res);
       toasterAlert(res.message);
       // window.location.reload();
@@ -156,6 +159,17 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       }
     }
     return "";
+  };
+
+  const userName = () => {
+    if (token) {
+      const decoded = getDecodedToken(token);
+      if (decoded !== null) {
+        return decoded?.firstName + " " + decoded?.lastName;
+      } else {
+        return "";
+      }
+    }
   };
 
   const rightToEditAndDelete = () => {
@@ -335,7 +349,11 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
 
                 <div className="flex gap-2 h-28 content-center py-1">
                   {token && picPath() !== "" ? (
-                    <AvatarRenderer src={picPath()} className="h-22 w-22" />
+                    <AvatarRenderer
+                      src={picPath()}
+                      className="h-22 w-22 text-4xl"
+                      fallBack={getInitials(userName()!)}
+                    />
                   ) : (
                     <AvatarRenderer
                       src={"http://localhost:3000/user-dummy.png"}

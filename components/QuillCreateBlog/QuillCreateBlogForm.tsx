@@ -76,12 +76,10 @@ const QuillCreateBlogForm = () => {
     "strike",
     "blockquote",
     "list",
-    // "bullet",
     "indent",
     "link",
     "image",
     "color",
-    // "clean",
   ];
 
   const { isPending, isSuccess, isError, error, mutateAsync } = useCreateBlog();
@@ -100,17 +98,10 @@ const QuillCreateBlogForm = () => {
     },
   });
 
-  console.log(state.blogContentWarn);
-
   const onSubmit = async (values: NewBlogFormData) => {
     const file = values.articleImg?.[0];
 
-    console.log("values are:", values);
-
-    console.log(state.blogContentWarn);
-
-    // console.log(checkContentWordLim(values.blogContent));
-    // console.log(contentLengthCheck);
+    // console.log("values are:", values);
 
     try {
       const formData = new FormData();
@@ -150,8 +141,6 @@ const QuillCreateBlogForm = () => {
       console.log(error);
     }
   };
-
-  // console.log(state.blogContentWarn);
 
   return (
     <div>

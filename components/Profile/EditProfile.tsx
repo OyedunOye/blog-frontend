@@ -58,20 +58,13 @@ const EditProfile = () => {
 
   const form = useForm<EditProfileFormData>({
     resolver: zodResolver(editUserProfileFormSchema),
-    defaultValues: data
-      ? {
-          firstName: data.user.firstName,
-          lastName: data.user.lastName,
-          email: data.user.email,
-          authorImg: data.user.authorImg,
-          removeProfilePic: false,
-        }
-      : {
-          firstName: "",
-          lastName: "",
-          email: "",
-          authorImg: "",
-        },
+    defaultValues: data && {
+      firstName: data.user.firstName || "",
+      lastName: data.user.lastName || "",
+      email: data.user.email || "",
+      authorImg: data.user.authorImg || "",
+      removeProfilePic: false,
+    },
   });
 
   // console.log(profileImage);
@@ -111,12 +104,6 @@ const EditProfile = () => {
 
   return (
     <>
-      {!getUsersIsError && getUserIsLoading ? (
-        <Loading message="Loading the edit profile form" />
-      ) : (
-        ""
-      )}
-
       {getUsersIsError ? (
         <div className="flex content-center h-full py-auto my-20 justify-center">
           <p className="font-bold">
@@ -124,11 +111,11 @@ const EditProfile = () => {
             profile at the moment. Please try again later.
           </p>
         </div>
-      ) : (
-        ""
-      )}
+      ) : null}
 
-      {getUsersIsSuccess && data ? (
+      {getUserIsLoading ? (
+        <Loading message="Loading the edit profile form" />
+      ) : data ? (
         <div className="flex flex-col gap-y-6">
           <h5 className="text-lg font-semibold">Update your profile info</h5>
 
@@ -154,7 +141,7 @@ const EditProfile = () => {
                       ? objectUrl
                       : data.user.authorImg
                       ? baseUrl + data.user.authorImg
-                      : "http://localhost:3000/user-dummy.png"
+                      : " /user-dummy.png"
                   }
                   alt="Profile avatar"
                   width={140}
@@ -166,7 +153,8 @@ const EditProfile = () => {
               <div
                 className={cn(
                   "absolute bottom-0 right-0 flex items-center justify-center bg-[#F5F5F5F5] h-8 w-8",
-                  objectUrl && "rounded-full border border-[#a8a5a5f5]"
+                  (objectUrl || data.user.authorImg) &&
+                    "rounded-full border border-[#a8a5a5f5]"
                 )}
               >
                 <button className="relative w-full h-full flex items-center justify-center cursor-pointer">
@@ -272,9 +260,7 @@ const EditProfile = () => {
             </form>
           </Form>
         </div>
-      ) : (
-        ""
-      )}
+      ) : null}
     </>
   );
 };

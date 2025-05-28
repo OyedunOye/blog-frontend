@@ -79,12 +79,10 @@ const QuillEditBlogForm = () => {
     "strike",
     "blockquote",
     "list",
-    // "bullet",
     "indent",
     "link",
     "image",
     "color",
-    // "clean",
   ];
 
   const {

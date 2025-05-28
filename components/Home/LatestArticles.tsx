@@ -61,9 +61,7 @@ const LatestArticles = () => {
       <MaxWidth className="my-6 w-full min-h-60">
         {isLoading && !isError ? (
           <Loader message="Loading blogs' section" />
-        ) : (
-          ""
-        )}
+        ) : null}
         {isError ? (
           <div className="flex content-center h-full py-auto my-20 justify-center">
             <p className="font-bold">
@@ -71,9 +69,7 @@ const LatestArticles = () => {
               moment. Please try again later.
             </p>
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
         {isSuccess && !data ? (
           <div className="flex content-center h-full py-auto my-20 justify-center">
             <p className="font-bold">
@@ -107,8 +103,8 @@ const LatestArticles = () => {
                         // src={
                         //   "http://localhost:3001/" + data.blogs[0].articleImg
                         // }
-                        src={`${baseUrl}${data.blogs[0].articleImg}`}
-                        alt={data.blogs[2].title}
+                        src={baseUrl + data.blogs[0].articleImg}
+                        alt={data.blogs[0].title}
                         width={90}
                         height={40}
                         className="rounded-t-md object-cover h-80 w-full"
@@ -131,7 +127,7 @@ const LatestArticles = () => {
                                   //   "http://localhost:3001/" +
                                   //   data.blogs[0].author.authorImg
                                   // }
-                                  src={`${baseUrl}${data.blogs[0].author.authorImg}`}
+                                  src={baseUrl + data.blogs[0].author.authorImg}
                                   alt={data.blogs[0].author.firstName}
                                   width={24}
                                   height={24}
