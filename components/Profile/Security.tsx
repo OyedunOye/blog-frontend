@@ -41,9 +41,9 @@ const Security = () => {
 
   const onSubmit = async (values: PasswordFormData) => {
     try {
-      console.log(values);
+      // console.log(values);
       const res = await mutateAsync(values);
-      console.log("response is", res);
+      // console.log("response is", res);
 
       if (res.user && !isPending) {
         toasterAlert(res.message);

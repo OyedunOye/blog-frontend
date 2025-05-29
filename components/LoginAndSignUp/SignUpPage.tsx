@@ -12,23 +12,14 @@ const SignUpPage = () => {
   const [homePageLoading, setHomePageLoading] = useState<boolean>(false);
   const [loginPageLoading, setLoginPageLoading] = useState<boolean>(false);
 
-  {
-    console.log("sign-up's homepageloading", homePageLoading);
-    console.log("login is loading", loginPageLoading);
-  }
-
   return (
     <div className="h-1/2 flex justify-center content-center flex-col">
       {homePageLoading ? (
         <Loading className="min-h-screen" message="Loading home page" />
-      ) : (
-        ""
-      )}
+      ) : null}
       {loginPageLoading ? (
         <Loading className="min-h-screen" message="Navigating to login page" />
-      ) : (
-        ""
-      )}
+      ) : null}
       <div className="bg-[#F3F4F6] w-full text-center h-56 pt-15 p-2">
         <h3 className="font-bold text-xl">🎉 Sign up</h3>
         <p className="text-md text-slate-600">

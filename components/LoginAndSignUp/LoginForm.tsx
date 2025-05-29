@@ -42,7 +42,7 @@ const LoginForm = () => {
   const onSubmit = async (values: LoginFormData) => {
     try {
       const res = await mutateAsync(values);
-      console.log("response is", res);
+      // console.log("response is", res);
 
       if (res.token && !isPending) {
         setCookie("token", res.token);

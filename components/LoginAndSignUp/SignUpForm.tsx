@@ -57,7 +57,7 @@ const SignUpForm = () => {
       formData.set("password", values.password);
       formData.set("authorImg", file);
       const res = await mutateAsync(formData);
-      console.log(res);
+      // console.log(res);
 
       if (res.user && !isPending) {
         toasterAlert(res.message);

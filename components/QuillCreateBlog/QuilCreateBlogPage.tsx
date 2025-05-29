@@ -5,7 +5,6 @@ import MaxWidth from "../common/MaxWidthWrapper";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import Loading from "../common/Loader";
-// import NewBlogForm from "./NewBlogForm";
 import QuillCreateBlogForm from "./QuillCreateBlogForm";
 import { AppContext } from "@/context/AppContext";
 
@@ -19,7 +18,6 @@ const QuillCreateBlogPage = () => {
       payload: "No",
     });
   };
-  console.log("homepageloading", homePageLoading);
 
   return (
     <>
@@ -28,9 +26,7 @@ const QuillCreateBlogPage = () => {
           className="min-h-screen z-99 bg-transparent"
           message="Loading home page"
         />
-      ) : (
-        ""
-      )}
+      ) : null}
 
       <div className="flex flex-col">
         <div className="bg-[#F3F4F6] w-full text-center h-56 pt-10 p-2">
