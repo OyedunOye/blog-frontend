@@ -39,6 +39,7 @@ const cookies = new Cookies(null, { path: "/" });
 const NavBar = () => {
   const { dispatch, state } = useContext(AppContext);
 
+  const [activeTab, setActiveTab] = useState<string>("Home");
   const [token, setToken] = useState<string | undefined>("");
   const [gettingToken, setGettingToken] = useState<boolean>(true);
 
@@ -82,12 +83,9 @@ const NavBar = () => {
     return "";
   };
 
-  // console.log(picPath());
-
   const handleLogOut = () => {
     setIsLoggingOut(true);
     cookies.remove("token");
-    // deleteCookie("token");
     toasterAlert("Successfully logged out.");
     setIsLoggingOut(false);
     window.location.reload();
@@ -99,20 +97,6 @@ const NavBar = () => {
       payload: "Dark",
     });
   };
-
-  // const { data, isSuccess } = useGetAUser();
-
-  // const handleProfileClick = () => {
-  //   if (data && isSuccess) {
-  //     // const payload = {
-  //     //   profileData: data}
-  //     console.log(data);
-  //     dispatch({
-  //       type: "PROFILE_DATA_STORAGE",
-  //       payload: data,
-  //     });
-  //   }
-  // };
 
   const handleSwitchToLightMode = () => {
     dispatch({
@@ -128,15 +112,11 @@ const NavBar = () => {
     >
       {isLoading ? (
         <Loading className="min-h-screen" message="Loading login page" />
-      ) : (
-        ""
-      )}
+      ) : null}
 
       {isLoggingOut ? (
         <Loading className="min-h-screen" message="Logging out" />
-      ) : (
-        ""
-      )}
+      ) : null}
 
       <MaxWidth className="flex flex-col w-full">
         <div className="flex justify-between">
@@ -144,7 +124,7 @@ const NavBar = () => {
             <Link href={"/"}>
               <Image src={Logo} alt="logo" className="w-30 cursor-pointer" />
             </Link>
-            <div className=" ">
+            <div className="space-x-2">
               {/* <div className=" max-lg:hidden"> */}
               {NavBarMenuList.map((menu) => (
                 <Link
@@ -157,9 +137,11 @@ const NavBar = () => {
                 >
                   <Button
                     key={menu}
-                    // onClick={setActiveTab(menu)}
+                    onClick={() => setActiveTab(menu)}
                     variant="ghost"
-                    className="hover:bg-[#F3F4F6]"
+                    className={`hover:bg-[#F3F4F6] ${
+                      activeTab === menu && "bg-[#F3F4F6]"
+                    }`}
                   >
                     {menu}
                   </Button>

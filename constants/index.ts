@@ -64,41 +64,6 @@ export const NavBarMenuList = [
 
 ];
 
-//The next 3 consecutive lists are holding the contents for the footer component
-export const useCasesList = [
-  "Abstergo Ltd.",
-  "Nursing Assistant",
-  "Medical Assistant",
-  "Markerting Coordinator",
-  "Dog Trainer",
-  "Web Designer",
-  "President of Sales",
-  "Medical Lab Technician",
-];
-
-export const categoriesList = [
-  "Nigeria",
-  "Algeria",
-  "South Africa",
-  "Central African Republic",
-  "Afghanistan",
-  "Vietnam",
-  "Iran (Islamic Republic of)",
-  "Pakistan",
-  "Serbia",
-];
-
-export const ourConditionsList = [
-  "Ethical Hacker",
-  "UI/UX Designer",
-  "Software Tester",
-  "Scrum Master",
-  "Project Manager",
-  "Team Leader",
-  "Software Developer",
-  "Software Development",
-];
-
 //These data belongs to the categories component. I think this might be subjected to changes, e.g. new categories may be added to the blog.
 export const categories = [
   {

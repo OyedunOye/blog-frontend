@@ -1,11 +1,7 @@
-import { getDecodedToken } from '@/hooks/getDecodeToken/getDecodedToken';
 import { getToken } from '@/utils';
 import axios from 'axios'
 
-// const BASE_URL = 'http://localhost:3001/api/users'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
-// const cookies = new Cookies(null, {path: "/"})
-
 
 export const createUser = async (credentials: any) => {
     try {
@@ -28,7 +24,6 @@ export const getAllAuthors = async() => {
 export const getAUser = async() => {
     try {
         const token = await getToken();
-        // console.log(token)
 
         const res = await axios.get(`${BASE_URL}users/profile`, {
             headers: {

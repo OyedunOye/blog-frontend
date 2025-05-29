@@ -38,7 +38,6 @@ export const createBlog = async (credentials: any) => {
 
 export const getAllBlogs = async () => {
   try {
-    console.log(`${BASE_URL}blogs`);
     const res = await axios.get(`${BASE_URL}blogs`);
     return res.data;
   } catch (error) {
