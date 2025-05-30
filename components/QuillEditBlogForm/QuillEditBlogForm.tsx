@@ -132,15 +132,12 @@ const QuillEditBlogForm = () => {
 
       if (checkContentWordLim(values.blogContent) === "enough") {
         setEditBlogContentWarn("No");
-        // console.log(blogId);
-        console.log(state.storedBlogId);
-        console.log(state.singleBlogDetail._id);
+
         const res = await mutateAsync({
           blogData: formData,
           blogId: state.singleBlogDetail._id,
         });
-        console.log(res);
-        console.log(editIsSuccess);
+
         if (res) {
           // checking blogIsSuccess, data and other variables from useEditBlog() not working here. Those are always not
           // in our desired format before synchronous checks happen at this point. Hence, only res which was awaited
@@ -157,7 +154,6 @@ const QuillEditBlogForm = () => {
           });
           router.push("/");
         }
-        // console.log(state.storedBlogId);
       }
       if (checkContentWordLim(values.blogContent) === "notEnough") {
         setEditBlogContentWarn("Yes");

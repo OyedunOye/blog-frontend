@@ -65,9 +65,7 @@ const Posts = () => {
             Please try again later.
           </p>
         </div>
-      ) : (
-        ""
-      )}
+      ) : null}
 
       {isSuccess && data ? (
         <div className="w-full flex flex-col gap-y-6">
@@ -140,32 +138,30 @@ const Posts = () => {
                 ))}
               </div>
 
-              <div className="flex justify-between mt-6 pr-4">
-                <Pagination className="justify-start mx-0 w-1/2">
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious href="#" />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationNext href="#" />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-
-                <Button variant="default">See more</Button>
+              <div className="flex w-full mt-6 ">
+                {data.user.blogs.length > 3 ? (
+                  <Pagination className="flex mx-0 w-full">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious href="#" />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#">1</PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationNext href="#" />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                ) : null}
               </div>
             </>
           )}
         </div>
-      ) : (
-        ""
-      )}
+      ) : null}
     </>
   );
 };

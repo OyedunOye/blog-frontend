@@ -18,7 +18,9 @@ interface EditBlogData {
 
 interface CreateCommentData {
   blogId: string;
-  comment: string;
+  comment: {
+    comment:string
+  }
 }
 
 export const createBlog = async (credentials: any) => {
@@ -129,7 +131,6 @@ export const createBlogComment = async ({
 export const toggleLoveABlog = async (blogId: string) => {
   const token = await getToken();
   try {
-    console.log("token is ", token);
     const res = await axios.patch(
       `${BASE_URL}blogs/love/${blogId}`,
       {}, //no request body
