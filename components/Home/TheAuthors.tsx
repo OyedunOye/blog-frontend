@@ -9,6 +9,8 @@ import Loading from "../common/Loader";
 import AvatarRenderer from "../common/Avatar";
 import { useEffect, useState } from "react";
 import { getInitials } from "@/utils/helpers";
+import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
+import CleanSlate from "../common/CleanSlate";
 
 interface Blogs {
   _id: string;
@@ -70,7 +72,7 @@ const TheAuthors = () => {
             </div>
           </div>
 
-          <div className="bg-[#F3F4F6] flex-col border px-2 py-6 rounded-md">
+          <div className="bg-[#F3F4F6] min-h-60 flex-col border px-2 py-6 rounded-md">
             <>
               <div className="flex justify-between">
                 <h4 className="font-bold text-md">✍️ Discover Authors</h4>
@@ -85,15 +87,14 @@ const TheAuthors = () => {
                 <Loading message="Loading blog's authors section" />
               ) : null}
               {isError ? (
-                <div className="flex content-center h-50 py-auto my-20 justify-center">
-                  <p className="font-bold">
-                    Server is unreachable, unable to load the author's section
-                    at the moment. Please try again later.
-                  </p>
-                </div>
+                <NoServerConnectionWarning
+                  className="h-[80%]]"
+                  message="Server is unreachable, unable to load the author's section
+                    at the moment. Please try again later."
+                />
               ) : null}
 
-              {isSuccess && data ? (
+              {isSuccess && allAuthors.length > 0 ? (
                 <>
                   <div className="flex flex-wrap gap-2 my-3 ml-4">
                     {(!allClicked ? topFifteenAuthors : allAuthors).map(
@@ -140,16 +141,18 @@ const TheAuthors = () => {
                     </div>
                   ) : null}
                 </>
-              ) : null}
-              {isSuccess && !data ? (
-                <div className="flex content-center h-fit justify-center">
-                  <p className="font-bold">
-                    No authors are available in our server at the moment. You
-                    can register, login and create a blog to be our first
-                    author!
-                  </p>
-                </div>
-              ) : null}
+              ) : (
+                <>
+                  {isSuccess && (allAuthors.length < 1 || !allAuthors) ? (
+                    <CleanSlate
+                      className="pt-3"
+                      message="No authors are available in our server at the moment.
+                        You can register, login and create a blog to be our
+                        first author!"
+                    />
+                  ) : null}
+                </>
+              )}
             </>
           </div>
         </div>

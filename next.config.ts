@@ -10,6 +10,12 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
       {
+        protocol: "https",
+        hostname: "blog-backend-new-6010.onrender.com",
+        port: "",
+        pathname: "/uploads/**",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "3001",

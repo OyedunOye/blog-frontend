@@ -32,6 +32,7 @@ import {
 import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
+import { usePathname } from "next/navigation";
 // import { useGetAUser } from "@/hooks/authors/useGetAUser";
 
 const cookies = new Cookies(null, { path: "/" });
@@ -39,7 +40,7 @@ const cookies = new Cookies(null, { path: "/" });
 const NavBar = () => {
   const { dispatch, state } = useContext(AppContext);
 
-  const [activeTab, setActiveTab] = useState<string>("Home");
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const [token, setToken] = useState<string | undefined>("");
   const [gettingToken, setGettingToken] = useState<boolean>(true);
 
@@ -49,6 +50,16 @@ const NavBar = () => {
   // const token = getCookie("token");
 
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/") {
+      setActiveTab("Home");
+    }
+    if (pathname === "/discover") {
+      setActiveTab("Discover");
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const getToken = async () => {
@@ -137,10 +148,10 @@ const NavBar = () => {
                 >
                   <Button
                     key={menu}
-                    onClick={() => setActiveTab(menu)}
+                    // onClick={() => setActiveTab(menu)}
                     variant="ghost"
                     className={`hover:bg-[#F3F4F6] ${
-                      activeTab === menu && "bg-[#F3F4F6]"
+                      activeTab === menu ? "bg-[#F3F4F6]" : null
                     }`}
                   >
                     {menu}

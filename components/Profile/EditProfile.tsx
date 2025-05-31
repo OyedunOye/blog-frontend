@@ -105,11 +105,22 @@ const EditProfile = () => {
   return (
     <>
       {getUsersIsError ? (
-        <div className="flex content-center h-full py-auto my-20 justify-center">
-          <p className="font-bold">
-            Server is unreachable, unable to load the form to update your
-            profile at the moment. Please try again later.
-          </p>
+        <div className="flex content-center h-84 py-auto gap-2 rounded-sm  shadow-md border w-full">
+          <div className="w-[76%] h-80 p-2 flex  content-center">
+            <Image
+              src={"/warning-sign.webp"}
+              alt="warning sign"
+              width={82}
+              height={70}
+              className="object-cover w-100 p-3"
+            />
+          </div>
+          <div className="flex  content-center py-5">
+            <p className="font-bold h-fit my-auto">
+              Server is unreachable, unable to load the form to update your
+              profile at the moment. Please try again later.
+            </p>
+          </div>
         </div>
       ) : null}
 

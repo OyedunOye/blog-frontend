@@ -206,7 +206,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
             state.appMode === "Dark" ? "bg-black text-white" : ""
           }`}
         >
-          <div className="w-full mb-6 rounded-sm bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
+          <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
             <MaxWidth className="min-h-40  w-full flex-row justify-between">
               <div className="flex flex-row-reverse w-full p-2 justify-between">
                 <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
@@ -292,7 +292,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   >
                     <Heart
                       color={
-                        currentUserLoveStatus() === "loved" ? "red" : "gray"
+                        currentUserLoveStatus() === "loved" ? "red" : "black"
                       }
                       fill={
                         currentUserLoveStatus() === "loved"

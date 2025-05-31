@@ -5,6 +5,7 @@ import Image from "next/image";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { useGetBlogCategoryCount } from "@/hooks/blog/useGetBlogCategoryCount";
 import Loading from "../common/Loader";
+import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 
 const Categories = () => {
   const { data, isLoading, isSuccess, isError } = useGetBlogCategoryCount();
@@ -19,11 +20,10 @@ const Categories = () => {
           <Loading message="Loading categories" />
         ) : null}
         {isError ? (
-          <div className="flex content-center h-fit justify-center">
-            <p className="font-bold">
-              Server is unreachable, please try again later.
-            </p>
-          </div>
+          <NoServerConnectionWarning
+            message="Server is unreachable, unable to load the categories section at the moment. Please try again later."
+            className="h-full"
+          />
         ) : null}
         {isSuccess && data ? (
           <div className="flex flex-wrap w-full gap-3">

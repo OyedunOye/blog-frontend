@@ -10,16 +10,18 @@ import { Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="mb-6">
+    <footer className="mb-6 mt-28">
       <div className="h-0.5 bg-black  w-full"></div>
       <MaxWidth className="flex-row justify-between py-5 mt-4 w-full">
         <div className="flex w-full justify-between">
           <div className="flex flex-col">
-            <Image
-              src={Logo}
-              alt="logo"
-              className="w-30 cursor-pointer mt-2 mb-4"
-            />
+            <Link href={"/"}>
+              <Image
+                src={Logo}
+                alt="logo"
+                className="w-30 cursor-pointer mt-2 mb-4"
+              />
+            </Link>
             <div className="flex flex-col gap-2">
               <a
                 href={"https://github.com/OyedunOye"}
