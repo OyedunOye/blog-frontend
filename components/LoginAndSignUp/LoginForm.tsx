@@ -18,10 +18,10 @@ import { Input } from "../ui/input";
 import { loginFormSchema } from "@/zodValidations/auth/constant";
 import { useLogUserIn } from "@/hooks/auth/useLogUserIn";
 import { toasterAlert } from "@/utils";
-import Loading from "../common/Loader";
 
 // For client-side usage
 import { setCookie } from "cookies-next/client";
+import { LoaderCircle } from "lucide-react";
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
@@ -60,55 +60,47 @@ const LoginForm = () => {
     }
   };
 
-  console.log(isError);
-  console.log(isPending);
-
   return (
     <div>
-      {/* {!isPending && !data && error
-        ? toasterAlert(
-            "There is an error connecting to the server, make sure your internet connection is okay and retry logging in."
-          )
-        : ""} */}
-      {isPending ? (
-        <Loading message="Logging in" />
-      ) : (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="example@example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email address</FormLabel>
+                <FormControl>
+                  <Input placeholder="example@example.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <Button variant="default" type="submit" className="w-full mb-5">
-              Continue
-            </Button>
-          </form>
-        </Form>
-      )}
+          <Button variant="default" type="submit" className="w-full mb-5">
+            {isPending ? (
+              <LoaderCircle className="text-gray-400 animate-spin" />
+            ) : (
+              "Continue"
+            )}
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 };
