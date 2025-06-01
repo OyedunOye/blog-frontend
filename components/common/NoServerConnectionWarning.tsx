@@ -9,7 +9,12 @@ interface MessageProp {
 
 const NoServerConnectionWarning = ({ message, className }: MessageProp) => {
   return (
-    <div className={cn("flex content-center h-full py-auto my-4", className)}>
+    <div
+      className={cn(
+        "flex content-center h-full py-auto my-4 max-md:flex-col",
+        className
+      )}
+    >
       <div className="w-[30%] p-2 flex content-center">
         <Image
           src={"/warning-sign.webp"}

@@ -26,25 +26,27 @@ const Categories = () => {
           />
         ) : null}
         {isSuccess && data ? (
-          <div className="flex flex-wrap w-full gap-3">
+          // <div className="flex justify-center border">
+          <div className="flex flex-wrap w-full gap-3 max-lg:gap-1 ">
             {categories.map(({ category, photo }) => (
               <div
                 key={category}
-                className="flex w-[22%] h-auto m-3 gap-2 bg-white rounded-sm shadow-2xl"
+                className="flex w-[22%] max-md:w-[100%] h-auto m-2 gap-2 bg-white rounded-sm shadow-2xl max-lg:w-[29%]"
               >
                 <div className="w-[80px] h-[80px]">
                   <Image src={photo} alt={category} width={80} height={80} />
                 </div>
                 <div className="flex flex-col content-center py-3">
                   <h6 className="flex font-semibold text-md">{category}</h6>
-                  <p className="flex   text-slate-600 text-sm">
+                  <p className="flex text-slate-600 text-sm">
                     {articleCountFormat(data[category] ?? 0)}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-        ) : null}
+        ) : // </div>
+        null}
       </MaxWidth>
     </section>
   );

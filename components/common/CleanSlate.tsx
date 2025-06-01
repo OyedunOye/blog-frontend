@@ -9,8 +9,13 @@ interface MessageProp {
 
 const CleanSlate = ({ message, className }: MessageProp) => {
   return (
-    <div className={cn("flex content-center h-full py-auto my-0", className)}>
-      <div className="w-[60%] h-full p-2 flex content-center">
+    <div
+      className={cn(
+        "flex content-center h-full py-auto my-0 max-md:flex-col",
+        className
+      )}
+    >
+      <div className="w-[60%] h-full max-md:w-full p-2 flex content-center">
         <Image
           src={"/freshstart.jpeg"}
           alt="warning sign"

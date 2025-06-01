@@ -54,7 +54,7 @@ const LatestArticles = () => {
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   return (
-    <section id="latest" className="mb-6 ">
+    <section id="latest" className="mb-6 max-lg:h-fit">
       <MaxWidth className="my-6 w-full min-h-60">
         <>
           <h3 className="font-bold text-xl mb-6 pt-0.5">🎈 Latest Articles</h3>
@@ -75,8 +75,8 @@ const LatestArticles = () => {
               {isSuccess && allBlogs ? (
                 <>
                   <div className="flex flex-col w-full ">
-                    <div className=" flex w-full gap-2 justify-between">
-                      <div className="w-[48%] border rounded-md flex flex-col">
+                    <div className=" flex w-full gap-2 justify-between max-md:flex-wrap max-lg:flex-col">
+                      <div className="w-[48%] border rounded-md flex flex-col max-lg:w-full">
                         <Link
                           href={`/blog/${allBlogs[0]._id}`}
                           onClick={() => setLoadingSingPage(true)}
@@ -190,7 +190,7 @@ const LatestArticles = () => {
                         )}
                       </div>
 
-                      <div className="w-[53%]">
+                      <div className="w-[53%] max-lg:w-full">
                         <ArticleCards />
                       </div>
                     </div>
@@ -205,7 +205,7 @@ const LatestArticles = () => {
                             }}
                             key={card.title}
                             href={`/blog/${card._id}`}
-                            className="flex flex-col w-[32%] h-90 gap-2 rounded-md shadow-2xl"
+                            className="flex flex-col w-[32%] max-md:w-[100%] max-lg:w-[48%] h-90 gap-2 rounded-md shadow-2xl max-md:shadow-lg"
                           >
                             <div className="flex flex-col w-full h-90 gap-2 rounded-md ">
                               <div className="flex h-56 w-full">

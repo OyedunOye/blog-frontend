@@ -5,7 +5,14 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "universal-cookie";
-import { ChevronDown, LoaderCircle, Moon, Sun } from "lucide-react";
+import {
+  ChevronDown,
+  CircleXIcon,
+  LoaderCircle,
+  Menu,
+  Moon,
+  Sun,
+} from "lucide-react";
 
 import { Button } from "../ui/button";
 import Logo from "@/public/Logo.png";
@@ -46,6 +53,7 @@ const NavBar = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const [toggleMenu, setToggleMenu] = useState<boolean>(false);
 
   // const token = getCookie("token");
 
@@ -131,11 +139,17 @@ const NavBar = () => {
 
       <MaxWidth className="flex flex-col w-full">
         <div className="flex justify-between">
-          <ul className="flex h-8 content-center">
-            <Link href={"/"}>
-              <Image src={Logo} alt="logo" className="w-30 cursor-pointer" />
+          <div className="flex h-8 content-center">
+            <Link href={"/"} className="w-20">
+              <Image
+                src={Logo}
+                alt="logo"
+                width={100}
+                height={50}
+                className="w-full h-full object-center cursor-pointer"
+              />
             </Link>
-            <div className="space-x-2">
+            <div className="space-x-2 max-md:hidden">
               {/* <div className=" max-lg:hidden"> */}
               {NavBarMenuList.map((menu) => (
                 <Link
@@ -148,7 +162,6 @@ const NavBar = () => {
                 >
                   <Button
                     key={menu}
-                    // onClick={() => setActiveTab(menu)}
                     variant="ghost"
                     className={`hover:bg-[#F3F4F6] ${
                       activeTab === menu ? "bg-[#F3F4F6]" : null
@@ -160,10 +173,37 @@ const NavBar = () => {
               ))}
             </div>
 
-            {/* <div className='hidden max-lg:block'>
-                    <Menu/>
-                </div> */}
-          </ul>
+            <div className="hidden max-md:block">
+              {!toggleMenu ? (
+                <Menu onClick={() => setToggleMenu(true)} className="" />
+              ) : (
+                <CircleXIcon
+                  onClick={() => setToggleMenu(false)}
+                  className="bg-white z-20"
+                />
+              )}
+              {toggleMenu && (
+                <div className="flex flex-col w-24 mt-2 h-fit border rounded-sm shadow-sm">
+                  <div className="flex flex-col divide-y-2">
+                    {NavBarMenuList.map((menu) => (
+                      <Link
+                        href={
+                          menu.split(" ")[0].toLowerCase() !== "home"
+                            ? `/${menu.split(" ")[0].toLowerCase()}`
+                            : "/"
+                        }
+                        key={menu}
+                        className="p-2 text-md"
+                        onClick={() => setToggleMenu(false)}
+                      >
+                        {menu}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
 
           <div className="flex w-contain justify-between content-center gap-1.5">
             {gettingToken ? (

@@ -63,7 +63,7 @@ const TheAuthors = () => {
             <div className="flex">
               <h4 className="font-bold text-md">🏷️ Tags</h4>
             </div>
-            <div className="flex gap-4 my-4">
+            <div className="flex gap-4 my-4 flex-wrap">
               {categories.map(({ category }) => (
                 <Button key={category} variant="outline">
                   {category}
@@ -96,12 +96,12 @@ const TheAuthors = () => {
 
               {isSuccess && allAuthors.length > 0 ? (
                 <>
-                  <div className="flex flex-wrap gap-2 my-3 ml-4">
+                  <div className="flex flex-wrap gap-2 my-3 ml-4 max-md:ml-0">
                     {(!allClicked ? topFifteenAuthors : allAuthors).map(
                       (author: Authors) => (
                         <div
                           key={author.firstName}
-                          className="my-2 w-[32%] border border-slate-200 rounded-sm p-2 shadow-sm"
+                          className="my-2 w-[32%] max-md:w-[100%] max-lg:w-[48%] border border-slate-200 rounded-sm p-2 shadow-sm"
                         >
                           <div className="flex gap-4 content-center">
                             <AvatarRenderer

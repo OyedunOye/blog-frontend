@@ -40,9 +40,9 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 max-md:w-[50%]">
             <p className="">©{new Date().getFullYear()}</p>
-            <p className="flex gap-1">
+            <p className="flex gap-1 max-md:flex-wrap">
               Made with
               <span>
                 <Heart color="red" fill="red" />{" "}
