@@ -207,26 +207,72 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
           }`}
         >
           <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
-            <MaxWidth className="min-h-40  w-full flex-row justify-between">
-              <div className="flex flex-row-reverse w-full p-2 justify-between">
-                <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
-                  <div className="flex flex-col">
-                    <p className="">🏷️ {singleBlogData.blog[0].category}</p>
+            <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-2">
+              <div className="flex flex-row-reverse w-full p-2 justify-between max-md:flex-col ">
+                <div className="flex flex-row-reverse justify-between w-full ">
+                  <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
+                    <div className="flex flex-col">
+                      <p className="">🏷️ {singleBlogData.blog[0].category}</p>
 
+                      <p className="">
+                        Published on{" "}
+                        {" " + formatDate(singleBlogData.blog[0].createdAt)}
+                      </p>
+                    </div>
                     <p className="">
-                      Published on{" "}
-                      {" " + formatDate(singleBlogData.blog[0].createdAt)}
+                      {singleBlogData.blog[0].readTime < 2
+                        ? singleBlogData.blog[0].readTime + " min read"
+                        : singleBlogData.blog[0].readTime + " mins read"}
                     </p>
                   </div>
-                  <p className="">
-                    {singleBlogData.blog[0].readTime < 2
-                      ? singleBlogData.blog[0].readTime + " min read"
-                      : singleBlogData.blog[0].readTime + " mins read"}
-                  </p>
+
+                  {rightToEditAndDelete() === "isAuthor" ? (
+                    <div className="w-80 h-10 flex justify-between mt-2 max-md:hidden max-lg:mx-2">
+                      <Button
+                        variant="default"
+                        className="bg-green-400 hover:bg-green-300 rounded-md w-30"
+                        onClick={handleEditClick}
+                      >
+                        Edit Blog
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        className=""
+                        onClick={handleDeleteClick}
+                      >
+                        Delete Blog
+                      </Button>
+                    </div>
+                  ) : null}
+
+                  <div className="p-2 flex flex-col gap-2">
+                    <AvatarRenderer
+                      src={
+                        singleBlogData.blog[0].author.authorImg
+                          ? baseUrl + singleBlogData.blog[0].author.authorImg
+                          : "/user-dummy.png"
+                      }
+                      fallBack={getInitials(
+                        singleBlogData.blog[0].author.firstName +
+                          " " +
+                          singleBlogData.blog[0].author.lastName
+                      )}
+                      className="h-30 w-30 text-4xl"
+                    />
+
+                    <p className="capitalize text-white font-bold">
+                      {" "}
+                      Author:
+                      {" " +
+                        singleBlogData.blog[0].author.firstName +
+                        " " +
+                        singleBlogData.blog[0].author.lastName}
+                    </p>
+                  </div>
                 </div>
 
                 {rightToEditAndDelete() === "isAuthor" ? (
-                  <div className="w-80 h-10 flex justify-between mt-2">
+                  <div className="w-full h-10 flex justify-between mt-2 max-md:flex max-2xl:hidden 2xl:hidden">
                     <Button
                       variant="default"
                       className="bg-green-400 hover:bg-green-300 rounded-md w-30"
@@ -243,36 +289,11 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     </Button>
                   </div>
                 ) : null}
-
-                <div className="p-2 flex flex-col gap-2">
-                  <AvatarRenderer
-                    src={
-                      singleBlogData.blog[0].author.authorImg
-                        ? baseUrl + singleBlogData.blog[0].author.authorImg
-                        : "/user-dummy.png"
-                    }
-                    fallBack={getInitials(
-                      singleBlogData.blog[0].author.firstName +
-                        " " +
-                        singleBlogData.blog[0].author.lastName
-                    )}
-                    className="h-30 w-30 text-4xl"
-                  />
-
-                  <p className="capitalize text-white font-bold">
-                    {" "}
-                    Author:
-                    {" " +
-                      singleBlogData.blog[0].author.firstName +
-                      " " +
-                      singleBlogData.blog[0].author.lastName}
-                  </p>
-                </div>
               </div>
             </MaxWidth>
           </div>
-          <MaxWidth className="flex flex-col h-full gap-0 w-full">
-            <h1 className="font-extrabold text-5xl py-1 mb-3 w-full text-center">
+          <MaxWidth className="flex flex-col h-full gap-0 w-full max-md:px-2">
+            <h1 className="font-extrabold max-md:text-3xl text-5xl py-1 mb-3 w-full text-center">
               {singleBlogData.blog[0].title}
             </h1>
             <div

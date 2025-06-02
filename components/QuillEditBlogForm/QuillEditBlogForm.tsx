@@ -167,7 +167,7 @@ const QuillEditBlogForm = () => {
   };
 
   return (
-    <MaxWidth className="">
+    <MaxWidth className="max-md:mx-0">
       {isPending ? (
         <Loading message="Submitting your new blog" />
       ) : (
@@ -191,7 +191,9 @@ const QuillEditBlogForm = () => {
             />
 
             <div
-              className={`${blogEditContentWarn === "Yes" ? "mb-5" : "mb-16"}`}
+              className={`mb-16 max-md:mb-32 ${
+                blogEditContentWarn === "Yes" ? "mb-5 max-md:mb-38" : ""
+              }`}
             >
               <FormField
                 control={form.control}
@@ -220,12 +222,12 @@ const QuillEditBlogForm = () => {
                   </FormItem>
                 )}
               />
-              {blogEditContentWarn === "Yes" ? (
-                <p className="text-sm text-red-600 mt-12">
-                  You need at least 120 words for the blog content
-                </p>
-              ) : null}
             </div>
+            {blogEditContentWarn === "Yes" ? (
+              <p className="text-sm text-red-600 mt-8 max-md:-mt-8">
+                You need at least 120 words for the blog content
+              </p>
+            ) : null}
 
             <FormField
               control={form.control}

@@ -37,8 +37,8 @@ const QuillCreateBlogPage = () => {
           </p>
         </div>
 
-        <MaxWidth className="h-contain py-10 w-2/3 justify-center relative -top-24 bg-white border rounded-lg shadow-md">
-          <div className="w-4/5 justify-center mx-auto">
+        <MaxWidth className="h-fit py-10 w-3/4 max-lg:w-[88%] max-md:w-[95%] justify-center relative -top-24 bg-white border rounded-lg shadow-md">
+          <div className="w-9/10 max-lg:w-[100%] max-md:mt-20 justify-center mx-auto">
             <QuillCreateBlogForm />
 
             {/* <div className="justify-center flex w-full mx-auto"></div> */}
