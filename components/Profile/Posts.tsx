@@ -59,7 +59,7 @@ const Posts = () => {
       {state.deleteModal ? <DeleteConfirmation /> : null}
       {isLoading && !isError ? <Loading message="Loading your posts" /> : ""}
       {isError ? (
-        <div className="flex content-center h-fit py-auto gap-2 rounded-sm shadow-md border">
+        <div className="flex max-md:flex-col max-md:mt-4 max-md:p-2 content-center h-fit py-auto gap-2 rounded-sm shadow-md border">
           <div className="w-[70%] h-fit p-2 flex flex-3/4 content-center">
             <Image
               src={"/warning-sign.webp"}
@@ -79,7 +79,7 @@ const Posts = () => {
       ) : (
         <>
           {isSuccess && data ? (
-            <div className="w-full flex flex-col gap-y-6">
+            <div className="w-full flex flex-col  gap-y-6">
               <h5 className="text-sm text-gray-600">
                 You have posted{" "}
                 <span className="font-semibold text-gray-800">
@@ -88,8 +88,8 @@ const Posts = () => {
                 blog{data.user.blogs.length > 1 ? "s" : ""}
               </h5>
               {data.user.blogs.length < 1 ? (
-                <div className=" flex border h-80 rounded-md shadow-sm gap-5 p-2">
-                  <div className="w-[60%] h-full p-2 flex content-center">
+                <div className=" flex max-lg:flex-col max-lg:h-fit border h-80 rounded-md shadow-sm gap-5 p-2">
+                  <div className="w-[60%] max-lg:w-full h-full p-2 flex content-center">
                     <Image
                       src={"/freshstart.jpeg"}
                       alt="warning sign"
@@ -121,9 +121,9 @@ const Posts = () => {
                     {data.user.blogs.map((blog: BlogType) => (
                       <div
                         key={blog._id}
-                        className="bg-gray-200 w-200 p-5 flex gap-x-10 rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
+                        className="bg-gray-200 w-[100%] p-5 max-md:p-2 flex gap-x-10 max-md:gap-y-3 max-md:flex-col rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
                       >
-                        <div className="w-[20%] h-50">
+                        <div className="w-[20%] max-md:w-[100%] h-50 max-md:h-fit">
                           <Image
                             src={`${baseUrl}` + blog.articleImg}
                             alt="blog cover image"
@@ -132,7 +132,7 @@ const Posts = () => {
                             className="object-cover h-38 rounded-sm"
                           />
                         </div>
-                        <div className="w-[75%] flex flex-col gap-y-4">
+                        <div className="w-[75%] max-md:w-full flex flex-col gap-y-4">
                           <h4 className="text-lg font-bold">{blog.title}</h4>
                           <p
                             className="text-gray-600 text-sm"
@@ -141,7 +141,7 @@ const Posts = () => {
                             }}
                           ></p>
 
-                          <div className="flex items-center justify-end gap-x-4 mt-5">
+                          <div className="flex items-center justify-end max-md:w-full max-md:justify-between gap-x-4 mt-5">
                             <Link href={`/blog/${blog._id}`}>
                               <Button
                                 variant="default"
@@ -163,8 +163,8 @@ const Posts = () => {
                     ))}
                   </div>
 
-                  <div className="flex w-full mt-6 ">
-                    {data.user.blogs.length > 3 ? (
+                  {data.user.blogs.length > 3 ? (
+                    <div className="flex w-full mt-6 ">
                       <Pagination className="flex mx-0 w-full">
                         <PaginationContent>
                           <PaginationItem>
@@ -181,8 +181,8 @@ const Posts = () => {
                           </PaginationItem>
                         </PaginationContent>
                       </Pagination>
-                    ) : null}
-                  </div>
+                    </div>
+                  ) : null}
                 </>
               )}
             </div>

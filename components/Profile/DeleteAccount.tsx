@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 
 const DeleteAccount = () => {
   return (
-    <div className="flex flex-col gap-y-6 w-full h-full bg-red-600/10 text-red-600 p-8 rounded-sm">
+    <div className="flex flex-col gap-y-6 w-full h-full bg-red-600/10 text-red-600 p-8 max-md:p-4 rounded-sm">
       <h5 className="text-lg font-semibold">Delete your account</h5>
       <p>
         We&apos;re sorry to see you go. Deleting your account is permanent and
@@ -32,18 +32,18 @@ const DeleteAccount = () => {
       </div>
 
       <div className="w-full flex items-center justify-end mt-10">
-        <div className="flex items-center justify-center gap-x-4">
+        <div className="flex items-center max-md:w-full justify-center gap-x-4">
           <Button
             variant={"default"}
             size={"lg"}
-            className="cursor-pointer rounded-full"
+            className="cursor-pointer rounded-full max-md:w-32"
           >
             Contact Support
           </Button>
           <Button
             variant={"destructive"}
             size={"lg"}
-            className="cursor-pointer rounded-full"
+            className="cursor-pointer rounded-full max-md:w-32"
           >
             Delete Account
           </Button>

@@ -105,18 +105,18 @@ const EditProfile = () => {
   return (
     <>
       {getUsersIsError ? (
-        <div className="flex content-center h-84 py-auto gap-2 rounded-sm  shadow-md border w-full">
-          <div className="w-[76%] h-80 p-2 flex  content-center">
+        <div className="flex max-md:flex-col max-md:mt-4 max-md:p-2 content-center h-fit py-auto gap-2 rounded-sm  shadow-md border">
+          <div className="w-[70%] h-fit p-2 flex flex-3/4 content-center">
             <Image
               src={"/warning-sign.webp"}
               alt="warning sign"
-              width={82}
-              height={70}
-              className="object-cover w-100 p-3"
+              width={80}
+              height={40}
+              className="object-cover w-200 "
             />
           </div>
           <div className="flex  content-center py-5">
-            <p className="font-bold h-fit my-auto">
+            <p className="font-bold h-fit my-auto p-2">
               Server is unreachable, unable to load the form to update your
               profile at the moment. Please try again later.
             </p>
