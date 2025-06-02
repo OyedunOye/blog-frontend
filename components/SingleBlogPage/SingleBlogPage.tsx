@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useGetASingleBlog } from "@/hooks/blog/useGetBlogs";
 import React, { useContext } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
@@ -23,7 +22,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateBlogComment } from "@/hooks/blog/useCreateBlogComment";
 import { useToggleLoveABlog } from "@/hooks/blog/useToggleLoveABlog";
 import "react-quill-new/dist/quill.snow.css";
-import { Avatar } from "../ui/avatar";
 import { getInitials } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 
@@ -55,7 +53,6 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     isError: singleBlogIsError,
     error: singleBlogError,
   } = useGetASingleBlog(blogId);
-  // console.log(singleBlogData);
 
   const { isPending, isSuccess, isError, error, mutateAsync, data } =
     useCreateBlogComment();
@@ -68,42 +65,33 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     isPending: toggleLikeIsPending,
   } = useToggleLoveABlog();
 
-  console.log(toggleLike);
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   const currentUserLoveStatus = () => {
     if (token) {
       const userDetails = getDecodedToken(token);
-      // console.log(userDetails);
       if (toggleLike && toggleLikeSuccess) {
-        console.log(toggleLike.updatedBlog.loves);
         if (
           userDetails &&
           toggleLike.updatedBlog.loves.indexOf(userDetails.id) !== -1
         ) {
-          console.log("loved");
           return "loved";
         } else {
-          console.log("unloved");
           return "unloved";
         }
       }
 
       if (!toggleLikeIsPending && singleBlogData) {
-        console.log(singleBlogData.blog[0].loves);
         if (
           userDetails &&
           singleBlogData.blog[0].loves.indexOf(userDetails.id) !== -1
         ) {
-          console.log("loved");
           return "loved";
         } else {
-          console.log("unloved");
           return "unloved";
         }
       }
     }
-    console.log("not authenticated");
     return "not authenticated";
   };
 
@@ -114,14 +102,15 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     },
   });
 
-  //pending writing of service to post new comment
   const onSubmit = async (values: NewCommentFormData) => {
-    // console.log("The comment value: ", values);
     try {
-      const res = await mutateAsync({ comment: values, blogId: blogId });
-      // console.log(res);
+      const res = await mutateAsync({
+        comment: values,
+        blogId: blogId,
+      });
+      console.log(res);
       toasterAlert(res.message);
-      // window.location.reload();
+
       if (res) {
         form.reset({ comment: "" });
       }
@@ -139,12 +128,12 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     }
     try {
       const res = await toggleLikeMutateAsync(blogId);
-      console.log(res);
       toasterAlert(res.message);
     } catch (error) {
       console.log(error);
     }
   };
+
   const token = getCookie("token");
 
   const picPath = () => {
@@ -158,12 +147,21 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     return "";
   };
 
+  const userName = () => {
+    if (token) {
+      const decoded = getDecodedToken(token);
+      if (decoded !== null) {
+        return decoded?.firstName + " " + decoded?.lastName;
+      } else {
+        return "";
+      }
+    }
+  };
+
   const rightToEditAndDelete = () => {
     if (token && singleBlogData) {
       const userData = getDecodedToken(token);
-      // console.log(userData);
       if (userData?.id === singleBlogData.blog[0].author._id) {
-        // console.log("allow to edit");
         return "isAuthor";
       } else {
         return "Not author";
@@ -208,27 +206,73 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
             state.appMode === "Dark" ? "bg-black text-white" : ""
           }`}
         >
-          <div className="w-full mb-6 rounded-sm bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
-            <MaxWidth className="min-h-40  w-full flex-row justify-between">
-              <div className="flex flex-row-reverse w-full p-2 justify-between">
-                <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
-                  <div className="flex flex-col">
-                    <p className="">🏷️ {singleBlogData.blog[0].category}</p>
+          <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
+            <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-2">
+              <div className="flex flex-row-reverse w-full p-2 justify-between max-md:flex-col ">
+                <div className="flex flex-row-reverse justify-between w-full ">
+                  <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
+                    <div className="flex flex-col">
+                      <p className="">🏷️ {singleBlogData.blog[0].category}</p>
 
+                      <p className="">
+                        Published on{" "}
+                        {" " + formatDate(singleBlogData.blog[0].createdAt)}
+                      </p>
+                    </div>
                     <p className="">
-                      Published on{" "}
-                      {" " + formatDate(singleBlogData.blog[0].createdAt)}
+                      {singleBlogData.blog[0].readTime < 2
+                        ? singleBlogData.blog[0].readTime + " min read"
+                        : singleBlogData.blog[0].readTime + " mins read"}
                     </p>
                   </div>
-                  <p className="">
-                    {singleBlogData.blog[0].readTime < 2
-                      ? singleBlogData.blog[0].readTime + " min read"
-                      : singleBlogData.blog[0].readTime + " mins read"}
-                  </p>
+
+                  {rightToEditAndDelete() === "isAuthor" ? (
+                    <div className="w-80 h-10 flex justify-between mt-2 max-md:hidden max-lg:mx-2">
+                      <Button
+                        variant="default"
+                        className="bg-green-400 hover:bg-green-300 rounded-md w-30"
+                        onClick={handleEditClick}
+                      >
+                        Edit Blog
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        className=""
+                        onClick={handleDeleteClick}
+                      >
+                        Delete Blog
+                      </Button>
+                    </div>
+                  ) : null}
+
+                  <div className="p-2 flex flex-col gap-2">
+                    <AvatarRenderer
+                      src={
+                        singleBlogData.blog[0].author.authorImg
+                          ? baseUrl + singleBlogData.blog[0].author.authorImg
+                          : "/user-dummy.png"
+                      }
+                      fallBack={getInitials(
+                        singleBlogData.blog[0].author.firstName +
+                          " " +
+                          singleBlogData.blog[0].author.lastName
+                      )}
+                      className="h-30 w-30 text-4xl"
+                    />
+
+                    <p className="capitalize text-white font-bold">
+                      {" "}
+                      Author:
+                      {" " +
+                        singleBlogData.blog[0].author.firstName +
+                        " " +
+                        singleBlogData.blog[0].author.lastName}
+                    </p>
+                  </div>
                 </div>
 
                 {rightToEditAndDelete() === "isAuthor" ? (
-                  <div className="w-80 h-10 flex justify-between mt-2">
+                  <div className="w-full h-10 flex justify-between mt-2 max-md:flex max-2xl:hidden 2xl:hidden">
                     <Button
                       variant="default"
                       className="bg-green-400 hover:bg-green-300 rounded-md w-30"
@@ -245,38 +289,11 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     </Button>
                   </div>
                 ) : null}
-
-                <div className="p-2 flex flex-col gap-2">
-                  {singleBlogData.blog[0].author.authorImg ? (
-                    <AvatarRenderer
-                      src={baseUrl + singleBlogData.blog[0].author.authorImg}
-                      fallBack={getInitials(
-                        singleBlogData.blog[0].author.firstName +
-                          " " +
-                          singleBlogData.blog[0].author.lastName
-                      )}
-                      className="h-30 w-30 text-4xl"
-                    />
-                  ) : (
-                    <AvatarRenderer
-                      src={"http://localhost:3000/user-dummy.png"}
-                      className="h-30 w-30"
-                    />
-                  )}
-                  <p className="capitalize text-white font-bold">
-                    {" "}
-                    Author:
-                    {" " +
-                      singleBlogData.blog[0].author.firstName +
-                      " " +
-                      singleBlogData.blog[0].author.lastName}
-                  </p>
-                </div>
               </div>
             </MaxWidth>
           </div>
-          <MaxWidth className="flex flex-col h-full gap-0 w-full">
-            <h1 className="font-extrabold text-5xl py-1 mb-3 w-full text-center">
+          <MaxWidth className="flex flex-col h-full gap-0 w-full max-md:px-2">
+            <h1 className="font-extrabold max-md:text-3xl text-5xl py-1 mb-3 w-full text-center">
               {singleBlogData.blog[0].title}
             </h1>
             <div
@@ -289,60 +306,48 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
             <div className="flex flex-col ">
               <div className="flex flex-col mb-3">
                 <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
-                  {!toggleLike ? (
-                    <Button
-                      variant="outline"
-                      className="rounded-full bg-gray-200 h-[80%] "
-                      onClick={onLove}
-                    >
-                      {currentUserLoveStatus() === "loved" ? (
-                        <Heart color="red" fill="red" />
-                      ) : (
-                        <Heart />
-                      )}
-                      {singleBlogData.blog[0].loveCount}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      className="rounded-full bg-gray-200 h-[80%] "
-                      onClick={onLove}
-                    >
-                      {currentUserLoveStatus() === "loved" ? (
-                        <Heart color="red" fill="red" />
-                      ) : (
-                        <Heart />
-                      )}
-                      {toggleLike.updatedBlog.loveCount}
-                    </Button>
-                  )}
+                  <Button
+                    variant="outline"
+                    className="rounded-full bg-gray-200 h-[80%] "
+                    onClick={onLove}
+                  >
+                    <Heart
+                      color={
+                        currentUserLoveStatus() === "loved" ? "red" : "black"
+                      }
+                      fill={
+                        currentUserLoveStatus() === "loved"
+                          ? "red"
+                          : "transparent"
+                      }
+                    />
+
+                    {!toggleLike
+                      ? singleBlogData.blog[0].loveCount
+                      : toggleLike.updatedBlog.loveCount}
+                  </Button>
+
                   <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14">
                     <MessageSquareMore size={18} className="pb-0.5" />{" "}
                     {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
-                    {!data ? (
-                      <span className="h-fit flex -mt-1 text-sm font-semibold">
-                        {" "}
-                        {singleBlogData.blog[0].commentCount}
-                      </span>
-                    ) : (
-                      <span className="h-fit flex -mt-1 text-sm font-semibold">
-                        {" "}
-                        {data.updatedBlog.commentCount}
-                      </span>
-                    )}
+                    <span className="h-fit flex -mt-1 text-sm font-semibold">
+                      {" "}
+                      {!data
+                        ? singleBlogData.blog[0].commentCount
+                        : data.updatedBlog.commentCount}
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex gap-2 h-28 content-center py-1">
-                  {token && picPath() !== "" ? (
-                    <AvatarRenderer src={picPath()} className="h-22 w-22" />
-                  ) : (
-                    <AvatarRenderer
-                      src={"http://localhost:3000/user-dummy.png"}
-                      className="h-20 w-20"
-                    />
-                  )}
-                  {/* <Textarea placeholder="Leave a comment..." /> */}
+                  <AvatarRenderer
+                    src={
+                      token && picPath() !== "" ? picPath() : "/user-dummy.png"
+                    }
+                    className="h-22 w-22 text-4xl"
+                    fallBack={getInitials(userName()!)}
+                  />
+
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
@@ -375,72 +380,48 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
               </div>
               <div className="flex flex-col gap-2 mt-10">
                 {/* trying to populate the comments display from updated comments returned on submitting a new comment but data's commenter obj returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
-                {!data
-                  ? singleBlogData.blog[0].comments.map(
-                      (eachComment: EachComment) => (
-                        <div
-                          className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm "
-                          key={eachComment._id}
-                        >
-                          <div className="flex">
-                            <div className="">
-                              {eachComment.commenter.authorImg !== "" ? (
-                                <AvatarRenderer
-                                  src={
-                                    baseUrl + eachComment.commenter.authorImg
-                                  }
-                                  fallBack={getInitials(
-                                    eachComment.commenter.firstName +
-                                      " " +
-                                      eachComment.commenter.lastName
-                                  )}
-                                  className="h-8 w-8"
-                                />
-                              ) : (
-                                <AvatarRenderer
-                                  src={"http://localhost:3000/user-dummy.png"}
-                                  className="h-8 w-8"
-                                />
-                              )}
-                            </div>
-                            <div className="flex flex-col pl-2">
-                              <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
-                                <p className="capitalize">
-                                  {eachComment.commenter.firstName +
-                                    " " +
-                                    eachComment.commenter.lastName}
-                                </p>
-                                <p className="">
-                                  {formatDate(eachComment.commentedAt)}
-                                </p>
-                              </div>
-                              <p className="">{eachComment.comment}</p>
-                            </div>
-                          </div>
+
+                {(!data
+                  ? singleBlogData.blog[0].comments
+                  : data.updatedBlog.comments
+                ).map((eachComment: EachComment) => (
+                  <div
+                    className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm "
+                    key={eachComment._id}
+                  >
+                    <div className="flex">
+                      <div className="">
+                        <AvatarRenderer
+                          src={
+                            eachComment.commenter.authorImg !== ""
+                              ? baseUrl + eachComment.commenter.authorImg
+                              : "/user-dummy.png"
+                          }
+                          fallBack={getInitials(
+                            eachComment.commenter.firstName +
+                              " " +
+                              eachComment.commenter.lastName
+                          )}
+                          className="h-8 w-8"
+                        />
+                      </div>
+
+                      <div className="flex flex-col pl-2">
+                        <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
+                          <p className="capitalize">
+                            {eachComment.commenter.firstName +
+                              " " +
+                              eachComment.commenter.lastName}
+                          </p>
+                          <p className="">
+                            {formatDate(eachComment.commentedAt)}
+                          </p>
                         </div>
-                      )
-                    )
-                  : data.updatedBlog.comments.map(
-                      (eachComment: EachComment) => (
-                        <div
-                          key={eachComment._id}
-                          className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm"
-                        >
-                          <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
-                            <p className="capitalize">
-                              {/* firstName and lastName update lagging sometimes and showing undefined, how to make sure it is always correct on first attempt? */}
-                              {eachComment.commenter.firstName +
-                                " " +
-                                eachComment.commenter.lastName}
-                            </p>
-                            <p className="">
-                              {formatDate(eachComment.commentedAt)}
-                            </p>
-                          </div>
-                          <p className="">{eachComment.comment}</p>
-                        </div>
-                      )
-                    )}
+                        <p className="">{eachComment.comment}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </MaxWidth>

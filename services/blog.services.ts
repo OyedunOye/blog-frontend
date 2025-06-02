@@ -1,8 +1,15 @@
 import axios from "axios";
-import { getCookie } from "cookies-next/client";
+// import { getCookie } from "cookies-next/client";
+import Cookies from "universal-cookie";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const token = getCookie("token");
+const cookies = new Cookies(null, { path: "/" });
+
+const getToken = async () => {
+  const token = await cookies.get("token");
+  return token;
+};
+// const token = getCookie("token");
 
 interface EditBlogData {
   blogId: string;
@@ -11,10 +18,13 @@ interface EditBlogData {
 
 interface CreateCommentData {
   blogId: string;
-  comment: any;
+  comment: {
+    comment:string
+  }
 }
 
 export const createBlog = async (credentials: any) => {
+  const token = await getToken();
   try {
     const res = await axios.post(`${BASE_URL}blogs`, credentials, {
       headers: {
@@ -30,7 +40,6 @@ export const createBlog = async (credentials: any) => {
 
 export const getAllBlogs = async () => {
   try {
-    console.log(`${BASE_URL}blogs`);
     const res = await axios.get(`${BASE_URL}blogs`);
     return res.data;
   } catch (error) {
@@ -62,8 +71,8 @@ export const getASingleBlog = async (blogId: string) => {
 };
 
 export const editBlog = async ({ blogId, blogData }: EditBlogData) => {
+  const token = await getToken();
   try {
-    console.log("token is ", token);
     const res = await axios.patch(`${BASE_URL}blogs/${blogId}`, blogData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -80,6 +89,7 @@ export const editBlog = async ({ blogId, blogData }: EditBlogData) => {
 };
 
 export const deleteBlog = async (blogId: string) => {
+  const token = await getToken();
   try {
     const res = await axios.delete(`${BASE_URL}blogs/${blogId}`, {
       headers: {
@@ -99,6 +109,7 @@ export const createBlogComment = async ({
   blogId,
   comment,
 }: CreateCommentData) => {
+  const token = await getToken();
   try {
     const res = await axios.post(
       `${BASE_URL}blogs/comment/${blogId}`,
@@ -117,8 +128,8 @@ export const createBlogComment = async ({
 };
 
 export const toggleLoveABlog = async (blogId: string) => {
+  const token = await getToken();
   try {
-    console.log("token is ", token);
     const res = await axios.patch(
       `${BASE_URL}blogs/love/${blogId}`,
       {}, //no request body

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NavBar from "@/components/common/NavBar";
+import Footer from "@/components/common/Footer";
 
 export const metadata: Metadata = {
   title: "Profile Page",
@@ -15,6 +16,7 @@ export default function ProfilePageLayout({
     <div className="">
       <NavBar />
       {children}
+      <Footer />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import Categories from "@/components/Home/Categories";
 import LatestArticles from "@/components/Home/LatestArticles";
 import Videos from "@/components/Home/Videos";
 import Subscribe from "@/components/Home/Subscribe";
-import ExpandedArticles from "@/components/Home/ExpandedArticles";
+import TheAuthors from "@/components/Home/TheAuthors";
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 
@@ -16,7 +16,7 @@ const HomePageScreen = () => {
       <Categories />
       <Videos />
       <Subscribe />
-      <ExpandedArticles />
+      <TheAuthors />
       <Footer />
     </main>
   );

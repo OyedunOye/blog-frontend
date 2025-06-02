@@ -79,12 +79,10 @@ const QuillEditBlogForm = () => {
     "strike",
     "blockquote",
     "list",
-    // "bullet",
     "indent",
     "link",
     "image",
     "color",
-    // "clean",
   ];
 
   const {
@@ -134,15 +132,12 @@ const QuillEditBlogForm = () => {
 
       if (checkContentWordLim(values.blogContent) === "enough") {
         setEditBlogContentWarn("No");
-        // console.log(blogId);
-        console.log(state.storedBlogId);
-        console.log(state.singleBlogDetail._id);
+
         const res = await mutateAsync({
           blogData: formData,
           blogId: state.singleBlogDetail._id,
         });
-        console.log(res);
-        console.log(editIsSuccess);
+
         if (res) {
           // checking blogIsSuccess, data and other variables from useEditBlog() not working here. Those are always not
           // in our desired format before synchronous checks happen at this point. Hence, only res which was awaited
@@ -159,7 +154,6 @@ const QuillEditBlogForm = () => {
           });
           router.push("/");
         }
-        // console.log(state.storedBlogId);
       }
       if (checkContentWordLim(values.blogContent) === "notEnough") {
         setEditBlogContentWarn("Yes");
@@ -173,7 +167,7 @@ const QuillEditBlogForm = () => {
   };
 
   return (
-    <MaxWidth className="">
+    <MaxWidth className="max-md:mx-0">
       {isPending ? (
         <Loading message="Submitting your new blog" />
       ) : (
@@ -197,7 +191,9 @@ const QuillEditBlogForm = () => {
             />
 
             <div
-              className={`${blogEditContentWarn === "Yes" ? "mb-5" : "mb-16"}`}
+              className={`mb-16 max-md:mb-32 ${
+                blogEditContentWarn === "Yes" ? "mb-5 max-md:mb-38" : ""
+              }`}
             >
               <FormField
                 control={form.control}
@@ -226,12 +222,12 @@ const QuillEditBlogForm = () => {
                   </FormItem>
                 )}
               />
-              {blogEditContentWarn === "Yes" ? (
-                <p className="text-sm text-red-600 mt-12">
-                  You need at least 120 words for the blog content
-                </p>
-              ) : null}
             </div>
+            {blogEditContentWarn === "Yes" ? (
+              <p className="text-sm text-red-600 mt-8 max-md:-mt-8">
+                You need at least 120 words for the blog content
+              </p>
+            ) : null}
 
             <FormField
               control={form.control}

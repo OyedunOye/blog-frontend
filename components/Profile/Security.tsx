@@ -41,9 +41,9 @@ const Security = () => {
 
   const onSubmit = async (values: PasswordFormData) => {
     try {
-      console.log(values);
+      // console.log(values);
       const res = await mutateAsync(values);
-      console.log("response is", res);
+      // console.log("response is", res);
 
       if (res.user && !isPending) {
         toasterAlert(res.message);
@@ -71,7 +71,7 @@ const Security = () => {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="*******"
+                    placeholder="******"
                     {...field}
                     className="w-full"
                   />
@@ -107,7 +107,7 @@ const Security = () => {
                 <FormLabel>Confirm New Password</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="*****"
+                    placeholder="******"
                     type="password"
                     {...field}
                     className="w-full"

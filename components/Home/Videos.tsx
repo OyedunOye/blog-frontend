@@ -5,8 +5,10 @@ import MaxWidth from "../common/MaxWidthWrapper";
 const Videos = () => {
   return (
     <MaxWidth className="w-full">
-      <h3 className="font-bold text-xl capitalize my-2">🎬 The videos</h3>
-      <p className="text-md text-slate-600 w-1/3 mb-2">
+      <h3 className="font-bold text-xl capitalize my-2 max-lg:mb-5">
+        🎬 The videos
+      </h3>
+      <p className="text-md text-slate-600 w-1/3 max-md:w-full mb-2 max-lg:w-full">
         Read and share new perspectives on just about any topic. Everyone’s
         welcome.
       </p>

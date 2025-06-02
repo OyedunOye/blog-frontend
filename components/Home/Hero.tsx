@@ -1,49 +1,68 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import HeroImg from "@/components/assets/heroImg.png";
 import MaxWidth from "../common/MaxWidthWrapper";
-import Link from "next/link";
-
-// For client-side usage
-import { getCookie } from "cookies-next/client";
 import { useRouter } from "next/navigation";
 import { toasterAlert } from "@/utils";
+import Cookies from "universal-cookie";
+import { LoaderCircle } from "lucide-react";
+
+const cookies = new Cookies(null, { path: "/" });
 
 const Hero = () => {
-  const token = getCookie("token");
+  const [token, setToken] = useState<string | undefined>("");
+  const [createClick, setCreateClick] = useState<boolean | undefined>(false);
+
+  useEffect(() => {
+    const getToken = async () => {
+      if (typeof window !== "undefined") {
+        const token = await cookies.get("token");
+        setToken(token);
+      }
+    };
+
+    getToken();
+  }, []);
 
   const router = useRouter();
 
   const handleOpenCreateBlogForm = () => {
-    token
-      ? router.push("/create-blog")
-      : toasterAlert(
-          "You are offline. Please login to be able to create a blog post!"
-        );
+    if (token) {
+      setCreateClick(true);
+      router.push("/create-blog");
+      return;
+    }
+    toasterAlert(
+      "You are offline. Please login to be able to create a blog post!"
+    );
   };
 
   return (
     <section id="home" className="w-full bg-[#F3F4F6]">
-      <MaxWidth className="w-full flex flex-wrap pt-10 flex-row bg-[#F3F4F6]">
-        <div className="flex flex-1/5 flex-col h-[280px] content-center my-5 py-1 mr-4 gap-6">
-          <h2 className="font-bold text-3xl">👋 Read and share anything.</h2>
+      <MaxWidth className="w-full h-fit flex flex-wrap pt-10 flex-row bg-[#F3F4F6] max-lg:pb-4">
+        <div className="flex flex-1/5 flex-col h-[280px] content-center my-5 py-1 mr-4 gap-6 max-md:flex-1 ">
+          <h2 className="font-bold text-3xl">👋 Read and share your story.</h2>
           <p>
-            Discover the most outstanding articles in all topics of life. Write
-            your stories and share them.
+            Discover outstanding articles in the carefully selected categories
+            available on this site.
           </p>
 
           <Button
-            onClick={handleOpenCreateBlogForm}
+            onClick={() => handleOpenCreateBlogForm()}
             variant="default"
             className=""
           >
-            Create a New Blog
+            {createClick ? (
+              <LoaderCircle className="text-gray-400 animate-spin" />
+            ) : (
+              "Create a New Blog"
+            )}
           </Button>
         </div>
-        <div className="h-full w-2/3 flex">
+        <div className="h-full w-2/3 flex max-md:w-full max-md:pb-5 ">
           <Image
             src={HeroImg}
             alt="hero image"

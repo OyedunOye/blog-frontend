@@ -11,7 +11,7 @@ const Loading = ({ message, className }: LoadingProps) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-center gap-8 bg-transparent",
+        "flex items-center justify-center gap-8 bg-transparent z-99",
         className
       )}
     >

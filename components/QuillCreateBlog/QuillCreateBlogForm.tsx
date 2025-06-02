@@ -76,12 +76,10 @@ const QuillCreateBlogForm = () => {
     "strike",
     "blockquote",
     "list",
-    // "bullet",
     "indent",
     "link",
     "image",
     "color",
-    // "clean",
   ];
 
   const { isPending, isSuccess, isError, error, mutateAsync } = useCreateBlog();
@@ -100,17 +98,10 @@ const QuillCreateBlogForm = () => {
     },
   });
 
-  console.log(state.blogContentWarn);
-
   const onSubmit = async (values: NewBlogFormData) => {
     const file = values.articleImg?.[0];
 
-    console.log("values are:", values);
-
-    console.log(state.blogContentWarn);
-
-    // console.log(checkContentWordLim(values.blogContent));
-    // console.log(contentLengthCheck);
+    // console.log("values are:", values);
 
     try {
       const formData = new FormData();
@@ -151,8 +142,6 @@ const QuillCreateBlogForm = () => {
     }
   };
 
-  // console.log(state.blogContentWarn);
-
   return (
     <div>
       {isPending ? (
@@ -177,7 +166,11 @@ const QuillCreateBlogForm = () => {
               )}
             />
 
-            <div className="mb-16">
+            <div
+              className={`mb-18  ${
+                state.blogContentWarn === "Yes" ? "max-md:-mb-20" : ""
+              }`}
+            >
               <FormField
                 control={form.control}
                 name="blogContent"
@@ -210,37 +203,47 @@ const QuillCreateBlogForm = () => {
               />
               {/* </div> */}
               {state.blogContentWarn === "Yes" ? (
-                <p className="text-sm text-red-600 mt-12">
+                <p className="text-sm text-red-600 mt-12 max-md:mt-24">
                   You need at least 120 words for the blog content
                 </p>
               ) : null}
             </div>
 
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Category tag</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Blog Category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Programming">Programming</SelectItem>
-                        <SelectItem value="Food">Food</SelectItem>
-                        <SelectItem value="Travel">Travel</SelectItem>
-                        <SelectItem value="Technology">Technology</SelectItem>
-                        <SelectItem value="Lifestyle">Lifestyle</SelectItem>
-                        <SelectItem value="Others">Others</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div
+              className={`max-md:mt-26 ${
+                state.blogContentWarn === "Yes"
+                  ? "max-md:mt-4 max-lg:-mt-8"
+                  : ""
+              }`}
+            >
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category tag</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange}>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Blog Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Programming">
+                            Programming
+                          </SelectItem>
+                          <SelectItem value="Food">Food</SelectItem>
+                          <SelectItem value="Travel">Travel</SelectItem>
+                          <SelectItem value="Technology">Technology</SelectItem>
+                          <SelectItem value="Lifestyle">Lifestyle</SelectItem>
+                          <SelectItem value="Others">Others</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}

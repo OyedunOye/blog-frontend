@@ -1,12 +1,7 @@
-import { getDecodedToken } from '@/hooks/getDecodeToken/getDecodedToken';
 import { getToken } from '@/utils';
 import axios from 'axios'
-import { getCookie } from 'cookies-next/client';
-// const BASE_URL = 'http://localhost:3001/api/users'
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
-// const token = await getToken();
-const token = getCookie("token");
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export const createUser = async (credentials: any) => {
     try {
@@ -28,8 +23,7 @@ export const getAllAuthors = async() => {
 
 export const getAUser = async() => {
     try {
-        const token = getCookie("token");
-        // console.log(token)
+        const token = await getToken();
 
         const res = await axios.get(`${BASE_URL}users/profile`, {
             headers: {
@@ -43,6 +37,7 @@ export const getAUser = async() => {
 }
 
 export const changeUserPassword = async(updateItem: any)=>{
+    const token = await getToken()
     try {
         const res = await axios.patch(`${BASE_URL}users/change-password`, updateItem, {
             headers: {
@@ -58,6 +53,7 @@ export const changeUserPassword = async(updateItem: any)=>{
 }
 
 export const updateUserProfile = async(updateItem: any)=>{
+    const token = await getToken()
     try {
         const res = await axios.patch(`${BASE_URL}users/edit-profile`, updateItem, {
             headers: {
