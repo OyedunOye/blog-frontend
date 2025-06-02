@@ -11,10 +11,10 @@ const DeleteConfirmation = () => {
 
   const router = useRouter();
 
-  const { mutateAsync, isSuccess, error } = useDeleteABlog();
+  const { mutateAsync } = useDeleteABlog();
 
   const handleBackClick = () => {
-    let payload = {
+    const payload = {
       deleteModal: false,
       storedBlogId: null,
       singleBlogDetail: null,

@@ -26,8 +26,7 @@ import { LoaderCircle } from "lucide-react";
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 const LoginForm = () => {
-  const { isPending, isSuccess, isError, error, mutateAsync, data } =
-    useLogUserIn();
+  const { isPending, mutateAsync, data } = useLogUserIn();
 
   const router = useRouter();
 

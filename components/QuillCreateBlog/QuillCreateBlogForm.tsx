@@ -82,7 +82,7 @@ const QuillCreateBlogForm = () => {
     "color",
   ];
 
-  const { isPending, isSuccess, isError, error, mutateAsync } = useCreateBlog();
+  const { isPending, mutateAsync } = useCreateBlog();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
 
@@ -144,6 +144,7 @@ const QuillCreateBlogForm = () => {
 
   return (
     <div>
+      {profilePreview && <p></p>}
       {isPending ? (
         <Loading message="Submitting your new blog" />
       ) : (
@@ -250,7 +251,7 @@ const QuillCreateBlogForm = () => {
               name="articleImg"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Article's cover image</FormLabel>
+                  <FormLabel>Article&apos;s cover image</FormLabel>
                   <FormControl>
                     <Input
                       type="file"

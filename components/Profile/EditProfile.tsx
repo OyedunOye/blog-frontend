@@ -33,13 +33,11 @@ const EditProfile = () => {
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | "">("");
 
-  const { mutateAsync, isPending, isSuccess, isError, error } =
-    useUpdateUserProfile();
+  const { mutateAsync, isPending, isError } = useUpdateUserProfile();
 
   const {
     data,
-    isSuccess: getUsersIsSuccess,
-    error: getUsersError,
+
     isError: getUsersIsError,
     isLoading: getUserIsLoading,
   } = useGetAUser();
@@ -73,16 +71,29 @@ const EditProfile = () => {
     // console.log("The values are", values);
     try {
       const formData = new FormData();
-      values.firstName !== ""
-        ? formData.set("firstName", values.firstName)
-        : "";
-      values.lastName !== "" ? formData.set("lastName", values.lastName) : "";
-      values.email !== "" ? formData.set("email", values.email) : "";
-      profileImage !== "" && !values.removeProfilePic
-        ? formData.set("authorImg", profileImage)
-        : values.removeProfilePic
-        ? formData.set("authorImg", "")
-        : "";
+      // values.firstName !== ""
+      //   ? formData.set("firstName", values.firstName)
+      //   : "";
+      // values.lastName !== "" ? formData.set("lastName", values.lastName) : "";
+      // values.email !== "" ? formData.set("email", values.email) : "";
+      // profileImage !== "" && !values.removeProfilePic
+      //   ? formData.set("authorImg", profileImage)
+      //   : values.removeProfilePic
+      //   ? formData.set("authorImg", "")
+      //   : "";
+
+      if (values.firstName !== "") {
+        formData.set("firstName", values.firstName);
+      }
+      if (values.lastName !== "") {
+        formData.set("lastName", values.lastName);
+      }
+      if (values.email !== "") {
+        formData.set("email", values.email);
+      }
+      if (profileImage !== "") {
+        formData.set("articleImg", profileImage);
+      }
       // console.log(values.removeProfilePic);
       // console.log(...formData);
 

@@ -11,8 +11,8 @@ const Subscribe = () => {
             📬 Subscribe to our newsletter
           </h3>
           <p className="text-md text-slate-600 text-center">
-            Read and share new perspectives on just about any topic. Everyone's
-            welcome.👋
+            Read and share new perspectives on just about any topic.
+            Everyone&apos;s welcome.👋
           </p>
           <div className="flex justify-center content-center mx-auto w-[80%] max-md:flex-col gap-2">
             <Input

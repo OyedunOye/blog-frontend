@@ -10,7 +10,7 @@ import { AppContext } from "@/context/AppContext";
 
 const QuillCreateBlogPage = () => {
   const [homePageLoading, setHomePageLoading] = useState<boolean>(false);
-  const { state, dispatch } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
   const handleClickBack = () => {
     setHomePageLoading(true);
     dispatch({
