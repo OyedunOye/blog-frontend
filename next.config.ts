@@ -1,7 +1,32 @@
-import type { NextConfig } from "next";
+// next.config.ts
 
-const nextConfig: NextConfig = {
-  /* config options here */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "blog-backend-u8d7.onrender.com",
+        port: "",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "blog-backend-new-6010.onrender.com",
+        port: "",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3001",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*", // Allow images from all domains
+      },
+    ],
+  },
 };
 
 export default nextConfig;
