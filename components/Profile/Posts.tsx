@@ -37,11 +37,11 @@ interface BlogType {
 const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
 const Posts = () => {
-  const { data, isLoading, isSuccess, error, isError } = useGetAUser();
+  const { data, isLoading, isSuccess, isError } = useGetAUser();
   const { state, dispatch } = useContext(AppContext);
 
   const handleDeleteClick = (blogData: BlogType) => {
-    let payload = {
+    const payload = {
       deleteModal: true,
       storedBlogId: blogData._id,
       singleBlogDetail: blogData,

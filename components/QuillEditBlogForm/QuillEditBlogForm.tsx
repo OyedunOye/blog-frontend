@@ -42,9 +42,9 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 type EditBlogFormData = z.infer<typeof editBlogFormSchema>;
 
-interface EditBlogProps {
-  blogId: string;
-}
+// interface EditBlogProps {
+//   blogId: string;
+// }
 
 const QuillEditBlogForm = () => {
   const modules = {
@@ -85,14 +85,7 @@ const QuillEditBlogForm = () => {
     "color",
   ];
 
-  const {
-    isPending,
-    isSuccess: editIsSuccess,
-    isError,
-    error,
-    mutateAsync,
-    data,
-  } = useEditBlog();
+  const { isPending, mutateAsync } = useEditBlog();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const { state, dispatch } = useContext(AppContext);
@@ -118,16 +111,31 @@ const QuillEditBlogForm = () => {
 
     try {
       const formData = new FormData();
-      values.title !== "" ? formData.set("title", values.title) : "";
-      values.blogContent !== ""
-        ? formData.set("blogContent", values.blogContent)
-        : "";
-      values.blogContent !== ""
-        ? formData.set("readTime", blogReadTime(values.blogContent))
-        : "";
-      values.category !== "" ? formData.set("category", values.category) : "";
-      values.articleImg !== "" ? formData.set("articleImg", file) : "";
+      // values.title !== "" ? formData.set("title", values.title) : "";
+      // values.blogContent !== ""
+      //   ? formData.set("blogContent", values.blogContent)
+      //   : "";
+      // values.blogContent !== ""
+      //   ? formData.set("readTime", blogReadTime(values.blogContent))
+      //   : "";
+      // values.category !== "" ? formData.set("category", values.category) : "";
+      // values.articleImg !== "" ? formData.set("articleImg", file) : "";
 
+      if (values.title !== "") {
+        formData.set("title", values.title);
+      }
+      if (values.blogContent !== "") {
+        formData.set("blogContent", values.blogContent);
+      }
+      if (values.blogContent !== "") {
+        formData.set("readTime", blogReadTime(values.blogContent));
+      }
+      if (values.category !== "") {
+        formData.set("category", values.category);
+      }
+      if (values.articleImg !== "") {
+        formData.set("articleImg", file);
+      }
       // console.log("formdata are", ...formData);
 
       if (checkContentWordLim(values.blogContent) === "enough") {
@@ -168,6 +176,7 @@ const QuillEditBlogForm = () => {
 
   return (
     <MaxWidth className="max-md:mx-0">
+      {profilePreview && <p></p>}
       {isPending ? (
         <Loading message="Submitting your new blog" />
       ) : (
@@ -263,7 +272,7 @@ const QuillEditBlogForm = () => {
               name="articleImg"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Article's cover image</FormLabel>
+                  <FormLabel>Article&apos;s cover image</FormLabel>
                   <FormControl>
                     <Input
                       type="file"

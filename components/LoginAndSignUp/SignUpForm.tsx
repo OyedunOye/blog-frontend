@@ -26,8 +26,7 @@ type SignUpFormData = z.infer<typeof signUpFormSchema>;
 const SignUpForm = () => {
   const router = useRouter();
 
-  const { mutateAsync, isPending, isSuccess, isError, error } =
-    useRegisterUser();
+  const { mutateAsync, isPending } = useRegisterUser();
 
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
 
@@ -70,6 +69,7 @@ const SignUpForm = () => {
 
   return (
     <div>
+      {profilePreview && <p></p>}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField

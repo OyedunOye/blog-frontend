@@ -10,7 +10,7 @@ const QuillEditBlogModal = () => {
   const { dispatch } = useContext(AppContext);
 
   const handleClickBack = () => {
-    let payload = {
+    const payload = {
       openEditModal: false,
       storedBlogId: null,
       singleBlogDetail: null,

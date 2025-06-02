@@ -25,8 +25,7 @@ type PasswordFormData = z.infer<typeof editPasswordFormSchema>;
 const Security = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false);
 
-  const { mutateAsync, isPending, isSuccess, isError, error } =
-    useChangePassword();
+  const { mutateAsync, isPending } = useChangePassword();
 
   const router = useRouter();
 

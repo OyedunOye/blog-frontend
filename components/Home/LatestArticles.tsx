@@ -49,7 +49,7 @@ const LatestArticles = () => {
       setAllBlogs(data.blogs);
       setRemainingBlogs(data.blogs.slice(4));
     }
-  }, [data]);
+  }, [data, isSuccess]);
 
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 

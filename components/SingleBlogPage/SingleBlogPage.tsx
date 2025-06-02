@@ -47,20 +47,14 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
 
   const router = useRouter();
 
-  const {
-    data: singleBlogData,
-    isLoading: singleBlogLoading,
-    isError: singleBlogIsError,
-    error: singleBlogError,
-  } = useGetASingleBlog(blogId);
+  const { data: singleBlogData, isLoading: singleBlogLoading } =
+    useGetASingleBlog(blogId);
 
-  const { isPending, isSuccess, isError, error, mutateAsync, data } =
-    useCreateBlogComment();
+  const { mutateAsync, data } = useCreateBlogComment();
 
   const {
     data: toggleLike,
     mutateAsync: toggleLikeMutateAsync,
-    error: toggleLikeError,
     isSuccess: toggleLikeSuccess,
     isPending: toggleLikeIsPending,
   } = useToggleLoveABlog();
@@ -171,7 +165,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   };
 
   const handleDeleteClick = () => {
-    let payload = {
+    const payload = {
       storedBlogId: blogId,
       deleteModal: true,
       singleBlogDetail: singleBlogData.blog[0],
@@ -183,7 +177,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   };
 
   const handleEditClick = () => {
-    let payload = {
+    const payload = {
       storedBlogId: blogId,
       openEditModal: true,
       singleBlogDetail: singleBlogData.blog[0],

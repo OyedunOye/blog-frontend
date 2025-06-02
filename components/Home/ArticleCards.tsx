@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
 import Image, { StaticImageData } from "next/image";
 import {
   Bookmark,
@@ -16,8 +15,6 @@ import Loader from "../common/Loader";
 
 import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
 import { wordLimit } from "@/utils/helpers";
-import { getCookie } from "cookies-next/client";
-import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
 
 interface BlogType {
   _id: string;
@@ -38,21 +35,19 @@ interface BlogType {
 }
 
 export const ArticleCards = () => {
-  const { data, isLoading, isError, error, isSuccess } = useGetAllBlogs();
+  const { data, isLoading, isSuccess } = useGetAllBlogs();
   const [dataDuplicate, setDataDuplicate] = useState<BlogType[]>([]);
   const [topTwoToFourBlogs, setTopTwoToFourBlogs] = useState<BlogType[]>([]);
 
   const [loadingSingPage, setLoadingSingPage] = useState<boolean>(false);
   const [loadingCard, setLoadingCard] = useState<string>("");
 
-  const token = getCookie("token");
-
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   useEffect(() => {
     if (data) {
-      setDataDuplicate(data.blogs),
-        setTopTwoToFourBlogs(data.blogs.slice(1, 4));
+      setDataDuplicate(data.blogs);
+      setTopTwoToFourBlogs(data.blogs.slice(1, 4));
     }
   }, [data]);
 
