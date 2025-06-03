@@ -32,10 +32,16 @@ import { toasterAlert } from "@/utils";
 import Loading from "../common/Loader";
 import { useContext, useState } from "react";
 import { useCreateBlog } from "@/hooks/blog/useCreateBlog";
-import ReactQuill from "react-quill-new";
+// import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { blogReadTime } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>,
+});
+import "react-quill-new/dist/quill.snow.css";
 
 type NewBlogFormData = z.infer<typeof newBlogFormSchema>;
 
