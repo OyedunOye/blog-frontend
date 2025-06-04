@@ -22,4 +22,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Implement Homepage UI [✔]
 - Implement Archive/Search Page UI []
 - Implement SignIn/SignOut Page UI [✔]
-- Implement Dashboard Page UI []
+- Implement Dashboard Page UI [✔]
