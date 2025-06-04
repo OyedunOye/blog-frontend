@@ -174,7 +174,7 @@ const EditProfile = () => {
 
               <div
                 className={cn(
-                  "absolute bottom-0 right-0 flex items-center justify-center bg-[#F5F5F5F5] h-8 w-8",
+                  "absolute bottom-0 right-0 flex items-center justify-center bg-[#F5F5F5F5] dark:bg-input/30 h-8 w-8",
                   (objectUrl || data.user.authorImg) &&
                     "rounded-full border border-[#a8a5a5f5]"
                 )}

@@ -117,6 +117,7 @@ const QuillCreateBlogForm = () => {
       formData.set("category", values.category);
       formData.set("articleImg", file);
 
+      console.log(...formData);
       // console.log(values.blogContent);
       // console.log(checkContentWordLim(values.blogContent));
       if (checkContentWordLim(values.blogContent) === "enough") {
@@ -210,7 +211,8 @@ const QuillCreateBlogForm = () => {
               />
               {/* </div> */}
               {state.blogContentWarn === "Yes" ? (
-                <p className="text-sm text-red-600 mt-12 max-md:mt-24">
+                // mt-18 works fine all sample phone models except galaxy z fold 5, hence mt-22 which is even almost too small for gal.. and a lil too much for others.
+                <p className="text-sm text-red-600 mt-12 max-md:mt-22">
                   You need at least 120 words for the blog content
                 </p>
               ) : null}
