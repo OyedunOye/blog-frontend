@@ -11,7 +11,7 @@ import { Heart } from "lucide-react";
 const Footer = () => {
   return (
     <footer className="mb-6 mt-28">
-      <div className="h-0.5 bg-black  w-full"></div>
+      <div className="h-0.5 bg-black dark:bg-white w-full"></div>
       <MaxWidth className="flex-row justify-between py-5 mt-4 w-full">
         <div className="flex w-full justify-between">
           <div className="flex flex-col">

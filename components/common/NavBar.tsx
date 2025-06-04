@@ -10,6 +10,7 @@ import {
   CircleXIcon,
   LoaderCircle,
   Menu,
+  // MonitorCog,
   Moon,
   Sun,
 } from "lucide-react";
@@ -40,12 +41,12 @@ import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
 import { AppContext } from "@/context/AppContext";
 import { usePathname } from "next/navigation";
-// import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import { useTheme } from "next-themes";
 
 const cookies = new Cookies(null, { path: "/" });
 
 const NavBar = () => {
-  const { dispatch, state } = useContext(AppContext);
+  const { state } = useContext(AppContext);
 
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [token, setToken] = useState<string | undefined>("");
@@ -55,7 +56,7 @@ const NavBar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
 
-  // const token = getCookie("token");
+  const { setTheme } = useTheme();
 
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
   const pathname = usePathname();
@@ -80,6 +81,11 @@ const NavBar = () => {
 
     getToken();
   }, []);
+
+  // useEffect((e:Event)=>{
+  //   const closeDropDown = e=>{setToggleMenu(false)}
+  //   document.body.addEventListener('click', closeDropDown)
+  // },[])
 
   const userName = () => {
     if (token) {
@@ -110,22 +116,9 @@ const NavBar = () => {
     window.location.reload();
   };
 
-  const handleSwitchToDarkMode = () => {
-    dispatch({
-      type: "DISPLAY_MODE",
-      payload: "Dark",
-    });
-  };
-
-  const handleSwitchToLightMode = () => {
-    dispatch({
-      type: "DISPLAY_MODE",
-      payload: "Light",
-    });
-  };
   return (
     <nav
-      className={`py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0  z-50 flex w-full flex-col ${
+      className={`py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0  z-50 flex w-full flex-col dark:bg-slate-800 ${
         state.appMode === "Dark" ? "bg-black text-white" : "bg-white"
       }`}
     >
@@ -163,8 +156,8 @@ const NavBar = () => {
                   <Button
                     key={menu}
                     variant="ghost"
-                    className={`hover:bg-[#F3F4F6] ${
-                      activeTab === menu ? "bg-[#F3F4F6]" : null
+                    className={`hover:bg-[#F3F4F6] dark:hover:bg-slate-700 ${
+                      activeTab === menu ? "bg-[#F3F4F6] text-black" : null
                     }`}
                   >
                     {menu}
@@ -175,15 +168,12 @@ const NavBar = () => {
 
             <div className="hidden max-md:block">
               {!toggleMenu ? (
-                <Menu onClick={() => setToggleMenu(true)} className="" />
+                <Menu onClick={() => setToggleMenu(true)} />
               ) : (
-                <CircleXIcon
-                  onClick={() => setToggleMenu(false)}
-                  className="bg-white z-20"
-                />
+                <CircleXIcon onClick={() => setToggleMenu(false)} />
               )}
               {toggleMenu && (
-                <div className="flex flex-col w-24 mt-2 h-fit border rounded-sm shadow-sm">
+                <div className="flex flex-col w-24 mt-2 h-fit border bg-white dark:bg-black rounded-sm shadow-sm">
                   <div className="flex flex-col divide-y-2">
                     {NavBarMenuList.map((menu) => (
                       <Link
@@ -220,7 +210,7 @@ const NavBar = () => {
                           {/* Image URL should come from the decoded token, if no image, use the  fallback from the username e.g `PO` for Peter Odo */}
                           <AvatarRenderer
                             src={picPath()}
-                            className="h-8 w-8"
+                            className="h-8 w-8 dark:bg-slate-400"
                             fallBack={getInitials(userName()!)}
                           />
                           <ChevronDown />
@@ -243,23 +233,34 @@ const NavBar = () => {
                           </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <>
-                          {state.appMode === "Light" ? (
-                            <DropdownMenuItem
-                              onClick={handleSwitchToDarkMode}
-                              className="cursor-pointer"
-                            >
-                              Dark Mode <Moon />
-                            </DropdownMenuItem>
-                          ) : (
-                            <DropdownMenuItem
-                              onClick={handleSwitchToLightMode}
-                              className="cursor-pointer"
-                            >
-                              Light Mode <Sun />
-                            </DropdownMenuItem>
-                          )}
-                        </>
+                        {/* <> */}
+                        {/* {state.appMode === "Light" ? ( */}
+                        <DropdownMenuItem
+                          // onClick={handleSwitchToDarkMode}
+                          onClick={() => setTheme("dark")}
+                          className="cursor-pointer"
+                        >
+                          Dark Mode <Moon />
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        {/* ) : ( */}
+                        <DropdownMenuItem
+                          // onClick={handleSwitchToLightMode}
+                          onClick={() => setTheme("light")}
+                          className="cursor-pointer"
+                        >
+                          Light Mode <Sun />
+                        </DropdownMenuItem>
+                        {/* <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          // onClick={handleSwitchToLightMode}
+                          onClick={() => setTheme("system")}
+                          className="cursor-pointer"
+                        >
+                          System Mode <MonitorCog />
+                        </DropdownMenuItem> */}
+                        {/* )} */}
+                        {/* </> */}
 
                         <DropdownMenuSeparator />
                         <DropdownMenuItem

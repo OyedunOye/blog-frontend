@@ -13,8 +13,11 @@ const Categories = () => {
     `${count} ${count < 2 ? "article" : "articles"}`;
 
   return (
-    <section id="categories" className="w-full bg-[#F3F4F6] py-8">
-      <MaxWidth className="w-full min-h-30">
+    <section
+      id="categories"
+      className="w-full bg-[#F3F4F6] dark:bg-slate-900 py-8"
+    >
+      <MaxWidth className="w-full min-h-30 bg-[#F3F4F6]  dark:bg-slate-900">
         <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
         {isLoading && !isError ? (
           <Loading message="Loading categories" />

@@ -195,11 +195,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       {singleBlogLoading ? (
         <Loader message="Loading single page" />
       ) : (
-        <div
-          className={`pb-15 ${
-            state.appMode === "Dark" ? "bg-black text-white" : ""
-          }`}
-        >
+        <div className="pb-15">
           <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
             <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-2">
               <div className="flex flex-row-reverse w-full p-2 justify-between max-md:flex-col ">
@@ -296,7 +292,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                 __html: singleBlogData.blog[0].blogContent,
               }}
             ></div>
-            <div className="bg-black h-0.5 my-5 "></div>
+            <div className="bg-black dark:bg-white h-0.5 my-5 "></div>
             <div className="flex flex-col ">
               <div className="flex flex-col mb-3">
                 <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
@@ -307,7 +303,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   >
                     <Heart
                       color={
-                        currentUserLoveStatus() === "loved" ? "red" : "black"
+                        currentUserLoveStatus() === "loved" ? "red" : "gray"
                       }
                       fill={
                         currentUserLoveStatus() === "loved"
@@ -321,7 +317,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                       : toggleLike.updatedBlog.loveCount}
                   </Button>
 
-                  <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14">
+                  <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 dark:bg-transparent dark:outline h-[80%] w-14">
                     <MessageSquareMore size={18} className="pb-0.5" />{" "}
                     {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
                     <span className="h-fit flex -mt-1 text-sm font-semibold">
@@ -364,7 +360,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                         )}
                       />
                       <div className="flex flex-col my-4">
-                        <Button variant="default">
+                        <Button variant="default" className="dark:text-white">
                           Submit <SendHorizonal />
                         </Button>
                       </div>
@@ -380,7 +376,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   : data.updatedBlog.comments
                 ).map((eachComment: EachComment) => (
                   <div
-                    className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm "
+                    className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50 dark:bg-input/30 shadow-sm "
                     key={eachComment._id}
                   >
                     <div className="flex">

@@ -16,7 +16,7 @@ const Loading = ({ message, className }: LoadingProps) => {
       )}
     >
       <MaxWidth className="flex flex-col items-center justify-center gap-8 ">
-        <Loader className="h-8 w-8 text-black animate-spin" />
+        <Loader className="h-8 w-8 text-black dark:text-white animate-spin" />
         <p className="text-2xl">{message}</p>
       </MaxWidth>{" "}
     </div>

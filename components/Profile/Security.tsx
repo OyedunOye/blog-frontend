@@ -123,7 +123,7 @@ const Security = () => {
       </Form>
 
       <div className="flex flex-col gap-y-4">
-        <h4 className="text-2xl font-semibold text-black">
+        <h4 className="text-2xl font-semibold text-black dark:text-white">
           Two-step Authentication
         </h4>
         <p>

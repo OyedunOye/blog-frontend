@@ -57,7 +57,7 @@ export const ArticleCards = () => {
       {isSuccess && dataDuplicate && topTwoToFourBlogs.length > 0 ? (
         <>
           {/* {dataDuplicate && topTwoToFourBlogs? ()} */}
-          <div className="flex flex-col  gap-4 border rounded-md w-full divide-y max-md:h-fit">
+          <div className="flex flex-col  gap-4 border dark:border-slate-300 dark:bg-input/30 rounded-md w-full divide-y max-md:h-fit">
             {topTwoToFourBlogs.map((item) => (
               <Link
                 key={item.title}

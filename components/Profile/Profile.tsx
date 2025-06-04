@@ -25,7 +25,7 @@ const Profile = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="min-h-[600px] w-[90%] border gap-8 max-md:gap-2 bg-white rounded-lg shadow-md max-w-[1366px] -mt-12 flex gap-x-12 p-8 max-md:p-2 mb-12">
+      <div className="min-h-[600px] w-[90%] border gap-8 max-md:gap-2 bg-white dark:bg-slate-900 rounded-lg shadow-md max-w-[1366px] -mt-12 flex gap-x-12 p-8 max-md:p-2 mb-12">
         <div
           className={`w-[220px] max-md:w-40 flex flex-col gap-y-2 border-0 transition-all ${
             activeTab !== "DASHBOARD" && dashboardMenu === false
@@ -36,8 +36,8 @@ const Profile = () => {
           <button
             onClick={() => setActiveTab("DASHBOARD")}
             className={cn(
-              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200",
-              activeTab === "DASHBOARD" && "bg-gray-200"
+              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700",
+              activeTab === "DASHBOARD" && "bg-gray-200 dark:bg-slate-700"
             )}
           >
             <LayoutDashboard />
@@ -49,8 +49,8 @@ const Profile = () => {
               setDashboardMenu(false);
             }}
             className={cn(
-              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200",
-              activeTab === "POSTS" && "bg-gray-200"
+              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700",
+              activeTab === "POSTS" && "bg-gray-200 dark:bg-slate-700"
             )}
           >
             <Book />
@@ -62,8 +62,8 @@ const Profile = () => {
               setDashboardMenu(false);
             }}
             className={cn(
-              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200",
-              activeTab === "PROFILE" && "bg-gray-200"
+              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700",
+              activeTab === "PROFILE" && "bg-gray-200 dark:bg-slate-700"
             )}
           >
             <User2 />
@@ -75,8 +75,8 @@ const Profile = () => {
               setDashboardMenu(false);
             }}
             className={cn(
-              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200",
-              activeTab === "SECURITY" && "bg-gray-200"
+              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700",
+              activeTab === "SECURITY" && "bg-gray-200 dark:bg-slate-700"
             )}
           >
             <LockIcon />
@@ -88,8 +88,8 @@ const Profile = () => {
               setDashboardMenu(false);
             }}
             className={cn(
-              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200",
-              activeTab === "DELETE" && "bg-gray-200"
+              "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700",
+              activeTab === "DELETE" && "bg-gray-200 dark:bg-slate-700"
             )}
           >
             <Settings />
