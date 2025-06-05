@@ -82,7 +82,7 @@ const Posts = () => {
             <div className="w-full flex flex-col  gap-y-6">
               <h5 className="text-sm text-gray-600 dark:text-white">
                 You have posted{" "}
-                <span className="font-semibold text-gray-800">
+                <span className="font-semibold text-gray-800 dark:text-white">
                   {data.user.blogs.length}{" "}
                 </span>
                 blog{data.user.blogs.length > 1 ? "s" : ""}

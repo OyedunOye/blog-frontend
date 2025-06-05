@@ -21,20 +21,21 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState<
     "DASHBOARD" | "POSTS" | "PROFILE" | "SECURITY" | "DELETE"
   >("DASHBOARD");
-  const [dashboardMenu, setDashboardMenu] = useState(false);
+  const [dashboardMenu, setDashboardMenu] = useState<boolean>(true);
 
   return (
     <div className="flex justify-center">
       <div className="min-h-[600px] w-[90%] border gap-8 max-md:gap-2 bg-white dark:bg-slate-900 rounded-lg shadow-md max-w-[1366px] -mt-12 flex gap-x-12 p-8 max-md:p-2 mb-12">
         <div
-          className={`w-[220px] max-md:w-40 flex flex-col gap-y-2 border-0 transition-all ${
-            activeTab !== "DASHBOARD" && dashboardMenu === false
-              ? "max-md:hidden"
-              : null
-          }`}
+          className={`w-[220px] max-md:w-40 flex flex-col gap-y-2 border-0 transition-all
+            ${dashboardMenu === false ? "max-md:hidden" : null}
+          `}
         >
           <button
-            onClick={() => setActiveTab("DASHBOARD")}
+            onClick={() => {
+              setActiveTab("DASHBOARD");
+              setDashboardMenu(false);
+            }}
             className={cn(
               "flex items-center gap-x-5 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-slate-700",
               activeTab === "DASHBOARD" && "bg-gray-200 dark:bg-slate-700"
@@ -105,36 +106,23 @@ const Profile = () => {
         </div>
 
         <div className="w-full max-md:flex flex-col max-2xl:hidden xl:hidden">
-          {/* <div className=""></div> */}
           <button
-            className={`flex my-2 bg-transparent py-auto gap-1 text-xl font-bold ${
-              activeTab !== "DASHBOARD" && !dashboardMenu
-                ? "max-md:flex content-center"
-                : "max-md:hidden"
+            className={`flex my-2 bg-transparent py-auto gap-1 text-xl z-10 font-bold ${
+              !dashboardMenu ? "max-md:flex content-center" : "max-md:hidden"
             } ${dashboardMenu ? "md:hidden" : null}`}
             onClick={() => setDashboardMenu(true)}
           >
             <MenuIcon size={30} />
             <p className="flex">Dashboard Menu</p>
           </button>
-          {/* {activeTab !== "DASHBOARD" ? (
-          ) : null} */}
-          {activeTab === "DASHBOARD" && <Dashboard />}
+
+          {activeTab === "DASHBOARD" && !dashboardMenu ? <Dashboard /> : null}
           {activeTab === "POSTS" && !dashboardMenu ? <Posts /> : null}
           {activeTab === "PROFILE" && !dashboardMenu ? <EditProfile /> : null}
           {activeTab === "SECURITY" && !dashboardMenu ? <Security /> : null}
           {activeTab === "DELETE" && !dashboardMenu ? <DeleteAccount /> : null}
-          {!dashboardMenu && null}
         </div>
       </div>
-      {/* <div className="w-full max-md:flex">
-
-          {activeTab === "DASHBOARD" && <Dashboard />}
-          {activeTab === "POSTS" && <Posts />}
-          {activeTab === "PROFILE" && <EditProfile />}
-          {activeTab === "SECURITY" && <Security />}
-          {activeTab === "DELETE" && <DeleteAccount />}
-        </div> */}
     </div>
   );
 };

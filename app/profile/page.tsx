@@ -13,7 +13,7 @@ export default async function Page() {
             Dashboard
           </h3>
         </div>
-        <p className="text-gray-500">
+        <p className="text-gray-500 dark:text-gray-300">
           Manage your blog posts and profile information here
         </p>
       </div>

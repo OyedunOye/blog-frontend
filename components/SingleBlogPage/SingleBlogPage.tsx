@@ -197,10 +197,10 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       ) : (
         <div className="pb-15">
           <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
-            <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-2">
+            <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-1">
               <div className="flex flex-row-reverse w-full p-2 justify-between max-md:flex-col ">
                 <div className="flex flex-row-reverse justify-between w-full ">
-                  <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
+                  <div className="flex flex-col justify-between gap-3 my-4 max-md:my-2 max-md:w-[50%] text-white font-bold">
                     <div className="flex flex-col">
                       <p className="">🏷️ {singleBlogData.blog[0].category}</p>
 
@@ -235,7 +235,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     </div>
                   ) : null}
 
-                  <div className="p-2 flex flex-col gap-2">
+                  <div className="p-2 flex flex-col max-md:w-[40%] gap-2">
                     <AvatarRenderer
                       src={
                         singleBlogData.blog[0].author.authorImg
@@ -247,7 +247,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                           " " +
                           singleBlogData.blog[0].author.lastName
                       )}
-                      className="h-30 w-30 text-4xl"
+                      className="h-30 w-30 max-md:h-24 max-md:w-24 text-4xl"
                     />
 
                     <p className="capitalize text-white font-bold">
@@ -334,7 +334,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     src={
                       token && picPath() !== "" ? picPath() : "/user-dummy.png"
                     }
-                    className="h-22 w-22 text-4xl"
+                    className="h-22 w-22 max-md:h-20 max-md:w-20 text-4xl"
                     fallBack={getInitials(userName()!)}
                   />
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 const Dashboard = () => {
   return (
-    <div className="flex flex-col gap-y-4  md:items-center justify-center max-md:-mt-20 w-full h-full px-1">
+    <div className="flex flex-col gap-y-4  md:items-center justify-center max-md:-mt-12 w-full h-full px-1">
       <Image
         alt="Group of friends smiling"
         src={"/dashboard.png"}
