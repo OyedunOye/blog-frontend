@@ -56,7 +56,7 @@ const NavBar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
 
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
   const pathname = usePathname();
@@ -118,9 +118,7 @@ const NavBar = () => {
 
   return (
     <nav
-      className={`py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0  z-50 flex w-full flex-col dark:bg-slate-800 ${
-        state.appMode === "Dark" ? "bg-black text-white" : "bg-white"
-      }`}
+      className={`py-4 shadow-indigo-600/10 shadow-lg sticky top-0 left-0  bg-white z-50 flex w-full flex-col dark:bg-slate-800 `}
     >
       {isLoading ? (
         <Loading className="min-h-screen" message="Loading login page" />
@@ -133,17 +131,16 @@ const NavBar = () => {
       <MaxWidth className="flex flex-col w-full">
         <div className="flex justify-between">
           <div className="flex h-8 content-center">
-            <Link href={"/"} className="w-20">
+            <Link href={"/"} className="w-16 rounded-sm mr-2">
               <Image
                 src={Logo}
                 alt="logo"
-                width={100}
-                height={50}
-                className="w-full h-full object-center cursor-pointer"
+                width={90}
+                height={52}
+                className="w-full h-[110%] max-md:h-full object-center rounded-sm"
               />
             </Link>
-            <div className="space-x-2 max-md:hidden">
-              {/* <div className=" max-lg:hidden"> */}
+            <div className="space-x-2 flex max-md:hidden">
               {NavBarMenuList.map((menu) => (
                 <Link
                   href={
@@ -164,16 +161,26 @@ const NavBar = () => {
                   </Button>
                 </Link>
               ))}
+              <div className=" cursor-pointer h-full flex content-center my-2">
+                {theme === "light" ? (
+                  <Moon onClick={() => setTheme("dark")} />
+                ) : (
+                  <Sun onClick={() => setTheme("light")} />
+                )}
+              </div>
             </div>
 
             <div className="hidden max-md:block">
               {!toggleMenu ? (
-                <Menu onClick={() => setToggleMenu(true)} />
+                <Menu className="h-full" onClick={() => setToggleMenu(true)} />
               ) : (
-                <CircleXIcon onClick={() => setToggleMenu(false)} />
+                <CircleXIcon
+                  className="h-full"
+                  onClick={() => setToggleMenu(false)}
+                />
               )}
               {toggleMenu && (
-                <div className="flex flex-col w-24 mt-2 h-fit border bg-white dark:bg-black rounded-sm shadow-sm">
+                <div className="flex flex-col min-w-24 mt-2 h-fit border bg-white dark:bg-black rounded-sm shadow-sm">
                   <div className="flex flex-col divide-y-2">
                     {NavBarMenuList.map((menu) => (
                       <Link
@@ -189,6 +196,29 @@ const NavBar = () => {
                         {menu}
                       </Link>
                     ))}
+                    <div className=" cursor-pointer h-full flex content-center">
+                      {theme === "light" ? (
+                        <button
+                          onClick={() => {
+                            setTheme("dark");
+                            setToggleMenu(false);
+                          }}
+                          className=" p-2 gap-1 flex"
+                        >
+                          Dark Mode <Moon />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setTheme("light");
+                            setToggleMenu(false);
+                          }}
+                          className=" p-2 gap-1 flex"
+                        >
+                          Light Mode <Sun />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -232,35 +262,6 @@ const NavBar = () => {
                             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                           </DropdownMenuItem>
                         </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                        {/* <> */}
-                        {/* {state.appMode === "Light" ? ( */}
-                        <DropdownMenuItem
-                          // onClick={handleSwitchToDarkMode}
-                          onClick={() => setTheme("dark")}
-                          className="cursor-pointer"
-                        >
-                          Dark Mode <Moon />
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        {/* ) : ( */}
-                        <DropdownMenuItem
-                          // onClick={handleSwitchToLightMode}
-                          onClick={() => setTheme("light")}
-                          className="cursor-pointer"
-                        >
-                          Light Mode <Sun />
-                        </DropdownMenuItem>
-                        {/* <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          // onClick={handleSwitchToLightMode}
-                          onClick={() => setTheme("system")}
-                          className="cursor-pointer"
-                        >
-                          System Mode <MonitorCog />
-                        </DropdownMenuItem> */}
-                        {/* )} */}
-                        {/* </> */}
 
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
