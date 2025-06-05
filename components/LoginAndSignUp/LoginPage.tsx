@@ -34,10 +34,10 @@ const LoginPage = () => {
         </p>
       </div>
 
-      <MaxWidth className="h-contain py-10 w-2/3 justify-center divide-y gap-8 absolute top-36 border z-50 bg-white dark:bg-slate-900 rounded-lg shadow-md">
+      <MaxWidth className="h-contain py-10 w-2/3 max-lg:w-[80%] justify-center divide-y gap-8 absolute top-36 border z-50 bg-white dark:bg-slate-900 rounded-lg shadow-md">
         <LoginButtons />
 
-        <div className="w-1/2 max-md:w-full justify-center mx-auto">
+        <div className="w-1/2 max-md:w-[100%] max-lg:w-[80%] justify-center mx-auto">
           <LoginForm />
 
           {/* <div className="justify-center flex w-full mx-auto"></div> */}
