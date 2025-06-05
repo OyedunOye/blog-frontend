@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -39,14 +39,13 @@ import {
 
 import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
-import { AppContext } from "@/context/AppContext";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 
 const cookies = new Cookies(null, { path: "/" });
 
 const NavBar = () => {
-  const { state } = useContext(AppContext);
+  // const { state } = useContext(AppContext);
 
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [token, setToken] = useState<string | undefined>("");
@@ -203,7 +202,7 @@ const NavBar = () => {
                             setTheme("dark");
                             setToggleMenu(false);
                           }}
-                          className=" p-2 gap-1 flex"
+                          className=" py-2 pl-2 mr-1 gap-1 flex flex-nowrap"
                         >
                           Dark Mode <Moon />
                         </button>
@@ -213,7 +212,7 @@ const NavBar = () => {
                             setTheme("light");
                             setToggleMenu(false);
                           }}
-                          className=" p-2 gap-1 flex"
+                          className=" py-2 pl-2 mr-1 gap-1 flex flex-nowrap"
                         >
                           Light Mode <Sun />
                         </button>

@@ -1,6 +1,35 @@
+"use client";
+
+import { useDeleteUserAccount } from "@/hooks/authors/useDeleteUserAccount";
 import { Button } from "../ui/button";
+import { toasterAlert } from "@/utils";
+import { useRouter } from "next/navigation";
+import Cookies from "universal-cookie";
 
 const DeleteAccount = () => {
+  const cookies = new Cookies(null, { path: "/" });
+
+  const { mutateAsync, isPending } = useDeleteUserAccount();
+
+  const router = useRouter();
+
+  const handleDeleteAccount = async () => {
+    try {
+      const res = await mutateAsync();
+      console.log(res);
+      if (!isPending && res.message) {
+        toasterAlert(res.message);
+        cookies.remove("token");
+        router.push("/");
+      }
+      // if (isError && !isPending) {
+      //   toasterAlert(res.error);
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-y-6 w-full h-full bg-red-600/10 text-red-600 p-8 max-md:p-4 rounded-sm">
       <h5 className="text-lg font-semibold">Delete your account</h5>
@@ -41,6 +70,8 @@ const DeleteAccount = () => {
             Contact Support
           </Button>
           <Button
+            type="button"
+            onClick={handleDeleteAccount}
             variant={"destructive"}
             size={"lg"}
             className="cursor-pointer rounded-full max-md:w-32"

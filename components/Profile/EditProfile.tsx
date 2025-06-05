@@ -91,8 +91,11 @@ const EditProfile = () => {
       if (values.email !== "") {
         formData.set("email", values.email);
       }
-      if (profileImage !== "") {
+      if (profileImage !== "" && !values.removeProfilePic) {
         formData.set("articleImg", profileImage);
+      }
+      if (values.removeProfilePic) {
+        formData.set("authorImg", "");
       }
       // console.log(values.removeProfilePic);
       // console.log(...formData);
