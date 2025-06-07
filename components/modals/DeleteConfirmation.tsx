@@ -51,8 +51,7 @@ const DeleteConfirmation = () => {
           <div className="text-center py-3">
             <h1 className="font-bold ">
               Are you sure you want to delete this blog titled
-              {` "${state.singleBlogDetail.title}" with id ${state.storedBlogId}`}
-              ?
+              {` "${state.singleBlogDetail.title}"?`}
             </h1>
             <p className="mt-3">A deleted blog cannot be retrieved.</p>
           </div>

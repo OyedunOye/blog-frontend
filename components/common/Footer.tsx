@@ -19,7 +19,9 @@ const Footer = () => {
               <Image
                 src={Logo}
                 alt="logo"
-                className="w-30 cursor-pointer mt-2 mb-4"
+                height={30}
+                width={90}
+                className="w-22 h-12 cursor-pointer mt-2 mb-4"
               />
             </Link>
             <div className="flex flex-col gap-2">
