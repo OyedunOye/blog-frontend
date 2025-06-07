@@ -42,7 +42,7 @@ export const ArticleCards = () => {
   const [loadingSingPage, setLoadingSingPage] = useState<boolean>(false);
   const [loadingCard, setLoadingCard] = useState<string>("");
 
-  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   useEffect(() => {
     if (data) {
@@ -81,7 +81,7 @@ export const ArticleCards = () => {
                             {item.author.authorImg ? (
                               <div className="w-6 h-6 rounded-sm">
                                 <Image
-                                  src={`${baseUrl}${item.author.authorImg}`}
+                                  src={item.author.authorImg}
                                   alt={item.author.firstName}
                                   width={24}
                                   height={24}
@@ -151,7 +151,7 @@ export const ArticleCards = () => {
                       <div className="w-40 h-30 content-center rounded-md max-md:flex max-md:my-auto max-lg:w-[25%] max-md:w-[30%]">
                         <Image
                           // src={"http://localhost:3001/" + item.articleImg}
-                          src={`${baseUrl}${item.articleImg}`}
+                          src={item.articleImg}
                           alt={item.title}
                           className="mb-3 w-full h-full object-cover rounded-md"
                           width={144}

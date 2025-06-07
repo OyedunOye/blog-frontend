@@ -51,7 +51,7 @@ const LatestArticles = () => {
     }
   }, [data, isSuccess]);
 
-  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   return (
     <section id="latest" className="mb-6 max-lg:h-fit">
@@ -83,7 +83,7 @@ const LatestArticles = () => {
                         >
                           <div className="w-full">
                             <Image
-                              src={baseUrl + data.blogs[0].articleImg}
+                              src={data.blogs[0].articleImg}
                               alt={data.blogs[0].title}
                               width={90}
                               height={40}
@@ -107,10 +107,7 @@ const LatestArticles = () => {
                                     {data.blogs[0].author.authorImg ? (
                                       <div className="h-6 w-6 border rounded-sm">
                                         <Image
-                                          src={
-                                            baseUrl +
-                                            data.blogs[0].author.authorImg
-                                          }
+                                          src={data.blogs[0].author.authorImg}
                                           alt={data.blogs[0].author.firstName}
                                           width={24}
                                           height={24}
@@ -215,7 +212,7 @@ const LatestArticles = () => {
                                   </div>
                                 ) : (
                                   <Image
-                                    src={`${baseUrl}${card.articleImg}`}
+                                    src={`${card.articleImg}`}
                                     alt={card.title}
                                     width={288}
                                     height={250}
@@ -229,7 +226,7 @@ const LatestArticles = () => {
                                   {card.author.authorImg ? (
                                     <div className="h-6 w-6 border rounded-sm">
                                       <Image
-                                        src={`${baseUrl}${card.author.authorImg}`}
+                                        src={card.author.authorImg}
                                         alt={card.author.firstName}
                                         width={26}
                                         height={26}

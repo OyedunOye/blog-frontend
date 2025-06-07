@@ -57,7 +57,7 @@ const NavBar = () => {
 
   const { theme, setTheme } = useTheme();
 
-  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
   const pathname = usePathname();
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const NavBar = () => {
     if (token) {
       const userData = getDecodedToken(token);
       if (userData?.authorImg !== "") {
-        return `${baseUrl}${userData?.authorImg}`;
+        return `${userData?.authorImg}`;
       }
     }
     return "";

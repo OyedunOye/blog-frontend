@@ -38,7 +38,7 @@ const TheAuthors = () => {
   const [topFifteenAuthors, setTopFifteenAuthors] = useState<Authors[]>([]);
   const [allClicked, setAllClicked] = useState<boolean>(false);
 
-  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   useEffect(() => {
     if (data) {
@@ -107,7 +107,7 @@ const TheAuthors = () => {
                             <AvatarRenderer
                               src={
                                 author.authorImg
-                                  ? baseUrl + author.authorImg
+                                  ? author.authorImg
                                   : "/user-dummy.png"
                               }
                               fallBack={getInitials(
