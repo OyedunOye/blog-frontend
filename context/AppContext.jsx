@@ -53,12 +53,6 @@ export const AppReducer = (state, action) => {
         profileData: action.payload,
       };
 
-    case "DISPLAY_MODE":
-      return {
-        ...state,
-        appMode: action.payload,
-      };
-
     default:
       return state;
   }
@@ -71,7 +65,6 @@ const initialState = {
   storedBlogId: null,
   singleBlogDetail: null,
   blogContentWarn: "No",
-  appMode: "Light",
   canLogin: false,
   profileData: null,
 };

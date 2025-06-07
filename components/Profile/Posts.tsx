@@ -37,11 +37,11 @@ interface BlogType {
 const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
 const Posts = () => {
-  const { data, isLoading, isSuccess, error, isError } = useGetAUser();
+  const { data, isLoading, isSuccess, isError } = useGetAUser();
   const { state, dispatch } = useContext(AppContext);
 
   const handleDeleteClick = (blogData: BlogType) => {
-    let payload = {
+    const payload = {
       deleteModal: true,
       storedBlogId: blogData._id,
       singleBlogDetail: blogData,
@@ -80,9 +80,9 @@ const Posts = () => {
         <>
           {isSuccess && data ? (
             <div className="w-full flex flex-col  gap-y-6">
-              <h5 className="text-sm text-gray-600">
+              <h5 className="text-sm text-gray-600 dark:text-white">
                 You have posted{" "}
-                <span className="font-semibold text-gray-800">
+                <span className="font-semibold text-gray-800 dark:text-white">
                   {data.user.blogs.length}{" "}
                 </span>
                 blog{data.user.blogs.length > 1 ? "s" : ""}
@@ -121,7 +121,7 @@ const Posts = () => {
                     {data.user.blogs.map((blog: BlogType) => (
                       <div
                         key={blog._id}
-                        className="bg-gray-200 w-[100%] p-5 max-md:p-2 flex gap-x-10 max-md:gap-y-3 max-md:flex-col rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
+                        className="bg-gray-200 dark:bg-input/30 w-[100%] p-5 max-md:p-2 flex gap-x-10 max-md:gap-y-3 max-md:flex-col rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
                       >
                         <div className="w-[20%] max-md:w-[100%] h-50 max-md:h-fit">
                           <Image
@@ -135,7 +135,7 @@ const Posts = () => {
                         <div className="w-[75%] max-md:w-full flex flex-col gap-y-4">
                           <h4 className="text-lg font-bold">{blog.title}</h4>
                           <p
-                            className="text-gray-600 text-sm"
+                            className="text-gray-600 dark:text-white text-sm"
                             dangerouslySetInnerHTML={{
                               __html: limContentToThirtyWords(blog.blogContent),
                             }}

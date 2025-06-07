@@ -25,8 +25,7 @@ type PasswordFormData = z.infer<typeof editPasswordFormSchema>;
 const Security = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false);
 
-  const { mutateAsync, isPending, isSuccess, isError, error } =
-    useChangePassword();
+  const { mutateAsync, isPending } = useChangePassword();
 
   const router = useRouter();
 
@@ -124,7 +123,7 @@ const Security = () => {
       </Form>
 
       <div className="flex flex-col gap-y-4">
-        <h4 className="text-2xl font-semibold text-black">
+        <h4 className="text-2xl font-semibold text-black dark:text-white">
           Two-step Authentication
         </h4>
         <p>

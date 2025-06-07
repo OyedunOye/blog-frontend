@@ -47,20 +47,14 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
 
   const router = useRouter();
 
-  const {
-    data: singleBlogData,
-    isLoading: singleBlogLoading,
-    isError: singleBlogIsError,
-    error: singleBlogError,
-  } = useGetASingleBlog(blogId);
+  const { data: singleBlogData, isLoading: singleBlogLoading } =
+    useGetASingleBlog(blogId);
 
-  const { isPending, isSuccess, isError, error, mutateAsync, data } =
-    useCreateBlogComment();
+  const { mutateAsync, data } = useCreateBlogComment();
 
   const {
     data: toggleLike,
     mutateAsync: toggleLikeMutateAsync,
-    error: toggleLikeError,
     isSuccess: toggleLikeSuccess,
     isPending: toggleLikeIsPending,
   } = useToggleLoveABlog();
@@ -171,7 +165,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   };
 
   const handleDeleteClick = () => {
-    let payload = {
+    const payload = {
       storedBlogId: blogId,
       deleteModal: true,
       singleBlogDetail: singleBlogData.blog[0],
@@ -183,7 +177,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   };
 
   const handleEditClick = () => {
-    let payload = {
+    const payload = {
       storedBlogId: blogId,
       openEditModal: true,
       singleBlogDetail: singleBlogData.blog[0],
@@ -201,16 +195,12 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       {singleBlogLoading ? (
         <Loader message="Loading single page" />
       ) : (
-        <div
-          className={`pb-15 ${
-            state.appMode === "Dark" ? "bg-black text-white" : ""
-          }`}
-        >
+        <div className="pb-15">
           <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
-            <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-2">
+            <MaxWidth className="min-h-40  w-full flex-row justify-between max-md:px-1">
               <div className="flex flex-row-reverse w-full p-2 justify-between max-md:flex-col ">
                 <div className="flex flex-row-reverse justify-between w-full ">
-                  <div className="flex flex-col justify-between gap-3 my-4 text-white font-bold">
+                  <div className="flex flex-col justify-between gap-3 my-4 max-md:my-2 max-md:w-[50%] text-white font-bold">
                     <div className="flex flex-col">
                       <p className="">🏷️ {singleBlogData.blog[0].category}</p>
 
@@ -245,7 +235,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     </div>
                   ) : null}
 
-                  <div className="p-2 flex flex-col gap-2">
+                  <div className="p-2 flex flex-col max-md:w-[40%] gap-2">
                     <AvatarRenderer
                       src={
                         singleBlogData.blog[0].author.authorImg
@@ -257,7 +247,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                           " " +
                           singleBlogData.blog[0].author.lastName
                       )}
-                      className="h-30 w-30 text-4xl"
+                      className="h-30 w-30 max-md:h-24 max-md:w-24 text-4xl"
                     />
 
                     <p className="capitalize text-white font-bold">
@@ -302,7 +292,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                 __html: singleBlogData.blog[0].blogContent,
               }}
             ></div>
-            <div className="bg-black h-0.5 my-5 "></div>
+            <div className="bg-black dark:bg-white h-0.5 my-5 "></div>
             <div className="flex flex-col ">
               <div className="flex flex-col mb-3">
                 <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
@@ -313,7 +303,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   >
                     <Heart
                       color={
-                        currentUserLoveStatus() === "loved" ? "red" : "black"
+                        currentUserLoveStatus() === "loved" ? "red" : "gray"
                       }
                       fill={
                         currentUserLoveStatus() === "loved"
@@ -327,7 +317,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                       : toggleLike.updatedBlog.loveCount}
                   </Button>
 
-                  <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 h-[80%] w-14">
+                  <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 dark:bg-transparent dark:outline h-[80%] w-14">
                     <MessageSquareMore size={18} className="pb-0.5" />{" "}
                     {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
                     <span className="h-fit flex -mt-1 text-sm font-semibold">
@@ -344,7 +334,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     src={
                       token && picPath() !== "" ? picPath() : "/user-dummy.png"
                     }
-                    className="h-22 w-22 text-4xl"
+                    className="h-22 w-22 max-md:h-20 max-md:w-20 text-4xl"
                     fallBack={getInitials(userName()!)}
                   />
 
@@ -370,7 +360,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                         )}
                       />
                       <div className="flex flex-col my-4">
-                        <Button variant="default">
+                        <Button variant="default" className="dark:text-white">
                           Submit <SendHorizonal />
                         </Button>
                       </div>
@@ -386,7 +376,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                   : data.updatedBlog.comments
                 ).map((eachComment: EachComment) => (
                   <div
-                    className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50  shadow-sm "
+                    className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50 dark:bg-input/30 shadow-sm "
                     key={eachComment._id}
                   >
                     <div className="flex">

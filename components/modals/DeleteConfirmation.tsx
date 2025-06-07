@@ -11,10 +11,10 @@ const DeleteConfirmation = () => {
 
   const router = useRouter();
 
-  const { mutateAsync, isSuccess, error } = useDeleteABlog();
+  const { mutateAsync } = useDeleteABlog();
 
   const handleBackClick = () => {
-    let payload = {
+    const payload = {
       deleteModal: false,
       storedBlogId: null,
       singleBlogDetail: null,
@@ -29,7 +29,7 @@ const DeleteConfirmation = () => {
     try {
       const res = await mutateAsync(state.storedBlogId);
       console.log(res);
-      let payload = {
+      const payload = {
         deleteModal: false,
         storedBlogId: null,
         singleBlogDetail: null,
@@ -47,12 +47,11 @@ const DeleteConfirmation = () => {
   return (
     <div className=" flex fixed top-0 left-0 bg-black/80 w-full h-full z-[50]">
       <div className="justify-center items-center flex border w-full h-full">
-        <div className="w-120 max-md:w-[86%] min-h-60 flex-col flex bg-white justify-between p-3 rounded-md">
+        <div className="w-120 max-md:w-[86%] min-h-60 flex-col flex bg-white dark:bg-slate-800 justify-between p-3 rounded-md">
           <div className="text-center py-3">
             <h1 className="font-bold ">
               Are you sure you want to delete this blog titled
-              {` "${state.singleBlogDetail.title}" with id ${state.storedBlogId}`}
-              ?
+              {` "${state.singleBlogDetail.title}"?`}
             </h1>
             <p className="mt-3">A deleted blog cannot be retrieved.</p>
           </div>

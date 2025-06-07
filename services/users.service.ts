@@ -67,3 +67,18 @@ export const updateUserProfile = async(updateItem: any)=>{
         console.log("An error occured, unable to retrieve your blogs.", error);
     }
 }
+
+export const deleteUserAccount = async() => {
+    try {
+        const token = await getToken();
+
+        const res = await axios.delete(`${BASE_URL}users/delete-profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+}

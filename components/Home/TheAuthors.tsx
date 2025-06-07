@@ -59,7 +59,7 @@ const TheAuthors = () => {
     <section className="my-4">
       <MaxWidth className="w-full">
         <div className="flex flex-col  gap-3">
-          <div className="flex flex-col border p-2 rounded-md bg-[#F3F4F6]">
+          <div className="flex flex-col border p-2 rounded-md bg-[#F3F4F6] dark:bg-black/60">
             <div className="flex">
               <h4 className="font-bold text-md">🏷️ Tags</h4>
             </div>
@@ -72,7 +72,7 @@ const TheAuthors = () => {
             </div>
           </div>
 
-          <div className="bg-[#F3F4F6] min-h-60 flex-col border px-2 py-6 rounded-md">
+          <div className="bg-[#F3F4F6] dark:bg-black/60 min-h-60 flex-col border px-2 py-6 rounded-md">
             <>
               <div className="flex justify-between">
                 <h4 className="font-bold text-md">✍️ Discover Authors</h4>
@@ -101,7 +101,7 @@ const TheAuthors = () => {
                       (author: Authors) => (
                         <div
                           key={author.firstName}
-                          className="my-2 w-[32%] max-md:w-[100%] max-lg:w-[48%] border border-slate-200 rounded-sm p-2 shadow-sm"
+                          className="my-2 w-[32%] max-md:w-[100%] max-lg:w-[48%] border border-slate-200 dark:border-slate-700 dark:bg-input/30 rounded-sm p-2 shadow-sm"
                         >
                           <div className="flex gap-4 content-center">
                             <AvatarRenderer

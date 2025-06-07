@@ -49,7 +49,7 @@ const LatestArticles = () => {
       setAllBlogs(data.blogs);
       setRemainingBlogs(data.blogs.slice(4));
     }
-  }, [data]);
+  }, [data, isSuccess]);
 
   const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
@@ -76,7 +76,7 @@ const LatestArticles = () => {
                 <>
                   <div className="flex flex-col w-full ">
                     <div className=" flex w-full gap-2 justify-between max-md:flex-wrap max-lg:flex-col">
-                      <div className="w-[48%] border rounded-md flex flex-col max-lg:w-full">
+                      <div className="w-[48%] border dark:border-slate-300 dark:bg-input/30 rounded-md flex flex-col max-lg:w-full">
                         <Link
                           href={`/blog/${allBlogs[0]._id}`}
                           onClick={() => setLoadingSingPage(true)}
@@ -103,7 +103,7 @@ const LatestArticles = () => {
                             <Link href={`/blog/${data.blogs[0]._id}`}>
                               <div className="flex flex-col gap-2">
                                 <div className="flex gap-2 text-sm text-gray-500">
-                                  <div className="flex gap-2 text-sm text-gray-500">
+                                  <div className="flex gap-2 text-sm text-gray-500 dark:text-slate-300">
                                     {data.blogs[0].author.authorImg ? (
                                       <div className="h-6 w-6 border rounded-sm">
                                         <Image
@@ -205,7 +205,7 @@ const LatestArticles = () => {
                             }}
                             key={card.title}
                             href={`/blog/${card._id}`}
-                            className="flex flex-col w-[32%] max-md:w-[100%] max-lg:w-[48%] h-90 gap-2 rounded-md shadow-2xl max-md:shadow-lg"
+                            className="flex flex-col w-[32%] max-md:w-[100%] max-lg:w-[48%] h-90 gap-2 dark:bg-input/30 rounded-md shadow-2xl max-md:shadow-lg"
                           >
                             <div className="flex flex-col w-full h-90 gap-2 rounded-md ">
                               <div className="flex h-56 w-full">

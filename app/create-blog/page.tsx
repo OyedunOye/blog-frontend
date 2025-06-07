@@ -1,13 +1,13 @@
 import QuilCreateBlogPage from "@/components/QuillCreateBlog/QuilCreateBlogPage";
-import WriteBlogPage from "@/components/WriteBlog/WriteBlogPage";
-import React from "react";
+import React, { Suspense } from "react";
 
 const WriteBlogPageScreen = () => {
   return (
-    <div className="">
-      {/* <WriteBlogPage /> */}
-      <QuilCreateBlogPage />
-    </div>
+    <Suspense>
+      <div className="">
+        <QuilCreateBlogPage />
+      </div>
+    </Suspense>
   );
 };
 
