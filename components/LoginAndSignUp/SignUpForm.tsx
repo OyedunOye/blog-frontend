@@ -54,7 +54,12 @@ const SignUpForm = () => {
       formData.set("lastName", values.lastName);
       formData.set("email", values.email);
       formData.set("password", values.password);
-      formData.set("authorImg", file);
+      if (file) {
+        formData.set("authorImg", file);
+      } else {
+        formData.set("authorImg", "");
+      }
+      // console.log(...formData);
       const res = await mutateAsync(formData);
       // console.log(res);
 

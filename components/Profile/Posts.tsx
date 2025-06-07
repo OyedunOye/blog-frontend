@@ -34,7 +34,7 @@ interface BlogType {
   };
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+// const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
 const Posts = () => {
   const { data, isLoading, isSuccess, isError } = useGetAUser();
@@ -125,7 +125,7 @@ const Posts = () => {
                       >
                         <div className="w-[20%] max-md:w-[100%] h-50 max-md:h-fit">
                           <Image
-                            src={`${baseUrl}` + blog.articleImg}
+                            src={blog.articleImg}
                             alt="blog cover image"
                             height={860}
                             width={848}

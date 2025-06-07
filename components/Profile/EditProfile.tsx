@@ -27,7 +27,7 @@ import Loading from "../common/Loader";
 
 type EditProfileFormData = z.infer<typeof editUserProfileFormSchema>;
 
-const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+// const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
 const EditProfile = () => {
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
@@ -65,7 +65,7 @@ const EditProfile = () => {
     },
   });
 
-  // console.log(profileImage);
+  console.log(data);
 
   const onSubmit = async (values: EditProfileFormData) => {
     // console.log("The values are", values);
@@ -91,14 +91,19 @@ const EditProfile = () => {
       if (values.email !== "") {
         formData.set("email", values.email);
       }
-      if (profileImage !== "" && !values.removeProfilePic) {
-        formData.set("articleImg", profileImage);
-      }
       if (values.removeProfilePic) {
         formData.set("authorImg", "");
       }
-      // console.log(values.removeProfilePic);
-      // console.log(...formData);
+      if (!values.removeProfilePic && profileImage !== "") {
+        formData.set("authorImg", profileImage);
+      }
+      // if (profileImage !== "" && values.removeProfilePic === false) {
+      //   formData.set("articleImg", profileImage);
+      // } else if (values.removeProfilePic === true) {
+      //   formData.set("authorImg", "");
+      // }
+      console.log(values.removeProfilePic);
+      console.log(...formData);
 
       const res = await mutateAsync(formData);
 
@@ -165,7 +170,7 @@ const EditProfile = () => {
                     objectUrl
                       ? objectUrl
                       : data.user.authorImg
-                      ? baseUrl + data.user.authorImg
+                      ? data.user.authorImg
                       : " /user-dummy.png"
                   }
                   alt="Profile avatar"

@@ -59,7 +59,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     isPending: toggleLikeIsPending,
   } = useToggleLoveABlog();
 
-  const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   const currentUserLoveStatus = () => {
     if (token) {
@@ -135,7 +135,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       const userData = getDecodedToken(token);
       if (userData?.authorImg !== "") {
         // return "http://localhost:3001/" + userData?.authorImg;
-        return `${baseUrl}${userData?.authorImg}`;
+        return `${userData?.authorImg}`;
       }
     }
     return "";
@@ -239,7 +239,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                     <AvatarRenderer
                       src={
                         singleBlogData.blog[0].author.authorImg
-                          ? baseUrl + singleBlogData.blog[0].author.authorImg
+                          ? singleBlogData.blog[0].author.authorImg
                           : "/user-dummy.png"
                       }
                       fallBack={getInitials(
@@ -384,7 +384,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                         <AvatarRenderer
                           src={
                             eachComment.commenter.authorImg !== ""
-                              ? baseUrl + eachComment.commenter.authorImg
+                              ? eachComment.commenter.authorImg
                               : "/user-dummy.png"
                           }
                           fallBack={getInitials(

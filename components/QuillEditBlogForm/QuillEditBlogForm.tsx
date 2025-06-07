@@ -38,6 +38,7 @@ import { AppContext } from "@/context/AppContext";
 import { useEditBlog } from "@/hooks/blog/useEditBlog";
 import { blogReadTime } from "@/utils/helpers";
 import MaxWidth from "../common/MaxWidthWrapper";
+import { LoaderCircle } from "lucide-react";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 type EditBlogFormData = z.infer<typeof editBlogFormSchema>;
@@ -175,22 +176,52 @@ const QuillEditBlogForm = () => {
   };
 
   return (
-    <MaxWidth className="max-md:mx-0">
+    <MaxWidth className={`max-md:mx-0 ${isPending && "cursor-progress"}`}>
       {profilePreview && <p></p>}
-      {isPending ? (
-        <Loading message="Submitting your new blog" />
-      ) : (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      {/* {isPending ? (
+        <Loading message="Updating your blog" />
+      ) : ( */}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Blog title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Write your blog title here" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div
+            className={`mb-16 max-md:mb-32 ${
+              blogEditContentWarn === "Yes" ? "mb-5 max-md:mb-38" : ""
+            }`}
+          >
             <FormField
               control={form.control}
-              name="title"
+              name="blogContent"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Blog title</FormLabel>
+                <FormItem className="">
+                  <FormLabel
+                    className={`${
+                      blogEditContentWarn === "Yes" ? "text-red-600" : " "
+                    }`}
+                  >
+                    Blog content
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Write your blog title here"
+                    <ReactQuill
+                      modules={modules}
+                      formats={formats}
+                      placeholder={"Write your blog here."}
+                      theme="snow"
+                      className="h-[50vh]"
+                      id="blogContent"
                       {...field}
                     />
                   </FormControl>
@@ -198,106 +229,77 @@ const QuillEditBlogForm = () => {
                 </FormItem>
               )}
             />
+          </div>
+          {blogEditContentWarn === "Yes" ? (
+            <p className="text-sm text-red-600 mt-8 max-md:-mt-8">
+              You need at least 120 words for the blog content
+            </p>
+          ) : null}
 
-            <div
-              className={`mb-16 max-md:mb-32 ${
-                blogEditContentWarn === "Yes" ? "mb-5 max-md:mb-38" : ""
-              }`}
-            >
-              <FormField
-                control={form.control}
-                name="blogContent"
-                render={({ field }) => (
-                  <FormItem className="">
-                    <FormLabel
-                      className={`${
-                        blogEditContentWarn === "Yes" ? "text-red-600" : " "
-                      }`}
-                    >
-                      Blog content
-                    </FormLabel>
-                    <FormControl>
-                      <ReactQuill
-                        modules={modules}
-                        formats={formats}
-                        placeholder={"Write your blog here."}
-                        theme="snow"
-                        className="h-[50vh]"
-                        id="blogContent"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {blogEditContentWarn === "Yes" ? (
-              <p className="text-sm text-red-600 mt-8 max-md:-mt-8">
-                You need at least 120 words for the blog content
-              </p>
-            ) : null}
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel>Category tag</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={state.singleBlogDetail.category}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Blog Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Programming">Programming</SelectItem>
+                      <SelectItem value="Food">Food</SelectItem>
+                      <SelectItem value="Travel">Travel</SelectItem>
+                      <SelectItem value="Technology">Technology</SelectItem>
+                      <SelectItem value="Lifestyle">Lifestyle</SelectItem>
+                      <SelectItem value="Others">Others</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Category tag</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={state.singleBlogDetail.category}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Blog Category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Programming">Programming</SelectItem>
-                        <SelectItem value="Food">Food</SelectItem>
-                        <SelectItem value="Travel">Travel</SelectItem>
-                        <SelectItem value="Technology">Technology</SelectItem>
-                        <SelectItem value="Lifestyle">Lifestyle</SelectItem>
-                        <SelectItem value="Others">Others</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="articleImg"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Article&apos;s cover image</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const url = URL.createObjectURL(file);
+                        setProfilePreview(url);
+                      }
+                      field.onChange(e.target.files);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="articleImg"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Article&apos;s cover image</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const url = URL.createObjectURL(file);
-                          setProfilePreview(url);
-                        }
-                        field.onChange(e.target.files);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button variant="default" type="submit" className="w-full mb-5">
-              Submit
-            </Button>
-          </form>
-        </Form>
-      )}
+          <Button variant="default" type="submit" className="w-full mb-5">
+            {isPending ? (
+              <LoaderCircle className="text-gray-400 animate-spin" />
+            ) : (
+              "Submit"
+            )}
+          </Button>
+        </form>
+      </Form>
+      {/* )} */}
     </MaxWidth>
   );
 };
