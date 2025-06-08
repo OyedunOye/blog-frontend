@@ -21,7 +21,7 @@ import Logo from "@/public/Logo.png";
 import MaxWidth from "./MaxWidthWrapper";
 import Loading from "./Loader";
 
-import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
+// import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
 
 import { NavBarMenuList } from "@/constants";
 import { toasterAlert } from "@/utils";
@@ -41,6 +41,7 @@ import AvatarRenderer from "./Avatar";
 import { getInitials } from "@/utils/helpers";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
 
 const cookies = new Cookies(null, { path: "/" });
 
@@ -49,7 +50,7 @@ const NavBar = () => {
 
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [token, setToken] = useState<string | undefined>("");
-  const [gettingToken, setGettingToken] = useState<boolean>(true);
+  // const [gettingToken, setGettingToken] = useState<boolean>(true);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
@@ -58,6 +59,8 @@ const NavBar = () => {
   const { theme, setTheme } = useTheme();
 
   // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
+  const { data, isLoading: getUserIsLoading } = useGetAUser();
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -74,7 +77,7 @@ const NavBar = () => {
       if (typeof window !== "undefined") {
         const token = await cookies.get("token");
         setToken(token);
-        setGettingToken(false);
+        // setGettingToken(false);
       }
     };
 
@@ -87,22 +90,15 @@ const NavBar = () => {
   // },[])
 
   const userName = () => {
-    if (token) {
-      const decoded = getDecodedToken(token);
-      if (decoded !== null) {
-        return decoded?.firstName + " " + decoded?.lastName;
-      } else {
-        return "";
-      }
+    if (!getUserIsLoading && data) {
+      return data.user.firstName + " " + data.user.lastName;
     }
+    return "";
   };
 
   const picPath = () => {
-    if (token) {
-      const userData = getDecodedToken(token);
-      if (userData?.authorImg !== "") {
-        return `${userData?.authorImg}`;
-      }
+    if (!getUserIsLoading && data) {
+      return data.user.authorImg;
     }
     return "";
   };
@@ -225,13 +221,13 @@ const NavBar = () => {
           </div>
 
           <div className="flex w-contain justify-between content-center gap-1.5">
-            {gettingToken ? (
+            {getUserIsLoading ? (
               <div>
                 <LoaderCircle className="text-gray-400 animate-spin" />
               </div>
             ) : (
               <>
-                {token ? (
+                {!getUserIsLoading && token ? (
                   <div className="ml-4">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

@@ -41,8 +41,8 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="w-full bg-[#F3F4F6] ">
-      <MaxWidth className="w-full h-fit flex flex-wrap pt-10 flex-row bg-[#F3F4F6] dark:bg-black/60 max-lg:pb-4">
+    <section id="home" className="w-full bg-[#F3F4F6] dark:bg-[#575254]">
+      <MaxWidth className="w-full h-fit flex flex-wrap pt-10 flex-row bg-[#F3F4F6] dark:bg-[#575254] max-lg:pb-4">
         <div className="flex flex-1/5 flex-col h-[280px] content-center my-5 py-1 mr-4 gap-6 max-md:flex-1 ">
           <h2 className="font-bold text-3xl">👋 Read and share your story.</h2>
           <p>

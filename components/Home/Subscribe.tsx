@@ -4,8 +4,11 @@ import { Input } from "../ui/input";
 
 const Subscribe = () => {
   return (
-    <section id="subscription" className="w-full bg-[#F3F4F6]">
-      <MaxWidth className="flex justify-center content-center w-full h-fit py-2 pb-3 bg-[#F3F4F6] dark:bg-black/60">
+    <section
+      id="subscription"
+      className="w-full bg-[#F3F4F6] dark:bg-[#4c484a]"
+    >
+      <MaxWidth className="flex justify-center content-center w-full h-fit py-2 pb-3 bg-[#F3F4F6] dark:bg-[#4c484a]">
         <div className="flex flex-col justify-center py-2 mx-auto gap-2 max-md:gap-4 max-md:w-full">
           <h3 className="font-bold text-xl text-center">
             📬 Subscribe to our newsletter
