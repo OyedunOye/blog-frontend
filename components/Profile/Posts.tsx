@@ -121,18 +121,18 @@ const Posts = () => {
                     {data.user.blogs.map((blog: BlogType) => (
                       <div
                         key={blog._id}
-                        className="bg-gray-200 dark:bg-input/30 w-[100%] p-5 max-md:p-2 flex gap-x-10 max-md:gap-y-3 max-md:flex-col rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
+                        className="bg-gray-200 dark:bg-input/30 w-[100%] max-lg:w-[94%] p-5 max-md:p-2 flex gap-x-8  max-md:gap-y-3 max-md:flex-col rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
                       >
-                        <div className="w-[20%] max-md:w-[100%] h-50 max-md:h-fit">
+                        <div className="w-[20%] max-lg:w-[40%] max-md:w-[100%] h-50 max-md:h-fit">
                           <Image
                             src={blog.articleImg}
                             alt="blog cover image"
                             height={860}
                             width={848}
-                            className="object-cover h-38 rounded-sm"
+                            className="object-cover h-38 w-full rounded-sm"
                           />
                         </div>
-                        <div className="w-[75%] max-md:w-full flex flex-col gap-y-4">
+                        <div className="w-[75%] max-lg:w-[55%] max-md:w-full flex flex-col gap-y-4">
                           <h4 className="text-lg font-bold">{blog.title}</h4>
                           <p
                             className="text-gray-600 dark:text-white text-sm"
@@ -141,18 +141,18 @@ const Posts = () => {
                             }}
                           ></p>
 
-                          <div className="flex items-center justify-end max-md:w-full max-md:justify-between gap-x-4 mt-5">
+                          <div className="flex items-center justify-end max-md:w-full max-md:justify-between max-lg:w-full gap-x-4 mt-5">
                             <Link href={`/blog/${blog._id}`}>
                               <Button
                                 variant="default"
-                                className="bg-green-400 hover:bg-green-300 rounded-md w-30"
+                                className="bg-green-400 hover:bg-green-300 rounded-md w-30 max-lg:w-24"
                               >
                                 Edit Blog
                               </Button>
                             </Link>
                             <Button
                               variant="destructive"
-                              className="cursor-pointer"
+                              className="cursor-pointer max-lg:w-24"
                               onClick={() => handleDeleteClick(blog)}
                             >
                               Delete Blog
