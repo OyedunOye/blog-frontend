@@ -21,16 +21,20 @@ import { ArticleCards } from "./ArticleCards";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 import CleanSlate from "../common/CleanSlate";
 
-interface BlogType {
+export interface BlogType {
   _id: string;
   title: string;
   blogContent: string;
   readTime: string;
   category: string;
+  loveCount: number;
+  loves: Array<string>;
+  bookmarks: Array<string>;
+  commentCount: number;
   articleImg: StaticImageData;
   createdAt: string;
   author: {
-    authorImg: StaticImageData;
+    authorImg: string;
     firstName: string;
     lastName: string;
   };
@@ -85,8 +89,8 @@ const LatestArticles = () => {
                             <Image
                               src={data.blogs[0].articleImg}
                               alt={data.blogs[0].title}
-                              width={90}
-                              height={40}
+                              width={500}
+                              height={400}
                               className="rounded-t-md object-cover h-80 w-full"
                             />
                           </div>
@@ -180,7 +184,23 @@ const LatestArticles = () => {
                                   {data.blogs[0].readTime} min
                                   {data.blogs[0].readTime > 1 ? "s" : null} read
                                 </p>
-                                <Bookmark className="bg-gray-200 rounded-full h-8 w-8 p-1" />
+                                <Bookmark
+                                  color={`${
+                                    data.blogs[0].bookmarks.indexOf(
+                                      loggedInUserId()!
+                                    ) !== -1
+                                      ? "green"
+                                      : "gray"
+                                  }`}
+                                  fill={`${
+                                    data.blogs[0].bookmarks.indexOf(
+                                      loggedInUserId()!
+                                    ) !== -1
+                                      ? "green"
+                                      : "transparent"
+                                  }`}
+                                  className="bg-gray-200 rounded-full h-8 w-8 p-1"
+                                />
                               </div>
                             </div>
                           </div>

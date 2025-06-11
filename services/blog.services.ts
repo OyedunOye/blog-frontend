@@ -142,7 +142,27 @@ export const toggleLoveABlog = async (blogId: string) => {
     );
     return res.data;
   } catch (error) {
-    console.log("An error occured, unable to submit comment", error);
+    console.log("An error occured, unable to love the blog", error);
+    throw error;
+  }
+};
+
+export const toggleBookmarkABlog = async (blogId: string) => {
+  const token = await getToken();
+  try {
+    const res = await axios.patch(
+      `${BASE_URL}blogs/bookmark/${blogId}`,
+      {}, //no request body
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log("An error occured, unable to bookmark the blog", error);
     throw error;
   }
 };

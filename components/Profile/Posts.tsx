@@ -64,8 +64,8 @@ const Posts = () => {
             <Image
               src={"/warning-sign.webp"}
               alt="warning sign"
-              width={82}
-              height={50}
+              width={200}
+              height={200}
               className="object-cover w-full h-full p-3"
             />
           </div>

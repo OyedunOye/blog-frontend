@@ -66,8 +66,8 @@ const Hero = () => {
           <Image
             src={HeroImg}
             alt="hero image"
-            width={200}
-            height={50}
+            width={500}
+            height={400}
             className="content-center my-1 w-full h-full object-cover"
           />
         </div>

@@ -1,108 +1,37 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-
-import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-import { Button } from "../ui/button";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { articleData } from "./data";
-
-import MaxWidth from "../common/MaxWidthWrapper";
-import AvatarRenderer from "../common/Avatar";
-import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
-import { BlogType } from "../Home/LatestArticles";
-import CleanSlate from "../common/CleanSlate";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import React from "react";
 import Loader from "../common/Loader";
-
+import CleanSlate from "../common/CleanSlate";
+import { BlogType } from "../Home/LatestArticles";
+import Link from "next/link";
+import Image from "next/image";
+import AvatarRenderer from "../common/Avatar";
 import { formatDate, loggedInUserId } from "@/utils";
 import { wordLimit } from "@/utils/helpers";
-import { useGetAUser } from "@/hooks/authors/useGetAUser";
-import Favourites from "./Favourites";
-import Bookmarks from "./Bookmarks";
+import { Button } from "../ui/button";
+import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
 
-const ArticleSection = () => {
-  const [activeTab, setActiveTab] = useState<"ARTICLES" | "FAVORITE" | "SAVED">(
-    "ARTICLES"
-  );
-
-  const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
-  const {
-    data: singleUserData,
-    isLoading: singleUserIsLoading,
-    isError: singleUserIsError,
-    isSuccess: singleUserIsSuccess,
-  } = useGetAUser();
-
-  const [allBlogs, setAllBlogs] = useState<BlogType[]>([]);
-
-  useEffect(() => {
-    if (data && isSuccess) {
-      setAllBlogs(data.blogs);
-    }
-  }, [data, isSuccess]);
-
-  console.log(singleUserData);
-  console.log(data);
+const Bookmarks = () => {
+  const { data, isLoading, isError, isSuccess } = useGetAUser();
 
   return (
-    <MaxWidth className="mb-24 mt-44 w-full">
-      <div className=" flex flex-col">
-        <ul className="flex text-gray-600">
-          <li className="flex">
-            <Button
-              onClick={() => setActiveTab("ARTICLES")}
-              variant="ghost"
-              className={cn(activeTab === "ARTICLES" && "text-black bg-accent")}
-            >
-              Articles ({allBlogs.length})
-            </Button>
-          </li>
-          <li className="flex">
-            <Button
-              onClick={() => setActiveTab("FAVORITE")}
-              variant="ghost"
-              className={cn(activeTab === "FAVORITE" && "text-black bg-accent")}
-            >
-              {/* Favorites ({singleUserData.user.loved.length}) */}
-              Favorites
-            </Button>
-          </li>
-          <li className="flex">
-            <Button
-              onClick={() => setActiveTab("SAVED")}
-              variant="ghost"
-              className={cn(activeTab === "SAVED" && "text-black bg-accent")}
-            >
-              {/* Saved ({singleUserData.user.bookmarked.length}) */}
-              Saved
-            </Button>
-          </li>
-        </ul>
-      </div>
-
+    // <div>FavouritesAndSaved</div>
+    <div className="w-full">
       {isLoading && !isError ? (
-        <Loader message="Loading blogs' section" className="w-full h-[480px]" />
+        <Loader
+          message="Loading favourite blogs"
+          className="w-full h-[480px]"
+        />
       ) : null}
 
-      <div className="mt-8 flex items-center gap-8 flex-wrap">
-        {isSuccess && (!allBlogs || allBlogs.length < 1) ? (
-          <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
+      <div className="flex items-center gap-8 flex-wrap">
+        {isSuccess &&
+        (!data.user.bookmarked || data.user.bookmarked.length < 1) ? (
+          <CleanSlate message="You are yet to bookmark any blog on this site." />
         ) : (
           <>
-            {isSuccess && allBlogs && activeTab === "ARTICLES"
-              ? allBlogs.map((data) => (
+            {isSuccess && data.user.bookmarked.length > 1
+              ? data.user.bookmarked.map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
@@ -193,32 +122,8 @@ const ArticleSection = () => {
           </>
         )}
       </div>
-
-      {activeTab === "FAVORITE" && <Favourites />}
-      {activeTab === "SAVED" && <Bookmarks />}
-
-      <div className="flex justify-between mt-6 pr-4">
-        <Pagination className="justify-start mx-0 w-1/2">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-
-        <Button variant="default">See more</Button>
-      </div>
-    </MaxWidth>
+    </div>
   );
 };
 
-export default ArticleSection;
+export default Bookmarks;
