@@ -25,7 +25,7 @@ const BecomeAuthor = () => {
   const [saveToken, setSaveToken] = useState<string | null>(null);
 
   useEffect(() => {
-    token;
+    // token;
     if (token) {
       setSaveToken(token);
     }
