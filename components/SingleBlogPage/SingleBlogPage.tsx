@@ -13,7 +13,12 @@ import DeleteConfirmation from "../modals/DeleteConfirmation";
 import { AppContext } from "@/context/AppContext";
 import QuillEditBlogModal from "../modals/EditModal";
 import { Textarea } from "../ui/textarea";
-import { Heart, MessageSquareMore, SendHorizonal } from "lucide-react";
+import {
+  Bookmark,
+  Heart,
+  MessageSquareMore,
+  SendHorizonal,
+} from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { newCommentFormSchema } from "@/zodValidations/auth/constant";
@@ -24,6 +29,7 @@ import { useToggleLoveABlog } from "@/hooks/blog/useToggleLoveABlog";
 import "react-quill-new/dist/quill.snow.css";
 import { getInitials } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
+import { useToggleBookmarkABlog } from "@/hooks/blog/useToggleBookmarkABlog";
 
 type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
 
@@ -59,6 +65,13 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     isPending: toggleLikeIsPending,
   } = useToggleLoveABlog();
 
+  const {
+    data: toggleBookmark,
+    mutateAsync: toggleBookmarkMutateAsync,
+    isSuccess: toggleBookmarkSuccess,
+    isPending: toggleBookmarkIsPending,
+  } = useToggleBookmarkABlog();
+
   // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   const currentUserLoveStatus = () => {
@@ -83,6 +96,34 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
           return "loved";
         } else {
           return "unloved";
+        }
+      }
+    }
+    return "not authenticated";
+  };
+
+  const currentUserBookmarkStatus = () => {
+    if (token) {
+      const userDetails = getDecodedToken(token);
+      if (toggleBookmark && toggleBookmarkSuccess) {
+        if (
+          userDetails &&
+          toggleBookmark.updatedBlog.bookmarks.indexOf(userDetails.id) !== -1
+        ) {
+          return "bookmarked";
+        } else {
+          return "not bookmarked";
+        }
+      }
+
+      if (!toggleBookmarkIsPending && singleBlogData) {
+        if (
+          userDetails &&
+          singleBlogData.blog[0].bookmarks.indexOf(userDetails.id) !== -1
+        ) {
+          return "bookmarked";
+        } else {
+          return "not bookmarked";
         }
       }
     }
@@ -122,6 +163,21 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     }
     try {
       const res = await toggleLikeMutateAsync(blogId);
+      toasterAlert(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onClickBookmark = async () => {
+    if (!token) {
+      toasterAlert(
+        "You are offline, please login to be able to bookmark this blog."
+      );
+      router.push("/login");
+    }
+    try {
+      const res = await toggleBookmarkMutateAsync(blogId);
       toasterAlert(res.message);
     } catch (error) {
       console.log(error);
@@ -295,38 +351,57 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
             <div className="bg-black dark:bg-white h-0.5 my-5 "></div>
             <div className="flex flex-col ">
               <div className="flex flex-col mb-3">
-                <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
-                  <Button
-                    variant="outline"
-                    className="rounded-full bg-gray-200 h-[80%] "
-                    onClick={onLove}
-                  >
-                    <Heart
+                <div className="flex justify-between">
+                  <div className=" flex h-10 py-0.5 gap-2 content-center mb-2">
+                    <Button
+                      variant="outline"
+                      className="rounded-full bg-gray-200 h-[80%] "
+                      onClick={onLove}
+                    >
+                      <Heart
+                        color={
+                          currentUserLoveStatus() === "loved" ? "red" : "gray"
+                        }
+                        fill={
+                          currentUserLoveStatus() === "loved"
+                            ? "red"
+                            : "transparent"
+                        }
+                      />
+
+                      {!toggleLike
+                        ? singleBlogData.blog[0].loveCount
+                        : toggleLike.updatedBlog.loveCount}
+                    </Button>
+
+                    <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 dark:bg-transparent dark:outline h-[80%] w-14">
+                      <MessageSquareMore size={18} className="pb-0.5" />{" "}
+                      {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
+                      <span className="h-fit flex -mt-1 text-sm font-semibold">
+                        {" "}
+                        {!data
+                          ? singleBlogData.blog[0].commentCount
+                          : data.updatedBlog.commentCount}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button className="bg-gray-200 dark:bg-transparent dark:outline rounded-full h-8 w-8 p-1">
+                    <Bookmark
                       color={
-                        currentUserLoveStatus() === "loved" ? "red" : "gray"
+                        currentUserBookmarkStatus() === "bookmarked"
+                          ? "green"
+                          : "gray"
                       }
                       fill={
-                        currentUserLoveStatus() === "loved"
-                          ? "red"
+                        currentUserBookmarkStatus() === "bookmarked"
+                          ? "green"
                           : "transparent"
                       }
+                      onClick={onClickBookmark}
+                      className=""
                     />
-
-                    {!toggleLike
-                      ? singleBlogData.blog[0].loveCount
-                      : toggleLike.updatedBlog.loveCount}
-                  </Button>
-
-                  <div className="flex rounded-full justify-center p-2 gap-3 content-center bg-gray-200 dark:bg-transparent dark:outline h-[80%] w-14">
-                    <MessageSquareMore size={18} className="pb-0.5" />{" "}
-                    {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
-                    <span className="h-fit flex -mt-1 text-sm font-semibold">
-                      {" "}
-                      {!data
-                        ? singleBlogData.blog[0].commentCount
-                        : data.updatedBlog.commentCount}
-                    </span>
-                  </div>
+                  </button>
                 </div>
 
                 <div className="flex gap-2 h-28 content-center py-1">

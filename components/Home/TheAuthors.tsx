@@ -21,7 +21,7 @@ interface Blogs {
   createdAt: string;
 }
 
-interface Authors {
+export interface Authors {
   _id: string;
   firstName: string;
   lastName: string;

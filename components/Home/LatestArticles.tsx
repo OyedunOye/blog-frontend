@@ -3,13 +3,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import {
-  Bookmark,
-  Heart,
-  LoaderCircle,
-  MessageSquareMore,
-  User2,
-} from "lucide-react";
+import { Bookmark, Heart, LoaderCircle, MessageSquareMore } from "lucide-react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate, loggedInUserId } from "@/utils";
 import Loader from "../common/Loader";
@@ -21,16 +15,20 @@ import { ArticleCards } from "./ArticleCards";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 import CleanSlate from "../common/CleanSlate";
 
-interface BlogType {
+export interface BlogType {
   _id: string;
   title: string;
   blogContent: string;
   readTime: string;
   category: string;
+  loveCount: number;
+  loves: Array<string>;
+  bookmarks: Array<string>;
+  commentCount: number;
   articleImg: StaticImageData;
   createdAt: string;
   author: {
-    authorImg: StaticImageData;
+    authorImg: string;
     firstName: string;
     lastName: string;
   };
@@ -85,8 +83,8 @@ const LatestArticles = () => {
                             <Image
                               src={data.blogs[0].articleImg}
                               alt={data.blogs[0].title}
-                              width={90}
-                              height={40}
+                              width={500}
+                              height={400}
                               className="rounded-t-md object-cover h-80 w-full"
                             />
                           </div>
@@ -104,22 +102,19 @@ const LatestArticles = () => {
                               <div className="flex flex-col gap-2">
                                 <div className="flex gap-2 text-sm text-gray-500">
                                   <div className="flex gap-2 text-sm text-gray-500 dark:text-slate-300">
-                                    {data.blogs[0].author.authorImg ? (
-                                      <div className="h-6 w-6 border rounded-sm">
-                                        <Image
-                                          src={data.blogs[0].author.authorImg}
-                                          alt={data.blogs[0].author.firstName}
-                                          width={24}
-                                          height={24}
-                                          className="object-cover h-full w-full rounded-sm"
-                                        />
-                                      </div>
-                                    ) : (
-                                      <User2
-                                        size={18}
-                                        className="border-1 content-center m-y-2 h-6 w-7"
+                                    <div className="h-6 w-6 border rounded-sm">
+                                      <Image
+                                        src={
+                                          data.blogs[0].author.authorImg
+                                            ? data.blogs[0].author.authorImg
+                                            : "/small-user-dummy.jpg"
+                                        }
+                                        alt={data.blogs[0].author.firstName}
+                                        width={24}
+                                        height={24}
+                                        className="object-cover h-full w-full rounded-sm"
                                       />
-                                    )}
+                                    </div>
 
                                     <p className="capitalize">
                                       {data.blogs[0].author.firstName +
@@ -180,7 +175,23 @@ const LatestArticles = () => {
                                   {data.blogs[0].readTime} min
                                   {data.blogs[0].readTime > 1 ? "s" : null} read
                                 </p>
-                                <Bookmark className="bg-gray-200 rounded-full h-8 w-8 p-1" />
+                                <Bookmark
+                                  color={`${
+                                    data.blogs[0].bookmarks.indexOf(
+                                      loggedInUserId()!
+                                    ) !== -1
+                                      ? "green"
+                                      : "gray"
+                                  }`}
+                                  fill={`${
+                                    data.blogs[0].bookmarks.indexOf(
+                                      loggedInUserId()!
+                                    ) !== -1
+                                      ? "green"
+                                      : "transparent"
+                                  }`}
+                                  className="bg-gray-200 rounded-full h-8 w-8 p-1"
+                                />
                               </div>
                             </div>
                           </div>
@@ -223,22 +234,20 @@ const LatestArticles = () => {
 
                               <div className="flex text-sm text-gray-500 p-2 gap-2">
                                 <div className="flex gap-2">
-                                  {card.author.authorImg ? (
-                                    <div className="h-6 w-6 border rounded-sm">
-                                      <Image
-                                        src={card.author.authorImg}
-                                        alt={card.author.firstName}
-                                        width={26}
-                                        height={26}
-                                        className="object-cover h-full w-full rounded-sm"
-                                      />
-                                    </div>
-                                  ) : (
-                                    <User2
-                                      size={18}
-                                      className="border-1 rounded-sm content-center m-y-2 h-6 w-7"
+                                  <div className="h-6 w-6 border rounded-sm">
+                                    <Image
+                                      src={
+                                        card.author.authorImg
+                                          ? card.author.authorImg
+                                          : "/small-user-dummy.jpg"
+                                      }
+                                      alt={card.author.firstName}
+                                      width={26}
+                                      height={26}
+                                      className="object-cover h-full w-full rounded-sm"
                                     />
-                                  )}
+                                  </div>
+
                                   <p className="capitalize">
                                     {card.author.firstName +
                                       " " +

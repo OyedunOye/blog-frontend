@@ -19,8 +19,8 @@ const CleanSlate = ({ message, className }: MessageProp) => {
         <Image
           src={"/freshstart.jpeg"}
           alt="warning sign"
-          width={80}
-          height={40}
+          width={200}
+          height={200}
           className="object-cover w-[100%] h-full rounded-md"
         />
       </div>

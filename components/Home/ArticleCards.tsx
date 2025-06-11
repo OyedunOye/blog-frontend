@@ -3,13 +3,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import {
-  Bookmark,
-  Heart,
-  LoaderCircle,
-  MessageSquareMore,
-  User2,
-} from "lucide-react";
+import { Bookmark, Heart, LoaderCircle, MessageSquareMore } from "lucide-react";
 import { formatDate, loggedInUserId } from "@/utils";
 import Loader from "../common/Loader";
 
@@ -78,22 +72,20 @@ export const ArticleCards = () => {
                       <div className="flex flex-col h-20 w-90 my-2 gap-3 p-2 max-md:w-[70%] max-lg:w-[75%] max-md:h-fit">
                         <div className="flex justify-between max-md:flex-col max-md:gap-3">
                           <div className="flex gap-2 text-sm text-gray-500 max-md:justify-between">
-                            {item.author.authorImg ? (
-                              <div className="w-6 h-6 rounded-sm">
-                                <Image
-                                  src={item.author.authorImg}
-                                  alt={item.author.firstName}
-                                  width={24}
-                                  height={24}
-                                  className="w-full h-full object-cover rounded-sm"
-                                />
-                              </div>
-                            ) : (
-                              <User2
-                                size={18}
-                                className="border-1 content-center m-y-2 h-6 w-7 rounded-sm"
+                            <div className="w-6 h-6 rounded-sm">
+                              <Image
+                                src={
+                                  item.author.authorImg
+                                    ? item.author.authorImg
+                                    : "/small-user-dummy.jpg"
+                                }
+                                alt={item.author.firstName}
+                                width={24}
+                                height={24}
+                                className="w-full h-full object-cover rounded-sm"
                               />
-                            )}
+                            </div>
+
                             <p className="capitalize">
                               {item.author.firstName +
                                 " " +
@@ -143,7 +135,24 @@ export const ArticleCards = () => {
                               {item.readTime} min
                               {item.readTime != "1" ? "s" : null} read
                             </p>
-                            <Bookmark className="bg-gray-200 rounded-full h-8 w-8 p-1" />
+                            <Bookmark
+                              color={`${
+                                data.blogs[0].bookmarks.indexOf(
+                                  loggedInUserId()!
+                                ) !== -1
+                                  ? "green"
+                                  : "gray"
+                              }`}
+                              fill={`${
+                                data.blogs[0].bookmarks.indexOf(
+                                  loggedInUserId()!
+                                ) !== -1
+                                  ? "green"
+                                  : "transparent"
+                              }`}
+                              className="bg-gray-200 rounded-full h-8 w-8 p-1"
+                            />
+                            {/* <Bookmark className="bg-gray-200 rounded-full h-8 w-8 p-1" /> */}
                           </div>
                         </div>
                       </div>
@@ -173,8 +182,8 @@ export const ArticleCards = () => {
               <Image
                 src={"/downloadblog.jpeg"}
                 alt="blog site image"
-                width={90}
-                height={40}
+                width={500}
+                height={400}
                 className="object-cover h-[55%] w-full rounded-t-sm"
               />
               <p className="font-extrabold text-5xl text-green-500 p-2">
