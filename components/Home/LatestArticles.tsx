@@ -3,13 +3,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import {
-  Bookmark,
-  Heart,
-  LoaderCircle,
-  MessageSquareMore,
-  User2,
-} from "lucide-react";
+import { Bookmark, Heart, LoaderCircle, MessageSquareMore } from "lucide-react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate, loggedInUserId } from "@/utils";
 import Loader from "../common/Loader";
@@ -108,22 +102,19 @@ const LatestArticles = () => {
                               <div className="flex flex-col gap-2">
                                 <div className="flex gap-2 text-sm text-gray-500">
                                   <div className="flex gap-2 text-sm text-gray-500 dark:text-slate-300">
-                                    {data.blogs[0].author.authorImg ? (
-                                      <div className="h-6 w-6 border rounded-sm">
-                                        <Image
-                                          src={data.blogs[0].author.authorImg}
-                                          alt={data.blogs[0].author.firstName}
-                                          width={24}
-                                          height={24}
-                                          className="object-cover h-full w-full rounded-sm"
-                                        />
-                                      </div>
-                                    ) : (
-                                      <User2
-                                        size={18}
-                                        className="border-1 content-center m-y-2 h-6 w-7"
+                                    <div className="h-6 w-6 border rounded-sm">
+                                      <Image
+                                        src={
+                                          data.blogs[0].author.authorImg
+                                            ? data.blogs[0].author.authorImg
+                                            : "/small-user-dummy.jpg"
+                                        }
+                                        alt={data.blogs[0].author.firstName}
+                                        width={24}
+                                        height={24}
+                                        className="object-cover h-full w-full rounded-sm"
                                       />
-                                    )}
+                                    </div>
 
                                     <p className="capitalize">
                                       {data.blogs[0].author.firstName +
@@ -243,22 +234,20 @@ const LatestArticles = () => {
 
                               <div className="flex text-sm text-gray-500 p-2 gap-2">
                                 <div className="flex gap-2">
-                                  {card.author.authorImg ? (
-                                    <div className="h-6 w-6 border rounded-sm">
-                                      <Image
-                                        src={card.author.authorImg}
-                                        alt={card.author.firstName}
-                                        width={26}
-                                        height={26}
-                                        className="object-cover h-full w-full rounded-sm"
-                                      />
-                                    </div>
-                                  ) : (
-                                    <User2
-                                      size={18}
-                                      className="border-1 rounded-sm content-center m-y-2 h-6 w-7"
+                                  <div className="h-6 w-6 border rounded-sm">
+                                    <Image
+                                      src={
+                                        card.author.authorImg
+                                          ? card.author.authorImg
+                                          : "/small-user-dummy.jpg"
+                                      }
+                                      alt={card.author.firstName}
+                                      width={26}
+                                      height={26}
+                                      className="object-cover h-full w-full rounded-sm"
                                     />
-                                  )}
+                                  </div>
+
                                   <p className="capitalize">
                                     {card.author.firstName +
                                       " " +

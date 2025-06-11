@@ -9,7 +9,7 @@ const BlogContentTextColorWarning = () => {
         <p className="">
           The blog content text editor is color sensitive! Please if you copy
           text from a dark background source or a webpage, there is a high
-          probability that your black text will retain its color in dark mode of
+          possibility that your black text will retain its color in dark mode of
           this app and be invisible for readers. Kindly test the darkmode to see
           how your blog will be displayed to readers and take advantage of the
           text colour option on the text editor to modify your text color as

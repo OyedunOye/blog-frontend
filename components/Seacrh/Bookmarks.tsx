@@ -10,6 +10,7 @@ import { formatDate, loggedInUserId } from "@/utils";
 import { wordLimit } from "@/utils/helpers";
 import { Button } from "../ui/button";
 import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
+import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 
 const Bookmarks = () => {
   const { data, isLoading, isError, isSuccess } = useGetAUser();
@@ -19,8 +20,14 @@ const Bookmarks = () => {
     <div className="w-full">
       {isLoading && !isError ? (
         <Loader
-          message="Loading favourite blogs"
+          message="Loading your saved blogs"
           className="w-full h-[480px]"
+        />
+      ) : null}
+      {isError ? (
+        <NoServerConnectionWarning
+          message="Server is unreachable, unable to load the saved blogs at the
+                        moment. Please try again later."
         />
       ) : null}
 
@@ -54,7 +61,7 @@ const Bookmarks = () => {
                                 : "/small-user-dummy.jpg"
                             }`}
                           />
-                          <div className="flex flex-col">
+                          <div className="flex flex-col dark:text-gray-300">
                             <p className="">
                               {data.author.firstName +
                                 " " +
@@ -68,14 +75,14 @@ const Bookmarks = () => {
                         </div>
                       </div>
 
-                      <h3 className="font-bold text-base h-16 max-lg:my-2 text-gray-900">
+                      <h3 className="font-bold text-base h-16 max-lg:my-2 text-gray-900 dark:text-white">
                         {wordLimit(data.title)}
                       </h3>
-                      <div className="flex justify-between text-gray-500">
+                      <div className="flex justify-between text-gray-500 ">
                         <div className=" flex gap-2">
                           <Button
                             variant="outline"
-                            className="rounded-full bg-gray-200"
+                            className="rounded-full bg-gray-200 dark:bg-gray-200"
                           >
                             <Heart
                               color={`${
@@ -93,7 +100,7 @@ const Bookmarks = () => {
                           </Button>
                           <Button
                             variant="outline"
-                            className="rounded-full bg-gray-200"
+                            className="rounded-full bg-gray-200 dark:bg-gray-200"
                           >
                             <MessageSquareMore /> {data.commentCount}
                           </Button>

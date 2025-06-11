@@ -20,25 +20,27 @@ const SearchHero = () => {
         className="object-cover w-full"
       />
 
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 p-[64px] lg:w-[80%] max-w-[1272px] bg-white rounded-3xl shadow-lg flex flex-col justify-center items-center gap-y-8 border">
-        <div className="flex flex-col gap-y-3 items-center">
+      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 p-[64px] max-md:p-[10px] lg:w-[80%] max-lg:w-[85%] max-md:h-[50] max-w-[1272px] bg-white rounded-3xl shadow-lg flex flex-col justify-center items-center gap-y-8 border dark:bg-black">
+        <div className="flex flex-col gap-y-3 items-center ">
           <h3
             className={cn(
-              "font-semibold text-gray-800 text-5xl",
+              "font-semibold text-gray-800 text-5xl max-md:text-lg dark:text-white",
               poppins.className
             )}
           >
             UI Design
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             We found 1135 results for{" "}
-            <span className="font-semibold text-black">UI Design</span>
+            <span className="font-semibold text-black dark:text-white">
+              UI Design
+            </span>
           </p>
         </div>
 
-        <form className="flex flex-col gap-y-3 lg:w-[65%] relative">
+        <form className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] relative">
           <Input
-            className="h-[52px] py-2 rounded-full pl-10"
+            className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
             placeholder="Search article..."
           />
           <Search

@@ -1,46 +1,39 @@
-import { useGetAUser } from "@/hooks/authors/useGetAUser";
-import React from "react";
+import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
+import React, { useEffect, useState } from "react";
+import { BlogType } from "../Home/LatestArticles";
 import Loader from "../common/Loader";
 import CleanSlate from "../common/CleanSlate";
-import { BlogType } from "../Home/LatestArticles";
-import Link from "next/link";
+import { Bookmark, Heart, Link, MessageSquareMore } from "lucide-react";
 import Image from "next/image";
 import AvatarRenderer from "../common/Avatar";
 import { formatDate, loggedInUserId } from "@/utils";
 import { wordLimit } from "@/utils/helpers";
 import { Button } from "../ui/button";
-import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
-import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 
-const Favourites = () => {
-  const { data, isLoading, isError, isSuccess } = useGetAUser();
+const AllBlogs = () => {
+  const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
 
-  // console.log(data);
+  const [allBlogs, setAllBlogs] = useState<BlogType[]>([]);
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      setAllBlogs(data.blogs);
+    }
+  }, [data, isSuccess]);
 
   return (
-    // <div>FavouritesAndSaved</div>
     <div className="w-full">
       {isLoading && !isError ? (
-        <Loader
-          message="Loading your favourite blogs"
-          className="w-full h-[480px]"
-        />
+        <Loader message="Loading blogs' section" className="w-full h-[480px]" />
       ) : null}
 
-      {isError ? (
-        <NoServerConnectionWarning
-          message="Server is unreachable, unable to load the blog section at the
-                  moment. Please try again later."
-        />
-      ) : null}
-
-      <div className="flex items-center gap-8 flex-wrap">
-        {isSuccess && (!data.user.loved || data.user.loved.length < 1) ? (
-          <CleanSlate message="You are yet to love any blog on this site." />
+      <div className="mt-8 flex items-center gap-8 flex-wrap">
+        {isSuccess && (!allBlogs || allBlogs.length < 1) ? (
+          <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
         ) : (
           <>
-            {isSuccess && data.user.loved.length > 1
-              ? data.user.loved.map((data: BlogType) => (
+            {isSuccess && allBlogs
+              ? allBlogs.map((data) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
@@ -63,7 +56,7 @@ const Favourites = () => {
                                 : "/small-user-dummy.jpg"
                             }`}
                           />
-                          <div className="flex flex-col dark:text-gray-300">
+                          <div className="flex flex-col">
                             <p className="">
                               {data.author.firstName +
                                 " " +
@@ -77,14 +70,14 @@ const Favourites = () => {
                         </div>
                       </div>
 
-                      <h3 className="font-bold text-base h-16 max-lg:my-2 text-gray-900 dark:text-white">
+                      <h3 className="font-bold text-base h-16 max-lg:my-2 text-gray-900">
                         {wordLimit(data.title)}
                       </h3>
                       <div className="flex justify-between text-gray-500">
                         <div className=" flex gap-2">
                           <Button
                             variant="outline"
-                            className="rounded-full bg-gray-200 dark:bg-gray-200"
+                            className="rounded-full bg-gray-200"
                           >
                             <Heart
                               color={`${
@@ -102,7 +95,7 @@ const Favourites = () => {
                           </Button>
                           <Button
                             variant="outline"
-                            className="rounded-full bg-gray-200 dark:bg-gray-200"
+                            className="rounded-full bg-gray-200"
                           >
                             <MessageSquareMore /> {data.commentCount}
                           </Button>
@@ -135,4 +128,4 @@ const Favourites = () => {
   );
 };
 
-export default Favourites;
+export default AllBlogs;

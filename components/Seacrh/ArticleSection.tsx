@@ -17,7 +17,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { articleData } from "./data";
 
 import MaxWidth from "../common/MaxWidthWrapper";
 import AvatarRenderer from "../common/Avatar";
@@ -28,9 +27,11 @@ import Loader from "../common/Loader";
 
 import { formatDate, loggedInUserId } from "@/utils";
 import { wordLimit } from "@/utils/helpers";
-import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import Favourites from "./Favourites";
 import Bookmarks from "./Bookmarks";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
+// import AllBlogs from "./AllBlogs";
 
 const ArticleSection = () => {
   const [activeTab, setActiveTab] = useState<"ARTICLES" | "FAVORITE" | "SAVED">(
@@ -38,14 +39,12 @@ const ArticleSection = () => {
   );
 
   const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
-  const {
-    data: singleUserData,
-    isLoading: singleUserIsLoading,
-    isError: singleUserIsError,
-    isSuccess: singleUserIsSuccess,
-  } = useGetAUser();
+  const { data: favouriteNSavedData, isSuccess: favouriteNSavedIsSuccess } =
+    useGetAUser();
 
   const [allBlogs, setAllBlogs] = useState<BlogType[]>([]);
+  const [favouriteCount, setFavouriteCount] = useState<number>(0);
+  const [savedCount, setSavedCount] = useState<number>(0);
 
   useEffect(() => {
     if (data && isSuccess) {
@@ -53,18 +52,27 @@ const ArticleSection = () => {
     }
   }, [data, isSuccess]);
 
-  console.log(singleUserData);
-  console.log(data);
+  useEffect(() => {
+    if (favouriteNSavedData && favouriteNSavedIsSuccess) {
+      setFavouriteCount(favouriteNSavedData.user.loved.length);
+      setSavedCount(favouriteNSavedData.user.bookmarked.length);
+    }
+  }, [favouriteNSavedData, favouriteNSavedIsSuccess]);
+
+  // console.log(singleUserData.user);
 
   return (
     <MaxWidth className="mb-24 mt-44 w-full">
       <div className=" flex flex-col">
-        <ul className="flex text-gray-600">
+        <ul className="flex text-gray-600 dark:text-white">
           <li className="flex">
             <Button
               onClick={() => setActiveTab("ARTICLES")}
               variant="ghost"
-              className={cn(activeTab === "ARTICLES" && "text-black bg-accent")}
+              className={cn(
+                activeTab === "ARTICLES" &&
+                  "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
+              )}
             >
               Articles ({allBlogs.length})
             </Button>
@@ -73,27 +81,31 @@ const ArticleSection = () => {
             <Button
               onClick={() => setActiveTab("FAVORITE")}
               variant="ghost"
-              className={cn(activeTab === "FAVORITE" && "text-black bg-accent")}
+              className={cn(
+                activeTab === "FAVORITE" &&
+                  "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
+              )}
             >
-              {/* Favorites ({singleUserData.user.loved.length}) */}
-              Favorites
+              Favorites ({favouriteCount})
             </Button>
           </li>
           <li className="flex">
             <Button
               onClick={() => setActiveTab("SAVED")}
               variant="ghost"
-              className={cn(activeTab === "SAVED" && "text-black bg-accent")}
+              className={cn(
+                activeTab === "SAVED" &&
+                  "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
+              )}
             >
-              {/* Saved ({singleUserData.user.bookmarked.length}) */}
-              Saved
+              Saved ({savedCount})
             </Button>
           </li>
         </ul>
       </div>
 
       {isLoading && !isError ? (
-        <Loader message="Loading blogs' section" className="w-full h-[480px]" />
+        <Loader message="Loading blogs section." className="w-full h-[480px]" />
       ) : null}
 
       <div className="mt-8 flex items-center gap-8 flex-wrap">
@@ -101,12 +113,18 @@ const ArticleSection = () => {
           <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
         ) : (
           <>
+            {isError ? (
+              <NoServerConnectionWarning
+                message="Server is unreachable, unable to load the blog section at the
+                  moment. Please try again later."
+              />
+            ) : null}
             {isSuccess && allBlogs && activeTab === "ARTICLES"
               ? allBlogs.map((data) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
-                    className="w-[calc(100%/4.5)] max-lg:w-[calc(100%/3.4)] max-md:w-[100%] h-[480px] max-lg:h-[496px] border shadow-lg hover:shadow-xl rounded-2xl"
+                    className="w-[calc(100%/4.5)] max-lg:w-[calc(100%/3.4)] max-md:w-[100%] h-[480px] max-lg:h-[496px] border shadow-lg hover:shadow-xl rounded-2xl dark:bg-input/30"
                   >
                     <Image
                       src={data.articleImg}
@@ -125,7 +143,7 @@ const ArticleSection = () => {
                                 : "/small-user-dummy.jpg"
                             }`}
                           />
-                          <div className="flex flex-col">
+                          <div className="flex flex-col dark:text-gray-300">
                             <p className="">
                               {data.author.firstName +
                                 " " +
@@ -139,14 +157,14 @@ const ArticleSection = () => {
                         </div>
                       </div>
 
-                      <h3 className="font-bold text-base h-16 max-lg:my-2 text-gray-900">
+                      <h3 className="font-bold text-base h-16 max-lg:my-2 text-gray-900 dark:text-white">
                         {wordLimit(data.title)}
                       </h3>
                       <div className="flex justify-between text-gray-500">
                         <div className=" flex gap-2">
                           <Button
                             variant="outline"
-                            className="rounded-full bg-gray-200"
+                            className="rounded-full bg-gray-200 dark:bg-gray-200"
                           >
                             <Heart
                               color={`${
@@ -164,7 +182,7 @@ const ArticleSection = () => {
                           </Button>
                           <Button
                             variant="outline"
-                            className="rounded-full bg-gray-200"
+                            className="rounded-full bg-gray-200 dark:bg-gray-200"
                           >
                             <MessageSquareMore /> {data.commentCount}
                           </Button>
@@ -194,6 +212,7 @@ const ArticleSection = () => {
         )}
       </div>
 
+      {/* {activeTab === "ARTICLES" && <AllBlogs />} */}
       {activeTab === "FAVORITE" && <Favourites />}
       {activeTab === "SAVED" && <Bookmarks />}
 
