@@ -75,7 +75,7 @@ const TheAuthors = () => {
           <div className="bg-[#F3F4F6] dark:bg-black/60 min-h-60 flex-col border px-2 py-6 rounded-md">
             <>
               <div className="flex justify-between">
-                <h4 className="font-bold text-md">✍️ Discover Authors</h4>
+                <h4 className="font-bold text-md">✍️ Authors</h4>
                 {!isError && !isLoading ? (
                   <p className="font-bold text-md mr-2">
                     {allAuthors.length} author{allAuthors.length > 1 && "s"}

@@ -35,11 +35,11 @@ const Favourites = () => {
       ) : null}
 
       <div className="flex items-center gap-8 flex-wrap">
-        {isSuccess && (!data.user.loved || data.user.loved.length < 1) ? (
+        {isSuccess && data.user.loved.length < 1 ? (
           <CleanSlate message="You are yet to love any blog on this site." />
         ) : (
           <>
-            {isSuccess && data.user.loved.length > 1
+            {isSuccess && data.user.loved.length > 0
               ? data.user.loved.map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}

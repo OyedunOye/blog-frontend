@@ -53,6 +53,7 @@ const NavBar = () => {
   // const [gettingToken, setGettingToken] = useState<boolean>(true);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [signUpIsLoading, setSignUpIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
 
@@ -117,6 +118,10 @@ const NavBar = () => {
     >
       {isLoading ? (
         <Loading className="min-h-screen" message="Loading login page" />
+      ) : null}
+
+      {signUpIsLoading ? (
+        <Loading className="min-h-screen" message="Loading sign up page" />
       ) : null}
 
       {isLoggingOut ? (
@@ -227,6 +232,15 @@ const NavBar = () => {
               </div>
             ) : (
               <>
+                <Link href={"/signup"}>
+                  <Button
+                    onClick={() => setSignUpIsLoading(true)}
+                    variant="default"
+                    className="w-fit"
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
                 {!getUserIsLoading && token ? (
                   <div className="ml-4">
                     <DropdownMenu>
@@ -273,7 +287,7 @@ const NavBar = () => {
                   <Link href={"/login"}>
                     <Button
                       onClick={() => setIsLoading(true)}
-                      variant="default"
+                      variant="ghost"
                       className=""
                     >
                       Log In
