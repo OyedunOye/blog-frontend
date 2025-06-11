@@ -63,7 +63,7 @@ const ExploreAuthors = () => {
           <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
         ) : (
           <>
-            {isSuccess && blogAuthors.length > 1 ? (
+            {isSuccess && blogAuthors.length > 0 ? (
               <div className="mt-8 flex items-center gap-8 flex-wrap">
                 {blogAuthors.map((author: Authors) => (
                   <Link
