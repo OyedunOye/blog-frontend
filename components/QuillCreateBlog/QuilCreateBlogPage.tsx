@@ -7,19 +7,25 @@ import Link from "next/link";
 import Loading from "../common/Loader";
 import QuillCreateBlogForm from "./QuillCreateBlogForm";
 import { AppContext } from "@/context/AppContext";
-import { CircleXIcon, InfoIcon } from "lucide-react";
 import BlogContentTextColorWarning from "../modals/BlogContentTextColorWarning";
+import { InfoIcon } from "lucide-react";
 
 const QuillCreateBlogPage = () => {
   const [homePageLoading, setHomePageLoading] = useState<boolean>(false);
-  const [contentTextColorWarning, setContentTextColorWarning] =
-    useState<boolean>(true);
-  const { dispatch } = useContext(AppContext);
+
+  const { dispatch, state } = useContext(AppContext);
   const handleClickBack = () => {
     setHomePageLoading(true);
     dispatch({
       type: "BLOGCONTENT_WARN",
       payload: "No",
+    });
+  };
+
+  const handleInfoClick = () => {
+    dispatch({
+      type: "CONTENT_TEXT_COLOR_WARNING",
+      payload: true,
     });
   };
 
@@ -39,27 +45,15 @@ const QuillCreateBlogPage = () => {
             {" "}
             Welcome to create blog post dashboard
           </p>
-          <div className="flex content-center justify-center absolute top-22 right-4 h-10 w-10 p-1 ">
-            {contentTextColorWarning ? (
-              <CircleXIcon
-                size={50}
-                onClick={() => setContentTextColorWarning(false)}
-              />
-            ) : (
-              <InfoIcon
-                onClick={() => setContentTextColorWarning(true)}
-                size={50}
-              />
-            )}
+          <div className="flex content-center justify-center cursor-pointer absolute top-22 right-4 h-10 w-10 p-1 ">
+            <InfoIcon onClick={handleInfoClick} size={50} />
           </div>
-          {contentTextColorWarning && <BlogContentTextColorWarning />}
+          {state.contentTextColorWarning && <BlogContentTextColorWarning />}
         </div>
 
         <MaxWidth className="h-fit py-10 w-3/4 max-lg:w-[88%] max-md:w-[95%] justify-center relative -top-24 bg-white dark:bg-slate-900 border rounded-lg shadow-md">
           <div className="w-9/10 max-lg:w-[100%]  justify-center mx-auto">
             <QuillCreateBlogForm />
-
-            {/* <div className="justify-center flex w-full mx-auto"></div> */}
 
             <Link href={"/"} className="justify-center flex">
               <Button

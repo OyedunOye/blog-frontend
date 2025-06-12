@@ -7,7 +7,6 @@ import Image from "next/image";
 import Cookies from "universal-cookie";
 import {
   ChevronDown,
-  CircleXIcon,
   LoaderCircle,
   Menu,
   // MonitorCog,
@@ -46,20 +45,15 @@ import { useGetAUser } from "@/hooks/authors/useGetAUser";
 const cookies = new Cookies(null, { path: "/" });
 
 const NavBar = () => {
-  // const { state } = useContext(AppContext);
-
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [token, setToken] = useState<string | undefined>("");
-  // const [gettingToken, setGettingToken] = useState<boolean>(true);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [signUpIsLoading, setSignUpIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-  const [toggleMenu, setToggleMenu] = useState<boolean>(false);
 
   const { theme, setTheme } = useTheme();
 
-  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
   const { data, isLoading: getUserIsLoading } = useGetAUser();
 
   const pathname = usePathname();
@@ -78,17 +72,11 @@ const NavBar = () => {
       if (typeof window !== "undefined") {
         const token = await cookies.get("token");
         setToken(token);
-        // setGettingToken(false);
       }
     };
 
     getToken();
   }, []);
-
-  // useEffect((e:Event)=>{
-  //   const closeDropDown = e=>{setToggleMenu(false)}
-  //   document.body.addEventListener('click', closeDropDown)
-  // },[])
 
   const userName = () => {
     if (!getUserIsLoading && data) {
@@ -171,57 +159,45 @@ const NavBar = () => {
             </div>
 
             <div className="hidden max-md:block">
-              {!toggleMenu ? (
-                <Menu className="h-full" onClick={() => setToggleMenu(true)} />
-              ) : (
-                <CircleXIcon
-                  className="h-full"
-                  onClick={() => setToggleMenu(false)}
-                />
-              )}
-              {toggleMenu && (
-                <div className="flex flex-col min-w-24 mt-2 h-fit border bg-white dark:bg-black rounded-sm shadow-sm">
-                  <div className="flex flex-col divide-y-2">
-                    {NavBarMenuList.map((menu) => (
-                      <Link
-                        href={
-                          menu.split(" ")[0].toLowerCase() !== "home"
-                            ? `/${menu.split(" ")[0].toLowerCase()}`
-                            : "/"
-                        }
-                        key={menu}
-                        className="p-2 text-md"
-                        onClick={() => setToggleMenu(false)}
-                      >
-                        {menu}
-                      </Link>
-                    ))}
-                    <div className=" cursor-pointer h-full flex content-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex h-full content-center">
+                  <Menu className="h-full" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-38 z-[100] mr-4 mt-3">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Link href={"/"}>Home</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Link href={"/discover"}>Discover</Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer h-full">
                       {theme === "light" ? (
                         <button
                           onClick={() => {
                             setTheme("dark");
-                            setToggleMenu(false);
                           }}
-                          className=" py-2 pl-2 mr-1 gap-1 flex flex-nowrap"
+                          className="flex gap-1 content-center"
                         >
-                          Dark Mode <Moon />
+                          Dark Mode <Moon className="m-1" />
                         </button>
                       ) : (
                         <button
                           onClick={() => {
                             setTheme("light");
-                            setToggleMenu(false);
                           }}
-                          className=" py-2 pl-2 mr-1 gap-1 flex flex-nowrap"
+                          className="flex gap-1 content-center"
                         >
-                          Light Mode <Sun />
+                          Light Mode <Sun className="m-1" />
                         </button>
                       )}
-                    </div>
-                  </div>
-                </div>
-              )}
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 

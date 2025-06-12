@@ -20,11 +20,11 @@ const SearchHero = () => {
         className="object-cover w-full"
       />
 
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 p-[64px] max-md:p-[10px] lg:w-[80%] max-lg:w-[85%] max-md:h-[50] max-w-[1272px] bg-white rounded-3xl shadow-lg dark:shadow-gray-600 flex flex-col justify-center items-center gap-y-8 border dark:bg-black">
+      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 p-[64px] max-md:p-[10px] lg:w-[80%] max-lg:w-[85%]  max-w-[1272px] bg-white rounded-3xl shadow-lg dark:shadow-gray-600 flex flex-col justify-center items-center gap-y-8 border dark:bg-black">
         <div className="flex flex-col gap-y-3 items-center ">
           <h3
             className={cn(
-              "font-semibold text-gray-800 text-5xl max-md:text-lg dark:text-white",
+              "font-semibold text-gray-800 text-5xl max-md:text-lg max-md:mt-[20px] dark:text-white",
               poppins.className
             )}
           >

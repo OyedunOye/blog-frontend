@@ -112,15 +112,6 @@ const QuillEditBlogForm = () => {
 
     try {
       const formData = new FormData();
-      // values.title !== "" ? formData.set("title", values.title) : "";
-      // values.blogContent !== ""
-      //   ? formData.set("blogContent", values.blogContent)
-      //   : "";
-      // values.blogContent !== ""
-      //   ? formData.set("readTime", blogReadTime(values.blogContent))
-      //   : "";
-      // values.category !== "" ? formData.set("category", values.category) : "";
-      // values.articleImg !== "" ? formData.set("articleImg", file) : "";
 
       if (values.title !== "") {
         formData.set("title", values.title);

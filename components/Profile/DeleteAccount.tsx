@@ -16,7 +16,6 @@ const DeleteAccount = () => {
   const handleDeleteAccount = async () => {
     try {
       const res = await mutateAsync();
-      console.log(res);
       if (!isPending && res.message) {
         toasterAlert(res.message);
         cookies.remove("token");

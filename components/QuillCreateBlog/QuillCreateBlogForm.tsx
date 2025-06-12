@@ -117,9 +117,6 @@ const QuillCreateBlogForm = () => {
       formData.set("category", values.category);
       formData.set("articleImg", file);
 
-      console.log(...formData);
-      // console.log(values.blogContent);
-      // console.log(checkContentWordLim(values.blogContent));
       if (checkContentWordLim(values.blogContent) === "enough") {
         dispatch({
           type: "BLOGCONTENT_WARN",
