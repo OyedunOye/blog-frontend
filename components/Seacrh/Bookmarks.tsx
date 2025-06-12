@@ -37,7 +37,7 @@ const Bookmarks = () => {
           <CleanSlate message="You are yet to bookmark any blog on this site." />
         ) : (
           <>
-            {isSuccess && data.user.bookmarked.length > 1
+            {isSuccess && data.user.bookmarked.length > 0
               ? data.user.bookmarked.map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}

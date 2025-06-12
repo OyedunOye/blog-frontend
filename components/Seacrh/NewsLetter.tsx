@@ -11,17 +11,17 @@ import { ArrowRight } from "lucide-react";
 
 const SearchNewsletter = () => {
   return (
-    <MaxWidth className="mb-24">
-      <div className="w-full py-10 flex items-center justify-between">
+    <MaxWidth className="mb-24 dark:dark:bg-slate-800">
+      <h3 className="max-w-[470px] text-4xl max-md:text-xl max-lg:mt-4 font-semibold text-gray-800 dark:text-white">
+        Join our newsletter 🎉
+      </h3>
+      <div className="w-full py-10 flex items-center justify-between max-md:flex-col-reverse">
         <div className={cn("flex flex-col gap-y-4", poppins.className)}>
-          <h3 className="max-w-[470px] text-4xl font-semibold text-gray-800">
-            Join our newsletter 🎉
-          </h3>
-          <p className="max-w-[473px] text-gray-600 mt-2">
+          <p className="max-w-[473px] text-gray-600 dark:text-gray-300 mt-2">
             Read and share new perspectives on just about any topic.
             Everyone&apos;s welcome.👋
           </p>
-          <div className="flex flex-col gap-y-1 mt-2 items-start">
+          {/* <div className="flex flex-col gap-y-1 mt-2 items-start">
             <div className="flex items-center justify-center gap-x-3">
               <div className="flex items-center justify-center px-3 py-1 bg-[#065F46]/10 rounded-full">
                 <p className="text-[#065F46] text-xs">01</p>
@@ -38,7 +38,7 @@ const SearchNewsletter = () => {
                 Get premium magazines
               </p>
             </div>
-          </div>
+          </div> */}
           <form className="flex flex-col gap-y-3 w-[] relative mt-4">
             <Input
               className="h-[52px] py-2 rounded-full pl-4"

@@ -32,6 +32,16 @@ import Bookmarks from "./Bookmarks";
 import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 // import AllBlogs from "./AllBlogs";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies(null, { path: "/" });
+
+const getToken = async () => {
+  const token = await cookies.get("token");
+  return token;
+};
+
+const token = await getToken();
 
 const ArticleSection = () => {
   const [activeTab, setActiveTab] = useState<"ARTICLES" | "FAVORITE" | "SAVED">(
@@ -77,30 +87,34 @@ const ArticleSection = () => {
               Articles ({allBlogs.length})
             </Button>
           </li>
-          <li className="flex">
-            <Button
-              onClick={() => setActiveTab("FAVORITE")}
-              variant="ghost"
-              className={cn(
-                activeTab === "FAVORITE" &&
-                  "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
-              )}
-            >
-              Favorites ({favouriteCount})
-            </Button>
-          </li>
-          <li className="flex">
-            <Button
-              onClick={() => setActiveTab("SAVED")}
-              variant="ghost"
-              className={cn(
-                activeTab === "SAVED" &&
-                  "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
-              )}
-            >
-              Saved ({savedCount})
-            </Button>
-          </li>
+          {token && (
+            <>
+              <li className="flex">
+                <Button
+                  onClick={() => setActiveTab("FAVORITE")}
+                  variant="ghost"
+                  className={cn(
+                    activeTab === "FAVORITE" &&
+                      "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
+                  )}
+                >
+                  Favorites ({favouriteCount})
+                </Button>
+              </li>
+              <li className="flex">
+                <Button
+                  onClick={() => setActiveTab("SAVED")}
+                  variant="ghost"
+                  className={cn(
+                    activeTab === "SAVED" &&
+                      "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
+                  )}
+                >
+                  Saved ({savedCount})
+                </Button>
+              </li>
+            </>
+          )}
         </ul>
       </div>
 

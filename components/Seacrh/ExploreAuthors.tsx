@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";
@@ -66,8 +66,8 @@ const ExploreAuthors = () => {
             {isSuccess && blogAuthors.length > 0 ? (
               <div className="mt-8 flex items-center gap-8 flex-wrap">
                 {blogAuthors.map((author: Authors) => (
-                  <Link
-                    href={"/"}
+                  <div
+                    // href={"/"}
                     key={author._id}
                     className="w-[calc(100%/4.5)] max-lg:w-[calc(100%/3.4)] max-md:w-[100%] h-[287px] border shadow-lg hover:shadow-xl rounded-2xl relative bg-white"
                   >
@@ -107,7 +107,7 @@ const ExploreAuthors = () => {
                       </h5>
                       <p className="text-xs text-[#6B7280]">{author.email}</p>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             ) : null}

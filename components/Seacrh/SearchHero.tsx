@@ -20,7 +20,7 @@ const SearchHero = () => {
         className="object-cover w-full"
       />
 
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 p-[64px] max-md:p-[10px] lg:w-[80%] max-lg:w-[85%] max-md:h-[50] max-w-[1272px] bg-white rounded-3xl shadow-lg flex flex-col justify-center items-center gap-y-8 border dark:bg-black">
+      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 p-[64px] max-md:p-[10px] lg:w-[80%] max-lg:w-[85%] max-md:h-[50] max-w-[1272px] bg-white rounded-3xl shadow-lg dark:shadow-gray-600 flex flex-col justify-center items-center gap-y-8 border dark:bg-black">
         <div className="flex flex-col gap-y-3 items-center ">
           <h3
             className={cn(
@@ -38,7 +38,7 @@ const SearchHero = () => {
           </p>
         </div>
 
-        <form className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] relative">
+        <form className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] mb-10 relative">
           <Input
             className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
             placeholder="Search article..."
@@ -51,7 +51,7 @@ const SearchHero = () => {
             <ArrowRight className="h-4 w-4 text-white" />
           </Button>
         </form>
-        <div className="flex items-center gap-x-3 -mt-3 lg:w-[65%]">
+        {/* <div className="flex items-center gap-x-3 -mt-3 lg:w-[65%]">
           <p className="font-semibold text-sm text-gray-600">Related: </p>
           <div className="flex items-center gap-x-2 text-sm text-indigo-600">
             <p>UX designer</p>
@@ -59,7 +59,7 @@ const SearchHero = () => {
             <p>Vector</p>
             <p>Frontend</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
