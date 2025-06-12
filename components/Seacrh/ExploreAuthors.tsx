@@ -22,7 +22,7 @@ const ExploreAuthors = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      console.log(data);
+      // console.log(data);
       setBlogAuthors(data.authors);
       setNumberOfAuthors(data.authors.length);
     }

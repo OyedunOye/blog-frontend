@@ -65,22 +65,10 @@ const EditProfile = () => {
     },
   });
 
-  console.log(data);
-
   const onSubmit = async (values: EditProfileFormData) => {
     // console.log("The values are", values);
     try {
       const formData = new FormData();
-      // values.firstName !== ""
-      //   ? formData.set("firstName", values.firstName)
-      //   : "";
-      // values.lastName !== "" ? formData.set("lastName", values.lastName) : "";
-      // values.email !== "" ? formData.set("email", values.email) : "";
-      // profileImage !== "" && !values.removeProfilePic
-      //   ? formData.set("authorImg", profileImage)
-      //   : values.removeProfilePic
-      //   ? formData.set("authorImg", "")
-      //   : "";
 
       if (values.firstName !== "") {
         formData.set("firstName", values.firstName);
@@ -97,13 +85,6 @@ const EditProfile = () => {
       if (!values.removeProfilePic && profileImage !== "") {
         formData.set("authorImg", profileImage);
       }
-      // if (profileImage !== "" && values.removeProfilePic === false) {
-      //   formData.set("articleImg", profileImage);
-      // } else if (values.removeProfilePic === true) {
-      //   formData.set("authorImg", "");
-      // }
-      console.log(values.removeProfilePic);
-      console.log(...formData);
 
       const res = await mutateAsync(formData);
 

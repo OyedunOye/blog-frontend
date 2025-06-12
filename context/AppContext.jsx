@@ -53,6 +53,12 @@ export const AppReducer = (state, action) => {
         profileData: action.payload,
       };
 
+    case "CONTENT_TEXT_COLOR_WARNING":
+      return {
+        ...state,
+        contentTextColorWarning: action.payload,
+      };
+
     default:
       return state;
   }
@@ -67,6 +73,7 @@ const initialState = {
   blogContentWarn: "No",
   canLogin: false,
   profileData: null,
+  contentTextColorWarning: true,
 };
 
 //create the context. This is the thing that the components import and use to get the state
