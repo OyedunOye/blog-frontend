@@ -56,6 +56,9 @@ const NavBar = () => {
 
   const { data, isLoading: getUserIsLoading } = useGetAUser();
 
+  console.log(data);
+  // const sessionExpCheck = new Date(g)
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -208,15 +211,17 @@ const NavBar = () => {
               </div>
             ) : (
               <>
-                <Link href={"/signup"}>
-                  <Button
-                    onClick={() => setSignUpIsLoading(true)}
-                    variant="default"
-                    className="w-fit"
-                  >
-                    Sign Up
-                  </Button>
-                </Link>
+                {!getUserIsLoading && !token && (
+                  <Link href={"/signup"}>
+                    <Button
+                      onClick={() => setSignUpIsLoading(true)}
+                      variant="default"
+                      className="w-fit"
+                    >
+                      Sign Up
+                    </Button>
+                  </Link>
+                )}
                 {!getUserIsLoading && token ? (
                   <div className="ml-4">
                     <DropdownMenu>
