@@ -16,7 +16,7 @@ const SearchHero = () => {
   const [searchText, setSearchText] = useState<string>("Search text");
   // const [searchResultArrayLength, setSearchResultArrayLength] =useState<number>(0);
   const [allBlogs, setAllBlogs] = useState<[]>([]);
-  const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
+  const { data, isSuccess } = useGetAllBlogs();
 
   // const searchResultArray: string[] = [];
 
