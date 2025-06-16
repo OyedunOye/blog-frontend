@@ -8,8 +8,39 @@ import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 import { ArrowRight, Search } from "lucide-react";
 import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
+import { BlogType } from "../Home/LatestArticles";
 
 const SearchHero = () => {
+  const [searchText, setSearchText] = useState<string>("Search text");
+  // const [searchResultArrayLength, setSearchResultArrayLength] =useState<number>(0);
+  const [allBlogs, setAllBlogs] = useState<[]>([]);
+  const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
+
+  // const searchResultArray: string[] = [];
+
+  useEffect(() => {
+    if (isSuccess && data && data.blogs) {
+      setAllBlogs(data.blogs);
+    }
+  }, [data]);
+  // console.log(allBlogs);
+
+  // why is this filterSearchWord function not working? the content of it literarily works fine standalone outside a function.
+  // const filterSearchWord = () => {
+  //   const filteredBlogs = allBlogs.filter((blog: BlogType) =>
+  //     blog.title.toLowerCase().includes(searchText.toLowerCase())
+  //   );
+  //   return filteredBlogs;
+  // };
+
+  const filteredBlogs = allBlogs.filter((blog: BlogType) =>
+    blog.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  // console.log(filteredBlogs);
+
   return (
     <div className="w-full relative">
       <Image
@@ -28,20 +59,34 @@ const SearchHero = () => {
               poppins.className
             )}
           >
-            UI Design
+            {/* UI Design */}
+            {searchText}
           </h3>
-          <p className="text-gray-500 dark:text-gray-400">
-            We found 1135 results for{" "}
-            <span className="font-semibold text-black dark:text-white">
-              UI Design
-            </span>
-          </p>
+          {searchText !== "Search text" ? (
+            <p className="text-gray-500 dark:text-gray-400">
+              We found {filteredBlogs.length} results for{" "}
+              <span className="font-semibold text-black dark:text-white">
+                {searchText}
+              </span>
+            </p>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400">
+              Type a keyword from the blog title to search
+            </p>
+          )}
         </div>
 
         <form className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] mb-10 relative">
           <Input
             className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
             placeholder="Search article..."
+            onChange={(e) => {
+              e.target.value !== ""
+                ? setSearchText(e.target.value)
+                : setSearchText("Search text");
+              // filterSearchWord;
+              // setSearchResultArrayLength(filterSearchWord.length);
+            }}
           />
           <Search
             className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"

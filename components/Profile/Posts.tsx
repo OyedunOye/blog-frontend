@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -15,7 +14,7 @@ import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import Loading from "../common/Loader";
 import { limContentToThirtyWords } from "@/utils/helpers";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "@/context/AppContext";
 import DeleteConfirmation from "../modals/DeleteConfirmation";
 
@@ -34,11 +33,24 @@ interface BlogType {
   };
 }
 
-// const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
-
 const Posts = () => {
   const { data, isLoading, isSuccess, isError } = useGetAUser();
   const { state, dispatch } = useContext(AppContext);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const blogsPerPage = 3;
+
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+
+  const currentBlogs = data
+    ? data?.user?.blogs.slice(indexOfFirstBlog, indexOfLastBlog)
+    : [];
+
+  const totalPages = data
+    ? Math.ceil(data?.user?.blogs.length / blogsPerPage)
+    : 0;
 
   const handleDeleteClick = (blogData: BlogType) => {
     const payload = {
@@ -51,8 +63,6 @@ const Posts = () => {
       payload: payload,
     });
   };
-
-  // console.log(data);
 
   return (
     <>
@@ -118,7 +128,7 @@ const Posts = () => {
               ) : (
                 <>
                   <div className="flex flex-col gap-y-8 w-full">
-                    {data.user.blogs.map((blog: BlogType) => (
+                    {currentBlogs.map((blog: BlogType) => (
                       <div
                         key={blog._id}
                         className="bg-gray-200 dark:bg-input/30 w-[100%] max-lg:w-[94%] p-5 max-md:p-2 flex gap-x-8  max-md:gap-y-3 max-md:flex-col rounded-tl-xl rounded-br-xl shadow-md hover:shadow-lg"
@@ -163,26 +173,47 @@ const Posts = () => {
                     ))}
                   </div>
 
-                  {data.user.blogs.length > 3 ? (
-                    <div className="flex w-full mt-6 ">
-                      <Pagination className="flex mx-0 w-full">
-                        <PaginationContent>
-                          <PaginationItem>
-                            <PaginationPrevious href="#" />
+                  <div className="flex w-full mt-6 ">
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious
+                            onClick={() => {
+                              setCurrentPage((prev) => Math.max(prev - 1, 1));
+                              window.scrollTo(0, 0);
+                            }}
+                            aria-disabled={currentPage === 1}
+                          />
+                        </PaginationItem>
+
+                        {Array.from({ length: totalPages }, (_, i) => (
+                          <PaginationItem key={i}>
+                            <PaginationLink
+                              isActive={currentPage === i + 1}
+                              onClick={() => {
+                                window.scrollTo(0, 0);
+                                setCurrentPage(i + 1);
+                              }}
+                            >
+                              {i + 1}
+                            </PaginationLink>
                           </PaginationItem>
-                          <PaginationItem>
-                            <PaginationLink href="#">1</PaginationLink>
-                          </PaginationItem>
-                          <PaginationItem>
-                            <PaginationEllipsis />
-                          </PaginationItem>
-                          <PaginationItem>
-                            <PaginationNext href="#" />
-                          </PaginationItem>
-                        </PaginationContent>
-                      </Pagination>
-                    </div>
-                  ) : null}
+                        ))}
+
+                        <PaginationItem>
+                          <PaginationNext
+                            onClick={() => {
+                              setCurrentPage((prev) =>
+                                Math.min(prev + 1, totalPages)
+                              );
+                              window.scrollTo(0, 0);
+                            }}
+                            aria-disabled={currentPage === totalPages}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
                 </>
               )}
             </div>
