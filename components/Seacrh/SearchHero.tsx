@@ -24,7 +24,7 @@ const SearchHero = () => {
     if (isSuccess && data && data.blogs) {
       setAllBlogs(data.blogs);
     }
-  }, [data]);
+  }, [data, isSuccess]);
   // console.log(allBlogs);
 
   // why is this filterSearchWord function not working? the content of it literarily works fine standalone outside a function.
