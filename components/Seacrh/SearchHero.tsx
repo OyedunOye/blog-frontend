@@ -14,45 +14,32 @@ import { BlogType } from "../Home/LatestArticles";
 
 const SearchHero = () => {
   const [searchText, setSearchText] = useState<string>("Search text");
-  const [searchResultArrayLength, setSearchResultArrayLength] =
-    useState<number>(0);
+  // const [searchResultArrayLength, setSearchResultArrayLength] =useState<number>(0);
   const [allBlogs, setAllBlogs] = useState<[]>([]);
   const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
 
-  // const titleArray:string[] = []
-  const titleArray: string[] = [];
-  const searchResultArray: string[] = [];
+  // const searchResultArray: string[] = [];
 
   useEffect(() => {
     if (isSuccess && data && data.blogs) {
       setAllBlogs(data.blogs);
-      // allBlogs.map((blog: BlogType) => {
-      //   titleArray.push(blog.title);
-      // });
     }
-    // console.log(titleArray);
   }, [data]);
-  console.log(allBlogs);
+  // console.log(allBlogs);
 
-  const filterSearchWord = () => {
-    // for (const title in titleArray) {
-    //   if (title.includes(searchText)) {
-    //     searchResultArray.push(title);
-    //     console.log(searchResultArray);
-    //   }
-    // }
-    // const filteredBlogs:Array<string> = []
-    //      filteredBlogs = titleArray.filter(title =>
-    //     title.toLowerCase().includes(searchText.toLowerCase())
+  // why is this filterSearchWord function not working? the content of it literarily works fine standalone outside a function.
+  // const filterSearchWord = () => {
+  //   const filteredBlogs = allBlogs.filter((blog: BlogType) =>
+  //     blog.title.toLowerCase().includes(searchText.toLowerCase())
+  //   );
+  //   return filteredBlogs;
+  // };
 
-    //     console.log(filteredBlogs)
-    //   )
+  const filteredBlogs = allBlogs.filter((blog: BlogType) =>
+    blog.title.toLowerCase().includes(searchText.toLowerCase())
+  );
 
-    const filteredBlogs = allBlogs.filter((blog: BlogType) =>
-      blog.title.toLowerCase().includes(searchText.toLowerCase())
-    );
-    return filteredBlogs;
-  };
+  // console.log(filteredBlogs);
 
   return (
     <div className="w-full relative">
@@ -75,12 +62,18 @@ const SearchHero = () => {
             {/* UI Design */}
             {searchText}
           </h3>
-          <p className="text-gray-500 dark:text-gray-400">
-            We found {filterSearchWord.length} results for{" "}
-            <span className="font-semibold text-black dark:text-white">
-              UI Design
-            </span>
-          </p>
+          {searchText !== "Search text" ? (
+            <p className="text-gray-500 dark:text-gray-400">
+              We found {filteredBlogs.length} results for{" "}
+              <span className="font-semibold text-black dark:text-white">
+                {searchText}
+              </span>
+            </p>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-400">
+              Type a keyword from the blog title to search
+            </p>
+          )}
         </div>
 
         <form className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] mb-10 relative">
@@ -91,8 +84,8 @@ const SearchHero = () => {
               e.target.value !== ""
                 ? setSearchText(e.target.value)
                 : setSearchText("Search text");
-              filterSearchWord;
-              setSearchResultArrayLength(filterSearchWord.length);
+              // filterSearchWord;
+              // setSearchResultArrayLength(filterSearchWord.length);
             }}
           />
           <Search

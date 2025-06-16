@@ -56,7 +56,7 @@ const NavBar = () => {
 
   const { data, isLoading: getUserIsLoading } = useGetAUser();
 
-  console.log(data);
+  // console.log(data);
   // const sessionExpCheck = new Date(g)
 
   const pathname = usePathname();
