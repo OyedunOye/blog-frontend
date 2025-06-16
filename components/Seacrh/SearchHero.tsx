@@ -16,7 +16,7 @@ const SearchHero = () => {
   const [searchText, setSearchText] = useState<string>("Search text");
   // const [searchResultArrayLength, setSearchResultArrayLength] =useState<number>(0);
   const [allBlogs, setAllBlogs] = useState<[]>([]);
-  const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
+  const { data, isSuccess } = useGetAllBlogs();
 
   // const searchResultArray: string[] = [];
 
@@ -24,7 +24,7 @@ const SearchHero = () => {
     if (isSuccess && data && data.blogs) {
       setAllBlogs(data.blogs);
     }
-  }, [data]);
+  }, [data, isSuccess]);
   // console.log(allBlogs);
 
   // why is this filterSearchWord function not working? the content of it literarily works fine standalone outside a function.
@@ -83,7 +83,7 @@ const SearchHero = () => {
             onChange={(e) => {
               e.target.value !== ""
                 ? setSearchText(e.target.value)
-                : setSearchText("Search text");
+                : setSearchText("Search text")
               // filterSearchWord;
               // setSearchResultArrayLength(filterSearchWord.length);
             }}
