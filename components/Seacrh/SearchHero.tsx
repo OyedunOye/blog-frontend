@@ -80,13 +80,13 @@ const SearchHero = () => {
           <Input
             className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
             placeholder="Search article..."
-            onChange={(e) => {
+            onChange={(e) => 
               e.target.value !== ""
                 ? setSearchText(e.target.value)
                 : setSearchText("Search text")
               // filterSearchWord;
               // setSearchResultArrayLength(filterSearchWord.length);
-            }}
+            }
           />
           <Search
             className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"
