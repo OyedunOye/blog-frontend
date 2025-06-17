@@ -1,6 +1,4 @@
-import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import React from "react";
-import Loader from "../common/Loader";
 import CleanSlate from "../common/CleanSlate";
 import { BlogType } from "../Home/LatestArticles";
 import Link from "next/link";
@@ -12,21 +10,19 @@ import { Button } from "../ui/button";
 import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 
-const Favourites = () => {
-  const { data, isLoading, isError, isSuccess } = useGetAUser();
+interface UserType {
+  email: string;
+  loved: BlogType[];
+  bookmarked: BlogType[];
+}
+interface FavouritesProps {
+  favoriteBlogs: UserType;
+  isError: boolean;
+}
 
-  // console.log(data);
-
+const Favourites = ({ favoriteBlogs, isError }: FavouritesProps) => {
   return (
-    // <div>FavouritesAndSaved</div>
     <div className="w-full">
-      {isLoading && !isError ? (
-        <Loader
-          message="Loading your favourite blogs"
-          className="w-full h-[480px]"
-        />
-      ) : null}
-
       {isError ? (
         <NoServerConnectionWarning
           message="Server is unreachable, unable to load the blog section at the
@@ -35,12 +31,12 @@ const Favourites = () => {
       ) : null}
 
       <div className="flex items-center gap-8 flex-wrap">
-        {isSuccess && data.user.loved.length < 1 ? (
+        {!isError && favoriteBlogs.loved.length < 1 ? (
           <CleanSlate message="You are yet to love any blog on this site." />
         ) : (
           <>
-            {isSuccess && data.user.loved.length > 0
-              ? data.user.loved.map((data: BlogType) => (
+            {!isError && favoriteBlogs.loved.length > 0
+              ? favoriteBlogs.loved.map((data) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}

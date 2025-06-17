@@ -59,6 +59,12 @@ export const AppReducer = (state, action) => {
         contentTextColorWarning: action.payload,
       };
 
+    case "DISPLAY_BLOG_ARRAY":
+      return {
+        ...state,
+        displayBlogArray: action.payload,
+      };
+
     default:
       return state;
   }
@@ -74,6 +80,7 @@ const initialState = {
   canLogin: false,
   profileData: null,
   contentTextColorWarning: true,
+  displayBlogArray: null,
 };
 
 //create the context. This is the thing that the components import and use to get the state

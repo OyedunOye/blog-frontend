@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,7 +20,6 @@ import {
 
 import MaxWidth from "../common/MaxWidthWrapper";
 import AvatarRenderer from "../common/Avatar";
-import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
 import { BlogType } from "../Home/LatestArticles";
 import CleanSlate from "../common/CleanSlate";
 import Loader from "../common/Loader";
@@ -30,9 +29,9 @@ import { wordLimit } from "@/utils/helpers";
 import Favourites from "./Favourites";
 import Bookmarks from "./Bookmarks";
 import { useGetAUser } from "@/hooks/authors/useGetAUser";
-import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
-// import AllBlogs from "./AllBlogs";
 import Cookies from "universal-cookie";
+import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
+import { AppContext } from "@/context/AppContext";
 
 const cookies = new Cookies(null, { path: "/" });
 
@@ -43,24 +42,30 @@ const getToken = async () => {
 
 const token = await getToken();
 
-const ArticleSection = () => {
+interface ArticleBlogProps {
+  allBlogs: BlogType[];
+  errorStatus: boolean;
+  loadingStatus: boolean;
+}
+
+const ArticleSection = ({
+  allBlogs,
+  errorStatus,
+  loadingStatus,
+}: ArticleBlogProps) => {
   const [activeTab, setActiveTab] = useState<"ARTICLES" | "FAVORITE" | "SAVED">(
     "ARTICLES"
   );
 
-  const { data, isLoading, isError, isSuccess } = useGetAllBlogs();
-  const { data: favouriteNSavedData, isSuccess: favouriteNSavedIsSuccess } =
-    useGetAUser();
+  const {
+    data: favouriteNSavedData,
+    isSuccess: favouriteNSavedIsSuccess,
+    isError: favouriteSavedIsError,
+  } = useGetAUser();
 
-  const [allBlogs, setAllBlogs] = useState<BlogType[]>([]);
   const [favouriteCount, setFavouriteCount] = useState<number>(0);
   const [savedCount, setSavedCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (data && isSuccess) {
-      setAllBlogs(data.blogs);
-    }
-  }, [data, isSuccess]);
+  const { state } = useContext(AppContext);
 
   useEffect(() => {
     if (favouriteNSavedData && favouriteNSavedIsSuccess) {
@@ -68,8 +73,6 @@ const ArticleSection = () => {
       setSavedCount(favouriteNSavedData.user.bookmarked.length);
     }
   }, [favouriteNSavedData, favouriteNSavedIsSuccess]);
-
-  // console.log(singleUserData.user);
 
   return (
     <MaxWidth className="mb-24 mt-44 w-full">
@@ -84,10 +87,14 @@ const ArticleSection = () => {
                   "text-black bg-accent dark:bg-slate-300 dark:hover:dark:bg-slate-300"
               )}
             >
-              Articles ({allBlogs.length})
+              Articles (
+              {!state.displayBlogArray
+                ? allBlogs.length
+                : state.displayBlogArray.length}
+              )
             </Button>
           </li>
-          {token && (
+          {!errorStatus && token && (
             <>
               <li className="flex">
                 <Button
@@ -118,23 +125,28 @@ const ArticleSection = () => {
         </ul>
       </div>
 
-      {isLoading && !isError ? (
+      {loadingStatus && !errorStatus ? (
         <Loader message="Loading blogs section." className="w-full h-[480px]" />
       ) : null}
 
       <div className="mt-8 flex items-center gap-8 flex-wrap">
-        {isSuccess && (!allBlogs || allBlogs.length < 1) ? (
+        {!errorStatus &&
+        !loadingStatus &&
+        (!allBlogs || allBlogs.length < 1) ? (
           <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
         ) : (
           <>
-            {isError ? (
+            {errorStatus ? (
               <NoServerConnectionWarning
                 message="Server is unreachable, unable to load the blog section at the
                   moment. Please try again later."
               />
             ) : null}
-            {isSuccess && allBlogs && activeTab === "ARTICLES"
-              ? allBlogs.map((data) => (
+            {!errorStatus && allBlogs && activeTab === "ARTICLES"
+              ? (state.displayBlogArray !== null
+                  ? state.displayBlogArray
+                  : allBlogs
+                ).map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
@@ -227,8 +239,18 @@ const ArticleSection = () => {
       </div>
 
       {/* {activeTab === "ARTICLES" && <AllBlogs />} */}
-      {activeTab === "FAVORITE" && <Favourites />}
-      {activeTab === "SAVED" && <Bookmarks />}
+      {activeTab === "FAVORITE" && (
+        <Favourites
+          favoriteBlogs={favouriteNSavedData.user}
+          isError={favouriteSavedIsError}
+        />
+      )}
+      {activeTab === "SAVED" && (
+        <Bookmarks
+          savedBlogs={favouriteNSavedData.user}
+          isError={favouriteSavedIsError}
+        />
+      )}
 
       <div className="flex justify-between mt-6 pr-4">
         <Pagination className="justify-start mx-0 w-1/2">
