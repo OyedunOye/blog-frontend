@@ -8,38 +8,31 @@ import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 import { ArrowRight, Search } from "lucide-react";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
-import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
+import { useContext, useEffect, useState } from "react";
 import { BlogType } from "../Home/LatestArticles";
+import { AppContext } from "@/context/AppContext";
 
-const SearchHero = () => {
+interface SearchHeroProps {
+  allBlogs: BlogType[];
+}
+
+const SearchHero = ({ allBlogs }: SearchHeroProps) => {
   const [searchText, setSearchText] = useState<string>("Search text");
-  // const [searchResultArrayLength, setSearchResultArrayLength] =useState<number>(0);
-  const [allBlogs, setAllBlogs] = useState<[]>([]);
-  const { data, isSuccess } = useGetAllBlogs();
 
-  // const searchResultArray: string[] = [];
-
-  useEffect(() => {
-    if (isSuccess && data && data.blogs) {
-      setAllBlogs(data.blogs);
-    }
-  }, [data, isSuccess]);
-  // console.log(allBlogs);
-
-  // why is this filterSearchWord function not working? the content of it literarily works fine standalone outside a function.
-  // const filterSearchWord = () => {
-  //   const filteredBlogs = allBlogs.filter((blog: BlogType) =>
-  //     blog.title.toLowerCase().includes(searchText.toLowerCase())
-  //   );
-  //   return filteredBlogs;
-  // };
+  const { dispatch } = useContext(AppContext);
 
   const filteredBlogs = allBlogs.filter((blog: BlogType) =>
     blog.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // console.log(filteredBlogs);
+  useEffect(() => {
+    if (searchText !== "Search text") {
+      dispatch({
+        payload: filteredBlogs,
+        type: "DISPLAY_BLOG_ARRAY",
+      });
+    }
+  }, [searchText]);
 
   return (
     <div className="w-full relative">
@@ -59,7 +52,6 @@ const SearchHero = () => {
               poppins.className
             )}
           >
-            {/* UI Design */}
             {searchText}
           </h3>
           {searchText !== "Search text" ? (
@@ -71,7 +63,7 @@ const SearchHero = () => {
             </p>
           ) : (
             <p className="text-gray-500 dark:text-gray-400">
-              Type a keyword from the blog title to search
+              Search for a blog title
             </p>
           )}
         </div>
@@ -80,12 +72,10 @@ const SearchHero = () => {
           <Input
             className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
             placeholder="Search article..."
-            onChange={(e) => 
+            onChange={(e) =>
               e.target.value !== ""
                 ? setSearchText(e.target.value)
                 : setSearchText("Search text")
-              // filterSearchWord;
-              // setSearchResultArrayLength(filterSearchWord.length);
             }
           />
           <Search
@@ -96,15 +86,6 @@ const SearchHero = () => {
             <ArrowRight className="h-4 w-4 text-white" />
           </Button>
         </form>
-        {/* <div className="flex items-center gap-x-3 -mt-3 lg:w-[65%]">
-          <p className="font-semibold text-sm text-gray-600">Related: </p>
-          <div className="flex items-center gap-x-2 text-sm text-indigo-600">
-            <p>UX designer</p>
-            <p>Photo</p>
-            <p>Vector</p>
-            <p>Frontend</p>
-          </div>
-        </div> */}
       </div>
     </div>
   );

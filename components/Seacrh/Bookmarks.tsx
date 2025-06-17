@@ -1,6 +1,4 @@
-import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import React from "react";
-import Loader from "../common/Loader";
 import CleanSlate from "../common/CleanSlate";
 import { BlogType } from "../Home/LatestArticles";
 import Link from "next/link";
@@ -12,33 +10,33 @@ import { Button } from "../ui/button";
 import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 
-const Bookmarks = () => {
-  const { data, isLoading, isError, isSuccess } = useGetAUser();
-
+interface UserType {
+  email: string;
+  loved: BlogType[];
+  bookmarked: BlogType[];
+}
+interface BookmarksProps {
+  savedBlogs: UserType;
+  isError: boolean;
+}
+const Bookmarks = ({ savedBlogs, isError }: BookmarksProps) => {
   return (
-    // <div>FavouritesAndSaved</div>
     <div className="w-full">
-      {isLoading && !isError ? (
-        <Loader
-          message="Loading your saved blogs"
-          className="w-full h-[480px]"
-        />
-      ) : null}
       {isError ? (
         <NoServerConnectionWarning
           message="Server is unreachable, unable to load the saved blogs at the
-                        moment. Please try again later."
+                      moment. Please try again later."
         />
       ) : null}
 
       <div className="flex items-center gap-8 flex-wrap">
-        {isSuccess &&
-        (!data.user.bookmarked || data.user.bookmarked.length < 1) ? (
+        {!isError &&
+        (!savedBlogs.bookmarked || savedBlogs.bookmarked.length < 1) ? (
           <CleanSlate message="You are yet to bookmark any blog on this site." />
         ) : (
           <>
-            {isSuccess && data.user.bookmarked.length > 0
-              ? data.user.bookmarked.map((data: BlogType) => (
+            {savedBlogs.bookmarked.length > 0
+              ? savedBlogs.bookmarked.map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
