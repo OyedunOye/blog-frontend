@@ -74,7 +74,10 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
           )}
         </div>
 
-        <form className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] mb-10 relative">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col gap-y-3 lg:w-[65%] max-lg:w-[75%] max-md:w-[100%] mb-10 relative"
+        >
           <Input
             className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
             placeholder="Search article..."
@@ -88,7 +91,10 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
             className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"
             aria-label="search icon"
           />
-          <Button className="h-[43px] w-[43px] bg-indigo-600 rounded-full flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2">
+          <Button
+            className="h-[43px] w-[43px] bg-indigo-600 rounded-full flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2"
+            type="submit"
+          >
             <ArrowRight className="h-4 w-4 text-white" />
           </Button>
         </form>

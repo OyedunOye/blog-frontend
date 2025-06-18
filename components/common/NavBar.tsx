@@ -242,15 +242,19 @@ const NavBar = () => {
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href={"/profile"}>Profile</Link>
-                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                          </DropdownMenuItem>
+                          <Link href={"/profile"}>
+                            <DropdownMenuItem className="cursor-pointer">
+                              Profile
+                              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                          </Link>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href={"/create-blog"}>Create Blog</Link>
-                            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                          </DropdownMenuItem>
+                          <Link href={"/create-blog"}>
+                            <DropdownMenuItem className="cursor-pointer">
+                              Create Blog
+                              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                          </Link>
                         </DropdownMenuGroup>
 
                         <DropdownMenuSeparator />
