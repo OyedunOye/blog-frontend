@@ -129,6 +129,14 @@ const ArticleSection = ({
         <Loader message="Loading blogs section." className="w-full h-[480px]" />
       ) : null}
 
+      {errorStatus ? (
+        <NoServerConnectionWarning
+          className=""
+          message="Server is unreachable, unable to load the blog section at the
+                  moment. Please try again later."
+        />
+      ) : null}
+
       <div className="mt-8 flex items-center gap-8 flex-wrap">
         {!errorStatus &&
         !loadingStatus &&
@@ -136,12 +144,6 @@ const ArticleSection = ({
           <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
         ) : (
           <>
-            {errorStatus ? (
-              <NoServerConnectionWarning
-                message="Server is unreachable, unable to load the blog section at the
-                  moment. Please try again later."
-              />
-            ) : null}
             {!errorStatus && allBlogs && activeTab === "ARTICLES"
               ? (state.displayBlogArray !== null
                   ? state.displayBlogArray
@@ -252,26 +254,28 @@ const ArticleSection = ({
         />
       )}
 
-      <div className="flex justify-between mt-6 pr-4">
-        <Pagination className="justify-start mx-0 w-1/2">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+      {!errorStatus && !loadingStatus && (
+        <div className="flex justify-between mt-6 pr-4">
+          <Pagination className="justify-start mx-0 w-1/2">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious href="#" />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href="#" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
 
-        <Button variant="default">See more</Button>
-      </div>
+          <Button variant="default">See more</Button>
+        </div>
+      )}
     </MaxWidth>
   );
 };
