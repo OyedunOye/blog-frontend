@@ -49,6 +49,12 @@ interface EachComment {
   commentedAt: string;
 }
 
+interface CommentProps {
+  comment: string;
+  commenter: string;
+  _id: string;
+}
+
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const { dispatch, state } = useContext(AppContext);
   const [commentId, setCommentId] = useState<string>("");
@@ -63,7 +69,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   if (!singleBlogLoading) {
     console.log(
       singleBlogData.blog[0].comments.filter(
-        (comment: any) => comment._id === "682a1a992fe95d97192ae5ae"
+        (comment: CommentProps) => comment._id === "682a1a992fe95d97192ae5ae"
       )
     );
   }
