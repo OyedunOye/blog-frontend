@@ -1,6 +1,10 @@
 import { getToken } from '@/utils';
 import axios from 'axios'
 
+interface ToggleTwoFAProp {
+    status: boolean
+}
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export const createUser = async (credentials: any) => {
@@ -49,6 +53,22 @@ export const changeUserPassword = async(updateItem: any)=>{
     return res.data
     } catch (error) {
         console.log("An error occured, unable to retrieve your blogs.", error);
+    }
+}
+
+export const toggleTwoFA = async(status:ToggleTwoFAProp)=>{
+    const token = await getToken()
+    try {
+        const res = await axios.patch(`${BASE_URL}users/toggle-two-fa`, status, {
+            headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+        })
+
+    return res.data
+    } catch (error) {
+        console.log("An error occured, unable to toggle the two FA button.", error);
     }
 }
 
