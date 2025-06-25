@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,10 +23,12 @@ import { toasterAlert } from "@/utils";
 // For client-side usage
 import { setCookie } from "cookies-next/client";
 import { LoaderCircle } from "lucide-react";
+import TwoFA from "../modals/TwoFaModal";
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 const LoginForm = () => {
+  const [twoFa, setTwoFa] = useState<boolean>(true);
   const { isPending, mutateAsync, data } = useLogUserIn();
 
   const router = useRouter();
@@ -48,6 +51,10 @@ const LoginForm = () => {
         toasterAlert(res.message);
         router.push("/");
       }
+
+      if (res.email && !isPending) {
+        setTwoFa(true);
+      }
     } catch (error) {
       // if(error?.status?===401)
       if (data === undefined && !isPending) {
@@ -61,6 +68,11 @@ const LoginForm = () => {
 
   return (
     <div>
+      {twoFa && (
+        // Get email from the form via form values
+        // Here, we are passing a hardcoded email for demonstration purposes
+        <TwoFA email="odopeter@gmail.com" closeModal={() => setTwoFa(false)} />
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
