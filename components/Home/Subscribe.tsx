@@ -77,7 +77,7 @@ const Subscribe = () => {
                 variant="default"
                 className="max-md:justify-self-center flex"
               >
-                Sign up
+                Subscribe
               </Button>
             </form>
           </Form>
