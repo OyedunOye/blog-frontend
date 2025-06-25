@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetASingleBlog } from "@/hooks/blog/useGetBlogs";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate, toasterAlert } from "@/utils";
 import Loader from "../common/Loader";
@@ -43,18 +43,36 @@ interface EachComment {
     firstName: string;
     lastName: string;
     authorImg: string;
+    _id: string;
   };
   _id: string;
   commentedAt: string;
 }
 
+interface CommentProps {
+  comment: string;
+  commenter: string;
+  _id: string;
+}
+
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const { dispatch, state } = useContext(AppContext);
+  const [commentId, setCommentId] = useState<string>("");
+
+  console.log(commentId);
 
   const router = useRouter();
 
   const { data: singleBlogData, isLoading: singleBlogLoading } =
     useGetASingleBlog(blogId);
+
+  if (!singleBlogLoading) {
+    console.log(
+      singleBlogData.blog[0].comments.filter(
+        (comment: CommentProps) => comment._id === "682a1a992fe95d97192ae5ae"
+      )
+    );
+  }
 
   const { mutateAsync, data } = useCreateBlogComment();
 
@@ -220,6 +238,14 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     return "Not author";
   };
 
+  const commentAuthorID = () => {
+    if (token && singleBlogData) {
+      const userData = getDecodedToken(token);
+      return userData?.id;
+    }
+    return;
+  };
+
   const handleDeleteClick = () => {
     const payload = {
       storedBlogId: blogId,
@@ -242,6 +268,19 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       type: "OPEN_EDIT_MODAL",
       payload: payload,
     });
+  };
+
+  const handleEditComment = () => {
+    toasterAlert(
+      "Edit comment button implementation in progress, will be available soon!"
+    );
+    return;
+  };
+  const handleDeleteComment = () => {
+    toasterAlert(
+      "Delete comment button implementation in progress, will be available soon!"
+    );
+    return;
   };
 
   return (
@@ -471,7 +510,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                         />
                       </div>
 
-                      <div className="flex flex-col pl-2">
+                      <div className="flex flex-col pl-2 w-full">
                         <div className="flex min-w-40 mb-3 gap-5 text-xs text-slate-500">
                           <p className="capitalize">
                             {eachComment.commenter.firstName +
@@ -483,6 +522,32 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                           </p>
                         </div>
                         <p className="">{eachComment.comment}</p>
+                        {commentAuthorID() === eachComment.commenter._id ? (
+                          <div className="w-full h-10 flex justify-end mt-2">
+                            <div className="w-64 flex justify-between">
+                              <Button
+                                variant="default"
+                                className="bg-green-400 hover:bg-green-300 rounded-md w-[45%] cursor-pointer"
+                                onClick={() => {
+                                  setCommentId(eachComment._id);
+                                  handleEditComment();
+                                }}
+                              >
+                                Edit Comment
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                className="w-[45%] cursor-pointer"
+                                onClick={() => {
+                                  setCommentId(eachComment._id);
+                                  handleDeleteComment();
+                                }}
+                              >
+                                Delete Comment
+                              </Button>
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   </div>

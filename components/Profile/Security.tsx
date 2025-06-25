@@ -15,10 +15,12 @@ import { editPasswordFormSchema } from "@/zodValidations/auth/constant";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import ToggleSwitch from "./ToggleSwitch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useChangePassword } from "@/hooks/auth/useChangePassword";
 import { toasterAlert } from "@/utils";
 import { useRouter } from "next/navigation";
+import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import { useToggleTwoFA } from "@/hooks/auth/useToggleTwoFA";
 
 type PasswordFormData = z.infer<typeof editPasswordFormSchema>;
 
@@ -26,6 +28,19 @@ const Security = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false);
 
   const { mutateAsync, isPending } = useChangePassword();
+
+  const {
+    mutateAsync: mutateToggleTwoFA,
+    isPending: mutateToggleTwoFAIsPending,
+  } = useToggleTwoFA();
+
+  const { data, isSuccess } = useGetAUser();
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      setIsToggled(data.user.isTwoFAuthActive);
+    }
+  }, [data, isSuccess]);
 
   const router = useRouter();
 
@@ -53,7 +68,20 @@ const Security = () => {
     }
   };
 
-  const handleTwoFactor = () => setIsToggled((prev) => !prev);
+  const handleTwoFactor = async () => {
+    // setIsToggled((prev) => !prev);
+    try {
+      // console.log(!isToggled);
+      const res = await mutateToggleTwoFA({ status: !isToggled });
+      // console.log(res);
+      if (res.user && !mutateToggleTwoFAIsPending) {
+        toasterAlert(res.message);
+        setIsToggled(res.user.isTwoFAuthActive);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -127,8 +155,9 @@ const Security = () => {
           Two-step Authentication
         </h4>
         <p>
-          Two-step authentication is currently off. For enhanced security,
-          please enable two-step verification to protect your account.
+          {!isToggled
+            ? "Two-step authentication is currently off. For enhanced security, please enable two-step verification to protect your account."
+            : "You have activated two-step authentication which enhances your account protectection!"}
         </p>
 
         <ToggleSwitch
