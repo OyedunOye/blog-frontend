@@ -25,7 +25,7 @@ const Subscribe = () => {
 
   const onSubmit = async (values: SubscribeFormData) => {
     try {
-      console.log(values);
+      // console.log(values);
       const res = await mutateAsync(values);
       if (res.subscriber && !isPending) {
         toasterAlert(res.message);

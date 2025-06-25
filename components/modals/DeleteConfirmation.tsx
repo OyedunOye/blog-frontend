@@ -46,7 +46,7 @@ const DeleteConfirmation = () => {
 
   return (
     <div className=" flex fixed top-0 left-0 bg-black/80 w-full h-full z-[50]">
-      <div className="justify-center items-center flex border w-full h-full">
+      <div className="justify-center items-center flex w-full h-full">
         <div className="w-120 max-md:w-[86%] min-h-60 flex-col flex bg-white dark:bg-slate-800 justify-between p-3 rounded-md">
           <div className="text-center py-3">
             <h1 className="font-bold ">
