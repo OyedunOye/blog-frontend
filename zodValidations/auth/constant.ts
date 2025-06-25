@@ -130,3 +130,9 @@ export const subscribeFormSchema = z.object({
     message: "Invalid email address.",
   }),
 });
+
+export const validateOtpFormSchema = z.object({
+  otp: z.string().length(6,{
+    message: "6 digits OTP code is required.",
+  }),
+});

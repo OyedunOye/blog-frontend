@@ -1,20 +1,44 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { LoaderCircle, X } from "lucide-react";
 
 import OtpInput from "react-otp-input";
 import { Button } from "../ui/button";
 
 import { cn } from "@/lib/utils";
 import { formatTime, obscureMail } from "@/utils/helpers";
+import { useVerifyOtpAndLogin } from "@/hooks/auth/useVerifyOtpAndLogin";
+import { setCookie } from "cookies-next/client";
+import { toasterAlert } from "@/utils";
+import { useRouter } from "next/navigation";
+import { useResendOtp } from "@/hooks/auth/useResendOtp";
+// import { validateOtpFormSchema } from "@/zodValidations/auth/constant";
+// import { z } from "zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { useForm } from "react-hook-form";
 
 interface TwoFAProps {
   email: string;
   closeModal: () => void;
 }
 
+// type ValidateOtpData = z.infer<typeof validateOtpFormSchema>;
+
 const TwoFA = ({ email, closeModal }: TwoFAProps) => {
   const [otp, setOtp] = useState<string>("");
-  const [seconds, setSeconds] = useState<number>(300);
+  const [seconds, setSeconds] = useState<number>(600);
+
+  //   const form = useForm<ValidateOtpData>({
+  //   resolver: zodResolver(validateOtpFormSchema),
+  //   defaultValues: {
+  //     otp:""
+  //   }
+  // })
+
+  const router = useRouter();
+
+  const { mutateAsync, isPending } = useVerifyOtpAndLogin();
+  const { mutateAsync: resendOtpMutateAsync, isPending: resendOtpIsPending } =
+    useResendOtp();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -28,40 +52,49 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
     };
   }, [seconds]);
 
-  const handleValidateOtp = (e: React.FormEvent) => {
+  const handleValidateOtp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       if (otp.length === 6) {
-        console.log("OTP is valid:", otp);
+        // console.log("OTP is valid:", otp);
         // Here you would typically send the OTP to your server for validation
-        // For example: await validateOtp(otp);
+        const res = await mutateAsync({ otp, email });
+        console.log(res.error);
 
-        // Use isPending from your hook to show
-        // loading state if needed as in the login form
+        // If this succeeds, run the login logic here and close the modal
+        if (res.token && !isPending) {
+          setCookie("token", res.token);
+          toasterAlert(res.message);
+          router.push("/");
+          closeModal();
+        }
 
-        // If this succeeds, run the login logic here also and close the modal
-
-        // setCookie("token", res.token);
-        // toasterAlert(res.message);
-        // router.push("/");
-
-        // closeModal();
+        if (res.error && !isPending) {
+          // console.log(res.error);
+          toasterAlert(res.error);
+        }
       }
     } catch (error) {
+      //I would like to return a toaster with the error message from the backend which specifies what has gone wrong e.g. incorrect token or expired token. This is accessible in res from mutate async call, hence, toaster moved into the try block.
+      toasterAlert("Something went wrong, please login again.");
       console.log(error);
     }
   };
 
-  const handleResendOtp = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleResendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     try {
       if (seconds === 0) {
         console.log("Resending OTP...");
         // Here you would typically resend the OTP to the user's email
+        const res = await resendOtpMutateAsync({ email });
+        if (!resendOtpIsPending && res.email) {
+          toasterAlert(res.message);
+        }
         // For example: await resendOtp(email);
-        setSeconds(300); // Reset the timer to 5 minutes
+        setSeconds(600); // Reset the timer to 10 minutes
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +104,7 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
   return (
     <div className=" flex fixed top-0 left-0 bg-black/80 w-full h-full z-[50]">
       <div className="justify-center items-center flex w-full h-full">
-        <div className="relative w-[90%] lg:w-[50%] h-[70%] flex-col flex bg-white dark:bg-slate-800 justify-between p-3 rounded-md">
+        <div className="relative w-[90%] max-md:w-[84%] lg:w-[50%] h-[70%] flex-col flex bg-white dark:bg-slate-800 justify-between p-3  rounded-md">
           <Button
             className="absolute -top-3 -right-3 h-8 w-8 rounded-full"
             aria-label="close"
@@ -105,7 +138,7 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
                         shouldAutoFocus
                         skipDefaultStyles
                         inputStyle={
-                          "h-10 text-center border border-gray-300 rounded-md focus:outline-none focus:border-indigo-600 mx-2 font-semibold w-10"
+                          "h-10 text-center border border-gray-300 rounded-md focus:outline-none focus:border-indigo-600 mx-2 font-semibold w-10 max-md:w-8"
                         }
                         // renderSeparator={<span>-</span>}
                         renderInput={(props) => <input {...props} />}
@@ -141,7 +174,11 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
                           )}
                           onClick={handleValidateOtp}
                         >
-                          Verify
+                          {isPending ? (
+                            <LoaderCircle className="text-gray-400 animate-spin" />
+                          ) : (
+                            "Verify"
+                          )}
                         </Button>
                       </div>
 
