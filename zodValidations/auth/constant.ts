@@ -123,3 +123,10 @@ export const editPasswordFormSchema = z.object({
   message: "Passwords do not match",
   path: ["confirmNewPassword"],
 });
+
+
+export const subscribeFormSchema = z.object({
+  email: z.string().email({
+    message: "Invalid email address.",
+  }),
+});
