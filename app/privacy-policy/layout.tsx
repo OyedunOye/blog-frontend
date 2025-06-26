@@ -1,13 +1,13 @@
 import Footer from "@/components/common/Footer";
 import NavBar from "@/components/common/NavBar";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Discover blogs, authors and all about the app.",
-  description: "Search for blogs and discover blog authors",
+  title: "Shade's blog privacy policy",
+  description: "Details your data being collected and how we use it.",
 };
 
-export default function DiscoverPageLayout({
+export default function PrivacyPolicyLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

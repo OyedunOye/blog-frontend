@@ -3,7 +3,7 @@ import NavBar from "@/components/common/NavBar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog's creation page",
+  title: "Create a new blog",
   description:
     "Registered user can write and submit their blog for publishing on this site by filling out this form.",
 };

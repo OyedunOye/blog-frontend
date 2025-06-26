@@ -11,6 +11,7 @@ import { setCookie } from "cookies-next/client";
 import { toasterAlert } from "@/utils";
 import { useRouter } from "next/navigation";
 import { useResendOtp } from "@/hooks/auth/useResendOtp";
+import Link from "next/link";
 
 interface TwoFAProps {
   email: string;
@@ -182,7 +183,8 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
 
                       <p className="text-sm  text-center">
                         By continuing, you agree to the Shade&apos;s blog Terms
-                        and privacy policy
+                        and <Link href={"/privacy-policy"}>privacy policy</Link>
+                        .
                       </p>
                     </div>
                   </div>

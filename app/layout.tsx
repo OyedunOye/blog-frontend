@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blog's homepage",
+  title: "Shades's Blog homepage",
   description: "Create and share inspiring stories",
 };
 

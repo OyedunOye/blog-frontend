@@ -51,6 +51,9 @@ const Footer = () => {
               </span>{" "}
               by Oluwasade Oyesina
             </p>
+            <Link className="text-blue-500 underline" href={"/privacy-policy"}>
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </MaxWidth>
