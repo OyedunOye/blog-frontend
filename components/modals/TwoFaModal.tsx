@@ -11,28 +11,17 @@ import { setCookie } from "cookies-next/client";
 import { toasterAlert } from "@/utils";
 import { useRouter } from "next/navigation";
 import { useResendOtp } from "@/hooks/auth/useResendOtp";
-// import { validateOtpFormSchema } from "@/zodValidations/auth/constant";
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
+import Link from "next/link";
 
 interface TwoFAProps {
   email: string;
   closeModal: () => void;
 }
 
-// type ValidateOtpData = z.infer<typeof validateOtpFormSchema>;
-
 const TwoFA = ({ email, closeModal }: TwoFAProps) => {
   const [otp, setOtp] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(600);
-
-  //   const form = useForm<ValidateOtpData>({
-  //   resolver: zodResolver(validateOtpFormSchema),
-  //   defaultValues: {
-  //     otp:""
-  //   }
-  // })
+  const [validateOtpLength, setValidateOtpLength] = useState<string>("ENOUGH");
 
   const router = useRouter();
 
@@ -56,9 +45,13 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
     e.preventDefault();
 
     try {
+      if (otp.length < 6) {
+        setValidateOtpLength("NOT ENOUGH");
+        return;
+      }
       if (otp.length === 6) {
-        // console.log("OTP is valid:", otp);
-        // Here you would typically send the OTP to your server for validation
+        setValidateOtpLength("ENOUGH");
+
         const res = await mutateAsync({ otp, email });
         console.log(res.error);
 
@@ -130,7 +123,7 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
                 {/* Form Section */}
                 <div className="">
                   <div className="flex flex-col gap-y-2 items-center justify-center mt-3">
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-3 h-14 max-md:h-18">
                       <OtpInput
                         value={otp}
                         onChange={setOtp}
@@ -143,6 +136,12 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
                         // renderSeparator={<span>-</span>}
                         renderInput={(props) => <input {...props} />}
                       />
+                      {validateOtpLength === "NOT ENOUGH" && (
+                        <p className="text-sm px-2 text-red-500">
+                          Insufficient OTP digits. You need 6 digits OTP to
+                          login!
+                        </p>
+                      )}
                     </div>
 
                     <div className="w-full flex items-center justify-center mt-4 gap-x-3 text-sm">
@@ -164,7 +163,7 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
                         {seconds === 0 ? "00:00" : formatTime(seconds)}
                       </p>
                     </div>
-                    <div className="my-4">
+                    <div className="mt-4 mb-8">
                       <div className="my-4">
                         <Button
                           variant="default"
@@ -184,7 +183,8 @@ const TwoFA = ({ email, closeModal }: TwoFAProps) => {
 
                       <p className="text-sm  text-center">
                         By continuing, you agree to the Shade&apos;s blog Terms
-                        and privacy policy
+                        and <Link href={"/privacy-policy"}>privacy policy</Link>
+                        .
                       </p>
                     </div>
                   </div>

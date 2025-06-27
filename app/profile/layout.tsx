@@ -4,7 +4,7 @@ import Footer from "@/components/common/Footer";
 
 export const metadata: Metadata = {
   title: "Profile Page",
-  description: "Author's detailed profile page",
+  description: "User's detailed profile page",
 };
 
 export default function ProfilePageLayout({

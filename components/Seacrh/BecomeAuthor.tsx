@@ -42,7 +42,7 @@ const BecomeAuthor = () => {
           )}
         >
           <p className="text-gray-500 uppercase font-semibold text-sm dark:text-gray-400">
-            super change your writing powers
+            super charge your writing powers
           </p>
           <h3 className="max-w-[470px] text-4xl max-lg:text-lg font-semibold text-gray-800 dark:text-white">
             Become an author and share your great stories

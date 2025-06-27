@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { toasterAlert } from "@/utils";
 import { useRouter } from "next/navigation";
 import Cookies from "universal-cookie";
+import Link from "next/link";
 
 const DeleteAccount = () => {
   const cookies = new Cookies(null, { path: "/" });
@@ -52,7 +53,7 @@ const DeleteAccount = () => {
           <li>
             <span className="font-semibold">Contact Support:</span> If you have
             any questions or need assistance, please contact our{" "}
-            <a href="mailto: test@mail.com" className="underline">
+            <a href="mailto: shadesblogapp@gmail.com" className="underline">
               support team.
             </a>
           </li>
@@ -61,13 +62,15 @@ const DeleteAccount = () => {
 
       <div className="w-full flex items-center justify-end mt-10">
         <div className="flex items-center max-md:w-full justify-center gap-x-4">
-          <Button
-            variant={"default"}
-            size={"lg"}
-            className="cursor-pointer rounded-full max-md:w-32"
-          >
-            Contact Support
-          </Button>
+          <Link href={"mailto:shadesblogapp@gmail.com"}>
+            <Button
+              variant={"default"}
+              size={"lg"}
+              className="cursor-pointer rounded-full max-md:w-32"
+            >
+              Contact Support
+            </Button>
+          </Link>
           <Button
             type="button"
             onClick={handleDeleteAccount}

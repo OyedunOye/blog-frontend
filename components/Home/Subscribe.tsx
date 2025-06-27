@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSubscribeToNewsletter } from "@/hooks/subscribe/useSubscribeToNewsletter";
 import { toasterAlert } from "@/utils";
+import Link from "next/link";
 
 type SubscribeFormData = z.infer<typeof subscribeFormSchema>;
 
@@ -82,7 +83,11 @@ const Subscribe = () => {
             </form>
           </Form>
           <p className="text-slate-600 text-sm text-center dark:text-white">
-            We care about the protection of your data. Read our Privacy Policy.
+            We care about the protection of your data. Read our{" "}
+            <Link className="text-blue-500 underline" href={"/privacy-policy"}>
+              Privacy Policy
+            </Link>
+            .
           </p>
         </div>
       </MaxWidth>
