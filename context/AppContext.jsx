@@ -65,6 +65,31 @@ export const AppReducer = (state, action) => {
         displayBlogArray: action.payload,
       };
 
+    case "EDIT_COMMENT":
+      return {
+        ...state,
+        storedBlogId: action.payload.storedBlogId,
+        commentToEdit: action.payload.commentToEdit,
+        commentId: action.payload.commentId,
+        editCommentClicked: action.payload.editCommentClicked,
+        updatedCommentArray: action.payload.updatedCommentArray,
+      };
+
+    case "DELETE_COMMENT":
+      return {
+        ...state,
+        storedBlogId: action.payload.storedBlogId,
+        commentId: action.payload.commentId,
+        deleteCommentClicked: action.payload.deleteCommentClicked,
+        updatedCommentArray: action.payload.updatedCommentArray,
+      };
+
+    case "UPDATED_COMMENT_ARRAY":
+      return {
+        ...state,
+        updatedCommentArray: action.payload,
+      };
+
     default:
       return state;
   }
@@ -81,6 +106,10 @@ const initialState = {
   profileData: null,
   contentTextColorWarning: true,
   displayBlogArray: null,
+  commentToEdit: null,
+  commentId: null,
+  editCommentClicked: false,
+  updatedCommentArray: null,
 };
 
 //create the context. This is the thing that the components import and use to get the state

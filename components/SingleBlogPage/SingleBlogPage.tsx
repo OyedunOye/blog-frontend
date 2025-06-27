@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetASingleBlog } from "@/hooks/blog/useGetBlogs";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate, toasterAlert } from "@/utils";
 import Loader from "../common/Loader";
@@ -30,6 +30,8 @@ import "react-quill-new/dist/quill.snow.css";
 import { getInitials } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { useToggleBookmarkABlog } from "@/hooks/blog/useToggleBookmarkABlog";
+import EditComment from "../modals/EditComment";
+import DeleteComment from "../modals/DeleteComment";
 
 type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
 
@@ -49,32 +51,15 @@ interface EachComment {
   commentedAt: string;
 }
 
-interface CommentProps {
-  comment: string;
-  commenter: string;
-  _id: string;
-}
-
 const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const { dispatch, state } = useContext(AppContext);
-  const [commentId, setCommentId] = useState<string>("");
-
-  console.log(commentId);
 
   const router = useRouter();
 
   const { data: singleBlogData, isLoading: singleBlogLoading } =
     useGetASingleBlog(blogId);
 
-  if (!singleBlogLoading) {
-    console.log(
-      singleBlogData.blog[0].comments.filter(
-        (comment: CommentProps) => comment._id === "682a1a992fe95d97192ae5ae"
-      )
-    );
-  }
-
-  const { mutateAsync, data } = useCreateBlogComment();
+  const { mutateAsync } = useCreateBlogComment();
 
   const {
     data: toggleLike,
@@ -161,10 +146,14 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
         comment: values,
         blogId: blogId,
       });
-      console.log(res);
-      toasterAlert(res.message);
 
       if (res) {
+        dispatch({
+          type: "UPDATED_COMMENT_ARRAY",
+          payload: res.updatedBlog.comments,
+        });
+        console.log(res);
+        toasterAlert(res.message);
         form.reset({ comment: "" });
       }
     } catch (error) {
@@ -246,6 +235,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     return;
   };
 
+  // Opens delete blog modal and set needed blog details in state. Available only for the blog author.
   const handleDeleteClick = () => {
     const payload = {
       storedBlogId: blogId,
@@ -258,6 +248,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     });
   };
 
+  // Opens the edit blog modal and sets needed blog details in state. Available only for the blog author.
   const handleEditClick = () => {
     const payload = {
       storedBlogId: blogId,
@@ -270,16 +261,35 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
     });
   };
 
-  const handleEditComment = () => {
-    toasterAlert(
-      "Edit comment button implementation in progress, will be available soon!"
-    );
+  // Opens the edit comment modal and sets needed comment details in state. Available only for the comment author.
+  const handleEditCommentButtonClick = (eachComment: EachComment) => {
+    console.log(eachComment._id);
+    const payload = {
+      editCommentClicked: true,
+      storedBlogId: blogId,
+      commentToEdit: eachComment.comment,
+      commentId: eachComment._id,
+    };
+    dispatch({
+      type: "EDIT_COMMENT",
+      payload: payload,
+    });
+
     return;
   };
-  const handleDeleteComment = () => {
-    toasterAlert(
-      "Delete comment button implementation in progress, will be available soon!"
-    );
+
+  // Opens the delete comment modal and sets needed comment details in state. Available only for the comment author.
+  const handleDeleteCommentButtonClick = (eachComment: EachComment) => {
+    const payload = {
+      deleteCommentClicked: true,
+      storedBlogId: blogId,
+      commentId: eachComment._id,
+    };
+    dispatch({
+      type: "DELETE_COMMENT",
+      payload: payload,
+    });
+
     return;
   };
 
@@ -378,6 +388,8 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
             </MaxWidth>
           </div>
           <MaxWidth className="flex flex-col h-full gap-0 w-full max-md:px-2">
+            {state.editCommentClicked && <EditComment />}
+            {state.deleteCommentClicked && <DeleteComment />}
             <h1 className="font-extrabold max-md:text-3xl text-5xl py-1 mb-3 w-full text-center">
               {singleBlogData.blog[0].title}
             </h1>
@@ -418,9 +430,9 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                       {/* trying to reflect the current number of comments in case an addition happens, but data returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
                       <span className="h-fit flex -mt-1 text-sm font-semibold">
                         {" "}
-                        {!data
+                        {!state.updatedCommentArray
                           ? singleBlogData.blog[0].commentCount
-                          : data.updatedBlog.commentCount}
+                          : state.updatedCommentArray.length}
                       </span>
                     </div>
                   </div>
@@ -485,9 +497,9 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
               <div className="flex flex-col gap-2 mt-10">
                 {/* trying to populate the comments display from updated comments returned on submitting a new comment but data's commenter obj returning undefined because the page is rendering before the await that returns data is fulfilled. How to solve this? Resolved! Now works as expected!! */}
 
-                {(!data
+                {(!state.updatedCommentArray
                   ? singleBlogData.blog[0].comments
-                  : data.updatedBlog.comments
+                  : state.updatedCommentArray
                 ).map((eachComment: EachComment) => (
                   <div
                     className="w-full min-h-18 rounded-sm p-1.5 bg-slate-50 dark:bg-input/30 shadow-sm "
@@ -521,6 +533,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                             {formatDate(eachComment.commentedAt)}
                           </p>
                         </div>
+
                         <p className="">{eachComment.comment}</p>
                         {commentAuthorID() === eachComment.commenter._id ? (
                           <div className="w-full h-10 flex justify-end mt-2">
@@ -528,10 +541,9 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                               <Button
                                 variant="default"
                                 className="bg-green-400 hover:bg-green-300 rounded-md w-[45%] cursor-pointer"
-                                onClick={() => {
-                                  setCommentId(eachComment._id);
-                                  handleEditComment();
-                                }}
+                                onClick={() =>
+                                  handleEditCommentButtonClick(eachComment)
+                                }
                               >
                                 Edit Comment
                               </Button>
@@ -539,8 +551,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                                 variant="destructive"
                                 className="w-[45%] cursor-pointer"
                                 onClick={() => {
-                                  setCommentId(eachComment._id);
-                                  handleDeleteComment();
+                                  handleDeleteCommentButtonClick(eachComment);
                                 }}
                               >
                                 Delete Comment

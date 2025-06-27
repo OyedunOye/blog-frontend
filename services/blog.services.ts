@@ -16,6 +16,12 @@ interface EditBlogData {
   blogData: any;
 }
 
+interface EditCommentData {
+  comment: string;
+  commentId: string;
+  blogId: string
+}
+
 interface CreateCommentData {
   blogId: string;
   comment: {
@@ -166,3 +172,31 @@ export const toggleBookmarkABlog = async (blogId: string) => {
     throw error;
   }
 };
+
+export const editComment = async (editDetails:any) => {
+  const token = await getToken();
+  try {
+        const res = await axios.patch(`${BASE_URL}blogs/edit-comment`, editDetails, {
+          headers:{
+            "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,}})
+        return res.data
+    } catch (error:any) {
+        // console.log(error)
+        return error.response.data || {error: "Something went wrong, please try again."}
+    }
+}
+
+export const deleteComment = async (deleteDetails:any) => {
+  const token = await getToken();
+  try {
+        const res = await axios.patch(`${BASE_URL}blogs/delete-comment`, deleteDetails, {
+          headers:{
+            "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,}})
+        return res.data
+    } catch (error:any) {
+        // console.log(error)
+        return error.response.data || {error: "Something went wrong, please try again."}
+    }
+}
