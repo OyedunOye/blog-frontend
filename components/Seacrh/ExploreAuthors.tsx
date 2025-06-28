@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { poppins } from "@/lib/fonts";
 
 import MaxWidth from "../common/MaxWidthWrapper";
-// import { exploreAuthors } from "./data";
 import { useGetAllAuthors } from "@/hooks/authors/useGetAllAuthors";
 import { useEffect, useState } from "react";
 import Loader from "../common/Loader";

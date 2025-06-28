@@ -70,15 +70,15 @@ const EditComment = () => {
           />
           <div className="content-center justify-center flex  gap-4 max-sm: pb-4">
             <Button
-              variant="default"
-              className="bg-green-400 hover:bg-green-300 rounded-md w-30"
+              variant="ghost"
+              className="w-30"
               onClick={closeEditCommentModal}
             >
               Back
             </Button>
             <Button
-              variant="destructive"
-              className="w-30"
+              variant="default"
+              className="bg-blue-400 hover:bg-blue-300 rounded-md w-30"
               onClick={updateComment}
             >
               Update
