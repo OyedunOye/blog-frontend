@@ -1,13 +1,12 @@
 import { loginSocialMedia } from "@/constants";
-// import React, { useState } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import { toasterAlert } from "@/utils";
 
-const LoginButtons = () => {
-  // const [socialMedia, setSocialMedia] = useState<string>("")
+const SignUpButtons = () => {
   const handleClickButton = (socialMedia: string) => {
     toasterAlert(
-      `Login with ${socialMedia} is coming soon! Please login with an email and a password.`
+      `Sign up with ${socialMedia} is coming soon! Please open your account with an email and a password.`
     );
   };
   return (
@@ -27,4 +26,4 @@ const LoginButtons = () => {
   );
 };
 
-export default LoginButtons;
+export default SignUpButtons;

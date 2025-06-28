@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
-import LoginButtons from "./LoginButtons";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import SignUpForm from "./SignUpForm";
 import Loading from "../common/Loader";
+import SignUpButtons from "./SignUpButtons";
 
 const SignUpPage = () => {
   const [homePageLoading, setHomePageLoading] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const SignUpPage = () => {
       </div>
 
       <MaxWidth className="h-contain py-10 w-2/3 max-lg:w-[80%] justify-center divide-y gap-8 absolute top-36 border z-50 bg-white dark:bg-slate-900 rounded-lg shadow-md">
-        <LoginButtons />
+        <SignUpButtons />
 
         <div className="w-1/2 max-lg:w-[80%] max-md:w-[100%] justify-center mx-auto">
           <SignUpForm />

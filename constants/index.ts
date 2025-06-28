@@ -2,51 +2,23 @@ import {
   SlSocialInstagram,
   SlSocialTwitter,
   SlSocialYoutube,
-  SlSocialFacebook
+  // SlSocialFacebook
 } from "react-icons/sl";
+
 import {
-  author1,
-  author2,
-  author3,
-  author4,
-  author5,
-  author6,
-  author7,
-  author8,
-  author9,
   programmingImg,
-  gamingImg,
-  fitnessImg,
   foodImg,
   techImg,
   lifestyleImg,
   abstractImg,
   travelImg,
-  trend1,
-  trend2,
-  writer1,
-  writer2,
-  writer3,
-  trend3,
-  trend4,
-  writer4,
-  popAuth1,
-  popStoryImg1,
-  popAuth2,
-  popStoryImg2,
-  popAuth3,
-  popStoryImg3,
-  articleImg1,
-  articleImg2,
-  articleImg3,
-  articleImg4,
+
 } from "@/components/assets";
 import { FcGoogle } from "react-icons/fc";
 
 export const loginSocialMedia = [
-  {img: SlSocialFacebook, name: "Facebook"},
+  // {img: SlSocialFacebook, name: "Facebook"},
   {img: FcGoogle, name: "Google"},
-  {img: SlSocialTwitter, name: "Twitter"}
 ]
 
 export const socialMedia = [
@@ -59,9 +31,6 @@ export const socialMedia = [
 export const NavBarMenuList = [
   "Home",
   "Discover",
-  // "Categories",
-  // "Subscription",
-
 ];
 
 //These data belongs to the categories component. I think this might be subjected to changes, e.g. new categories may be added to the blog.

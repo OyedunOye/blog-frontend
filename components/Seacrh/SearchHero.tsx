@@ -17,7 +17,9 @@ interface SearchHeroProps {
 }
 
 const SearchHero = ({ allBlogs }: SearchHeroProps) => {
-  const [searchText, setSearchText] = useState<string>("Search text");
+  const [searchText, setSearchText] = useState<string>(
+    "Search for A Blog by Its Title"
+  );
 
   const { dispatch } = useContext(AppContext);
 
@@ -32,7 +34,7 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
         type: "DISPLAY_BLOG_ARRAY",
       });
     }
-    if (searchText === "Search text") {
+    if (searchText === "Search for A Blog by Its Title") {
       dispatch({
         payload: allBlogs,
         type: "DISPLAY_BLOG_ARRAY",
@@ -60,7 +62,8 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
           >
             {searchText}
           </h3>
-          {searchText !== "Search text" ? (
+          {searchText !== "Search for A Blog by Its Title" ? (
+            // <p className="text-gray-500 dark:text-gray-400">
             <p className="text-gray-500 dark:text-gray-400">
               We found {filteredBlogs.length} results for{" "}
               <span className="font-semibold text-black dark:text-white">
@@ -68,9 +71,7 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
               </span>
             </p>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">
-              Search for a blog title
-            </p>
+            <p className="text-gray-500 dark:text-gray-400">Search result</p>
           )}
         </div>
 
@@ -80,11 +81,11 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
         >
           <Input
             className="h-[52px] py-2 rounded-full pl-10 dark:bg-input/60"
-            placeholder="Search article..."
+            placeholder="Search blog..."
             onChange={(e) =>
               e.target.value !== ""
                 ? setSearchText(e.target.value)
-                : setSearchText("Search text")
+                : setSearchText("Search for A Blog by Its Title")
             }
           />
           <Search
