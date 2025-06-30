@@ -56,7 +56,7 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
         <div className="flex flex-col gap-y-3 items-center ">
           <h3
             className={cn(
-              "font-semibold text-gray-800 text-5xl max-md:text-lg max-md:mt-[20px] dark:text-white",
+              "font-semibold text-gray-800 text-5xl text-center max-md:text-lg max-md:mt-[20px] dark:text-white",
               poppins.className
             )}
           >

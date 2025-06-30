@@ -51,6 +51,8 @@ const NavBar = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [signUpIsLoading, setSignUpIsLoading] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const [homeIsClicked, setHomeIsClicked] = useState<boolean>(false);
+  const [discoverIsClicked, setDiscoverIsClicked] = useState<boolean>(false);
 
   const { theme, setTheme } = useTheme();
 
@@ -61,12 +63,24 @@ const NavBar = () => {
 
   const pathname = usePathname();
 
+  const handleMenuClick = (menu: string) => {
+    if (menu === "Home" && pathname !== "/") {
+      setHomeIsClicked(true);
+    }
+
+    if (menu === "Discover" && pathname !== "/discover") {
+      setDiscoverIsClicked(true);
+    }
+  };
+
   useEffect(() => {
     if (pathname === "/") {
       setActiveTab("Home");
+      setHomeIsClicked(false);
     }
     if (pathname === "/discover") {
       setActiveTab("Discover");
+      setDiscoverIsClicked(false);
     }
   }, [pathname]);
 
@@ -134,6 +148,10 @@ const NavBar = () => {
             <div className="space-x-2 flex max-md:hidden">
               {NavBarMenuList.map((menu) => (
                 <Link
+                  className="w-18"
+                  onClick={() => {
+                    handleMenuClick(menu);
+                  }}
                   href={
                     menu.split(" ")[0].toLowerCase() !== "home"
                       ? `/${menu.split(" ")[0].toLowerCase()}`
@@ -144,11 +162,16 @@ const NavBar = () => {
                   <Button
                     key={menu}
                     variant="ghost"
-                    className={`hover:bg-[#F3F4F6] dark:hover:bg-slate-700 ${
+                    className={`hover:bg-[#F3F4F6] dark:hover:bg-slate-700 w-full ${
                       activeTab === menu ? "bg-[#F3F4F6] text-black" : null
                     }`}
                   >
-                    {menu}
+                    {(homeIsClicked && menu === "Home") ||
+                    (discoverIsClicked && menu === "Discover") ? (
+                      <LoaderCircle className="text-gray-400 animate-spin w-fit" />
+                    ) : (
+                      menu
+                    )}
                   </Button>
                 </Link>
               ))}
