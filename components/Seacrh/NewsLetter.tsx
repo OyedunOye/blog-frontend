@@ -45,7 +45,7 @@ const SearchNewsletter = () => {
 
   return (
     <MaxWidth className="mb-24 dark:dark:bg-slate-800">
-      <h3 className="max-w-[470px] text-4xl max-md:text-xl max-lg:mt-4 font-semibold text-gray-800 dark:text-white">
+      <h3 className="max-w-[470px] text-4xl max-md:text-xl max-lg:mt-10 lg:mt-10 font-semibold text-gray-800 dark:text-white">
         Join our newsletter 🎉
       </h3>
       <div className="w-full py-10 flex items-center justify-between max-md:flex-col-reverse">

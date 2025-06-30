@@ -68,11 +68,11 @@ const ExploreAuthors = () => {
                   <div
                     // href={"/"}
                     key={author._id}
-                    className="w-[calc(100%/4.5)] max-lg:w-[calc(100%/3.4)] max-md:w-[100%] h-[287px] border shadow-lg hover:shadow-xl rounded-2xl relative bg-white"
+                    className="w-[calc(100%/4.5)] max-lg:w-[calc(100%/3.4)] max-md:w-[100%] h-[287px] border shadow-lg hover:shadow-xl rounded-2xl relative bg-white dark:bg-black"
                   >
                     <div className="relative">
                       <Image
-                        src={"/freshstart.jpeg"}
+                        src={"/authorBackDrop.jpeg"}
                         alt="Author Hero Image"
                         width={400}
                         height={350}
@@ -101,10 +101,12 @@ const ExploreAuthors = () => {
                         poppins.className
                       )}
                     >
-                      <h5 className="text-[#1F2937] font-medium text-base w-full capitalize">
+                      <h5 className="text-[#1F2937] dark:text-white font-medium text-base w-full capitalize">
                         {author.firstName + " " + author.lastName}
                       </h5>
-                      <p className="text-xs text-[#6B7280]">{author.email}</p>
+                      <p className="text-xs text-[#6B7280] dark:text-white">
+                        {author.email}
+                      </p>
                     </div>
                   </div>
                 ))}
