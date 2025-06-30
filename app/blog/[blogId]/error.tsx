@@ -18,7 +18,7 @@ export default function Error({
 
   return (
     <div className="w-full h-full flex justify-center">
-      <div className="w-full h-full flex flex-col gap-6 my-[15%] content-center text-center">
+      <div className="w-full h-full flex flex-col gap-6 px-4 my-[15%] content-center text-center">
         <h2 className="text-2xl font-bold">Not Found</h2>
         <p>Could not find the requested blog, it might have been deleted.</p>
 
