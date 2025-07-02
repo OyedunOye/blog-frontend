@@ -8,7 +8,7 @@ import Cookies from "universal-cookie";
 import { LoaderCircle } from "lucide-react";
 
 const DeactivateUserConfirmation = () => {
-  const { dispatch, state } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   // const { mutateAsync, data, isLoading, isError, error, isSuccess } =useDeleteABlog(state.storedBlogId);
   const cookies = new Cookies(null, { path: "/" });
