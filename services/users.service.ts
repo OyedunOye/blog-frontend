@@ -88,13 +88,16 @@ export const updateUserProfile = async(updateItem: any)=>{
     }
 }
 
-export const deleteUserAccount = async() => {
+export const deactivateUserAccount = async() => {
+    const token = await getToken();
     try {
-        const token = await getToken();
 
-        const res = await axios.delete(`${BASE_URL}users/delete-profile`, {
+        const res = await axios.patch(`${BASE_URL}users/deactivate-profile`,
+            {}, //no request body
+            {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             },
         })
         return res.data
