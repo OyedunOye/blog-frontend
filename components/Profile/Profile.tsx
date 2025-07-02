@@ -15,8 +15,8 @@ import Dashboard from "./Dashboard";
 import Posts from "./Posts";
 import EditProfile from "./EditProfile";
 import Security from "./Security";
-// import DeleteAccount from "./DeleteAccount";
-import WorkInProgress from "./WorkInProgress";
+import DeleteAccount from "./DeleteAccount";
+// import WorkInProgress from "./WorkInProgress";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<
@@ -103,8 +103,8 @@ const Profile = () => {
           {activeTab === "POSTS" && <Posts />}
           {activeTab === "PROFILE" && <EditProfile />}
           {activeTab === "SECURITY" && <Security />}
-          {/* {activeTab === "DELETE" && <DeleteAccount />} */}
-          {activeTab === "DELETE" && <WorkInProgress />}
+          {activeTab === "DELETE" && <DeleteAccount />}
+          {/* {activeTab === "DELETE" && <WorkInProgress />} */}
         </div>
 
         <div className="w-full max-md:flex flex-col max-2xl:hidden xl:hidden">
@@ -122,8 +122,8 @@ const Profile = () => {
           {activeTab === "POSTS" && !dashboardMenu ? <Posts /> : null}
           {activeTab === "PROFILE" && !dashboardMenu ? <EditProfile /> : null}
           {activeTab === "SECURITY" && !dashboardMenu ? <Security /> : null}
-          {/* {activeTab === "DELETE" && !dashboardMenu ? <DeleteAccount /> : null} */}
-          {activeTab === "DELETE" && !dashboardMenu ? <WorkInProgress /> : null}
+          {activeTab === "DELETE" && !dashboardMenu ? <DeleteAccount /> : null}
+          {/* {activeTab === "DELETE" && !dashboardMenu ? <WorkInProgress /> : null} */}
         </div>
       </div>
     </div>

@@ -1,88 +1,85 @@
 "use client";
 
-import { useDeleteUserAccount } from "@/hooks/authors/useDeleteUserAccount";
 import { Button } from "../ui/button";
-import { toasterAlert } from "@/utils";
-import { useRouter } from "next/navigation";
-import Cookies from "universal-cookie";
 import Link from "next/link";
+import DeactivateUserConfirmation from "../modals/DeactivateUserConfirmation";
+import { useContext } from "react";
+import { AppContext } from "@/context/AppContext";
 
 const DeleteAccount = () => {
-  const cookies = new Cookies(null, { path: "/" });
+  const { state, dispatch } = useContext(AppContext);
 
-  const { mutateAsync, isPending } = useDeleteUserAccount();
-
-  const router = useRouter();
-
-  const handleDeleteAccount = async () => {
-    try {
-      const res = await mutateAsync();
-      if (!isPending && res.message) {
-        toasterAlert(res.message);
-        cookies.remove("token");
-        router.push("/");
-      }
-      // if (isError && !isPending) {
-      //   toasterAlert(res.error);
-      // }
-    } catch (error) {
-      console.log(error);
-    }
+  const handleDeactivateClick = () => {
+    const payload = {
+      deleteModal: true,
+    };
+    dispatch({
+      type: "CONFIRM_DELETE",
+      payload: payload,
+    });
   };
 
   return (
-    <div className="flex flex-col gap-y-6 w-full h-full bg-red-600/10 text-red-600 p-8 max-md:p-4 rounded-sm">
-      <h5 className="text-lg font-semibold">Delete your account</h5>
-      <p>
-        We&apos;re sorry to see you go. Deleting your account is permanent and
-        cannot be undone. <br /> This action will:
-      </p>
-      <div className="border-t border-t-gray-200 mt-4 pt-4 max-w-[80%]">
-        <ul className="flex flex-col gap-y-4 list-disc ml-6">
-          <li>
-            <span className="font-semibold">Data Deletion:</span> When you
-            delete your account, all your data will be permanently removed from
-            our system. This includes any personal information, account
-            settings, and content you have created.
-          </li>
-          <li>
-            <span className="font-semibold">Irreversibility:</span> Account
-            deletion is irreversible. Once your account is deleted, you will not
-            be able to recover it or any associated data.
-          </li>
-          <li>
-            <span className="font-semibold">Contact Support:</span> If you have
-            any questions or need assistance, please contact our{" "}
-            <a href="mailto: shadesblogapp@gmail.com" className="underline">
-              support team.
-            </a>
-          </li>
-        </ul>
-      </div>
+    <>
+      {state.deleteModal ? <DeactivateUserConfirmation /> : null}
+      <div className="flex flex-col gap-y-6 w-full h-full bg-red-600/10 text-red-600 p-8 max-md:p-4 rounded-sm">
+        <h5 className="text-lg font-semibold">Deactivate your account</h5>
+        <p>
+          We&apos;re sorry to see you go. Deactivating your account locks your
+          account and you will be unable to reverse it by yourself. <br /> This
+          action will:
+        </p>
+        <div className="border-t border-t-gray-200 mt-4 pt-4 max-w-[80%]">
+          <ul className="flex flex-col gap-y-4 list-disc ml-6">
+            <li>
+              <span className="font-semibold">Data Archive:</span> When you
+              deactivate your account, all your data will not be displayed in
+              the app data will be held for 90 days, after which it will be
+              permanently removed from our system with no option of retrieving.
+              This includes any personal information, account settings, and the
+              contents that you have created.
+            </li>
+            <li>
+              <span className="font-semibold">Irreversibility:</span> Account
+              deactivation is reversible within 90 days after which data
+              retrieval is irreversible. Once your account is deleted, you will
+              not be able to recover it or any associated data.
+            </li>
+            <li>
+              <span className="font-semibold">Contact Support:</span> If you
+              have any questions or need assistance or to reactivate your
+              account within 90 days of its inactivation, please contact our{" "}
+              <a href="mailto: shadesblogapp@gmail.com" className="underline">
+                support team.
+              </a>
+            </li>
+          </ul>
+        </div>
 
-      <div className="w-full flex items-center justify-end mt-10">
-        <div className="flex items-center max-md:w-full justify-center gap-x-4">
-          <Link href={"mailto:shadesblogapp@gmail.com"}>
+        <div className="w-full flex items-center justify-end mt-10">
+          <div className="flex items-center max-md:w-full justify-center gap-x-4">
+            <Link href={"mailto:shadesblogapp@gmail.com"}>
+              <Button
+                variant={"default"}
+                size={"lg"}
+                className="cursor-pointer rounded-full max-md:w-32"
+              >
+                Contact Support
+              </Button>
+            </Link>
             <Button
-              variant={"default"}
+              type="button"
+              onClick={handleDeactivateClick}
+              variant={"destructive"}
               size={"lg"}
-              className="cursor-pointer rounded-full max-md:w-32"
+              className="cursor-pointer rounded-full max-md:w-34"
             >
-              Contact Support
+              Deactivate Account
             </Button>
-          </Link>
-          <Button
-            type="button"
-            onClick={handleDeleteAccount}
-            variant={"destructive"}
-            size={"lg"}
-            className="cursor-pointer rounded-full max-md:w-32"
-          >
-            Delete Account
-          </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,8 @@
-import { deleteUserAccount } from "@/services/users.service"
+import { deactivateUserAccount } from "@/services/users.service"
 import { useMutation } from "@tanstack/react-query"
 
-export const useDeleteUserAccount = () =>{
+export const useDeactivateUserAccount = () =>{
     return useMutation({
-        mutationFn: deleteUserAccount,
+        mutationFn: deactivateUserAccount,
     })
 }
