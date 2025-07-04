@@ -7,6 +7,10 @@ import { subscribeFormSchema } from "@/zodValidations/auth/constant";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
+import { useUnsubscribeToNewsletter } from "@/hooks/subscribe/useUnsubscribeToNewsletter";
+import { toasterAlert } from "@/utils";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface UnsubscribeProps {
   email: string;
@@ -15,6 +19,8 @@ interface UnsubscribeProps {
 type SubscribeFormData = z.infer<typeof subscribeFormSchema>;
 
 const Unsubscribe = ({ email }: UnsubscribeProps) => {
+  const router = useRouter();
+  const { mutateAsync, isPending } = useUnsubscribeToNewsletter();
   const form = useForm<SubscribeFormData>({
     resolver: zodResolver(subscribeFormSchema),
     defaultValues: {
@@ -35,8 +41,22 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
       // which leads back to this component.
 
       // Proceed with the unsubcription endpoint from here. { email: values.email }
+      const res = await mutateAsync(values);
+      if (res.email && !isPending) {
+        toasterAlert(res.message);
+
+        form.reset({ email: "" });
+        router.push("/");
+      }
+
+      if (res.error && !isPending) {
+        toasterAlert(res.error);
+      }
     } catch (error) {
       console.log(error);
+      toasterAlert(
+        "An error occured while cancelling your newsletter subscription, please try again later."
+      );
     }
   };
 
@@ -79,7 +99,7 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
                       {...field}
                       className="h-[52px] py-2 rounded-full pl-4"
                       autoFocus
-                      value={email}
+                      // value={email}
                     />
                   </FormControl>
                 </FormItem>
@@ -90,6 +110,9 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
             </Button>
           </form>
         </Form>
+        <Link href={"/"}>
+          <Button variant="default">Home</Button>
+        </Link>
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ const DeleteAccount = () => {
             <li>
               <span className="font-semibold">Data Archive:</span> When you
               deactivate your account, all your data will not be displayed in
-              the app data will be held for 90 days, after which it will be
+              the app data but will be held for 90 days, after which it will be
               permanently removed from our system with no option of retrieving.
               This includes any personal information, account settings, and the
               contents that you have created.
