@@ -11,6 +11,8 @@ import { useUnsubscribeToNewsletter } from "@/hooks/subscribe/useUnsubscribeToNe
 import { toasterAlert } from "@/utils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
 
 interface UnsubscribeProps {
   email: string;
@@ -20,6 +22,7 @@ type SubscribeFormData = z.infer<typeof subscribeFormSchema>;
 
 const Unsubscribe = ({ email }: UnsubscribeProps) => {
   const router = useRouter();
+  const [homeClick, setHomeClick] = useState<boolean>(false);
   const { mutateAsync, isPending } = useUnsubscribeToNewsletter();
   const form = useForm<SubscribeFormData>({
     resolver: zodResolver(subscribeFormSchema),
@@ -111,7 +114,13 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
           </form>
         </Form>
         <Link href={"/"}>
-          <Button variant="default">Home</Button>
+          <Button onClick={() => setHomeClick(true)} variant="default">
+            {homeClick ? (
+              <LoaderCircle className="text-gray-400 animate-spin" />
+            ) : (
+              "Home"
+            )}
+          </Button>
         </Link>
       </div>
     </div>
