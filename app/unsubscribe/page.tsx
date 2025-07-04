@@ -4,18 +4,15 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Unsubscribe from "@/components/Unsubscribe/Unsubscribe";
 
-function SearchEmail() {
+const UnsubscribeScreen = () => {
   const searchParams = useSearchParams();
 
   const email = searchParams.get("email") ?? "";
-  return email;
-}
-const UnsubscribeScreen = () => {
-  // See mire comment in the `Unsubscribe` component
+  // See more comment in the `Unsubscribe` component
   return (
     <section className="">
-      <Suspense>
-        <Unsubscribe email={SearchEmail()} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Unsubscribe email={email} />
       </Suspense>
     </section>
   );
