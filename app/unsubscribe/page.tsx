@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import Unsubscribe from "@/components/Unsubscribe/Unsubscribe";
 
 const UnsubscribeScreen = () => {
@@ -11,7 +12,9 @@ const UnsubscribeScreen = () => {
   // See mire comment in the `Unsubscribe` component
   return (
     <section className="">
-      <Unsubscribe email={email} />
+      <Suspense>
+        <Unsubscribe email={email} />
+      </Suspense>
     </section>
   );
 };
