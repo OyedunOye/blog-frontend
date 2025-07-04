@@ -12,11 +12,11 @@ const UnsubscribeScreen = () => {
   const email = searchParams.get("email") ?? "";
   // See more comment in the `Unsubscribe` component
   return (
-    <section className="">
       <Suspense fallback={<div>Loading...</div>}>
+    <section className="">
         <Unsubscribe email={email} />
-      </Suspense>
     </section>
+      </Suspense>
   );
 };
 
