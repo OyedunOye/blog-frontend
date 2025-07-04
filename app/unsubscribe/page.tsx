@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 // import Unsubscribe from "@/components/Unsubscribe/Unsubscribe";
 
 // Force dynamic rendering at runtime (no static generation)
