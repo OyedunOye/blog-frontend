@@ -2,21 +2,22 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import Unsubscribe from "@/components/Unsubscribe/Unsubscribe";
+// import Unsubscribe from "@/components/Unsubscribe/Unsubscribe";
 
 // Force dynamic rendering at runtime (no static generation)
 export const dynamic = "force-dynamic";
+const Unsubscribe = lazy(() => import("@/components/Unsubscribe/Unsubscribe"));
 
 const UnsubscribeScreen = () => {
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "";
   // See more comment in the `Unsubscribe` component
   return (
-      <Suspense fallback={<div>Loading...</div>}>
     <section className="">
+      <Suspense fallback={<div>Loading...</div>}>
         <Unsubscribe email={email} />
-    </section>
       </Suspense>
+    </section>
   );
 };
 
