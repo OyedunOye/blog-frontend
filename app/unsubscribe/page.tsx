@@ -7,15 +7,15 @@ import { Suspense } from "react";
 
 // Force dynamic rendering at runtime (no static generation)
 // export const dynamic = "force-dynamic";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 // const Unsubscribe = lazy(() => import("@/components/Unsubscribe/Unsubscribe"));
-const Unsubscribe = dynamic(
-  () => import("@/components/Unsubscribe/Unsubscribe"),
-  {
-    ssr: false,
-    loading: () => <p>Loading unsubscribe page...</p>,
-  }
-);
+// const Unsubscribe = dynamic(
+//   () => import("@/components/Unsubscribe/Unsubscribe"),
+//   {
+//     ssr: false,
+//     loading: () => <p>Loading unsubscribe page...</p>,
+//   }
+// );
 
 const UnsubscribeScreen = () => {
   const searchParams = useSearchParams();
@@ -24,8 +24,8 @@ const UnsubscribeScreen = () => {
   return (
     <Suspense>
       <section className="">
-{/*         <Unsubscribe email={email} /> */}
-        "Hello world"
+        {/*         <Unsubscribe email={email} /> */}
+        {email}
       </section>
     </Suspense>
   );
