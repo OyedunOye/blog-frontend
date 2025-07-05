@@ -24,7 +24,8 @@ const UnsubscribeScreen = () => {
   return (
     <Suspense>
       <section className="">
-        <Unsubscribe email={email} />
+{/*         <Unsubscribe email={email} /> */}
+        "Hello world"
       </section>
     </Suspense>
   );
