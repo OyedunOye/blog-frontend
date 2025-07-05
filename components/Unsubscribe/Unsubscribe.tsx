@@ -66,7 +66,7 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <section className="flex justify-center">
       <div className="min-h-[500px] w-[90%] border gap-8 max-md:gap-2 bg-white dark:bg-slate-900 rounded-lg shadow-md max-w-[1366px] flex flex-col items-center justify-center gap-y-12 max-md:p-2 my-6">
         <h3
           className={
@@ -125,7 +125,7 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
           </Button>
         </Link>
       </div>
-    </div>
+    </section>
   );
 };
 
