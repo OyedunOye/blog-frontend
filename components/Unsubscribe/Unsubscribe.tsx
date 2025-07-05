@@ -92,7 +92,7 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-3 lg:w-[70%] relative mt-4"
+            className="flex flex-col gap-y-3 lg:w-[70%] relative mt-4 max-lg:w-[80%] max-md:w-[100%]"
           >
             <FormField
               control={form.control}
@@ -110,12 +110,12 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
                 </FormItem>
               )}
             />
-            <Button className="bg-indigo-600 rounded-full flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2">
+            <Button className="bg-indigo-600 rounded-full flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2 max-md:w-fit">
               Unsubscribe
             </Button>
           </form>
         </Form>
-        <Link href={"/"}>
+        <Link href={"/"} className="max-md:mt-6">
           <Button onClick={() => setHomeClick(true)} variant="default">
             {homeClick ? (
               <LoaderCircle className="text-gray-400 animate-spin" />
