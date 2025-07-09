@@ -115,7 +115,7 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
             </Button>
           </form>
         </Form>
-        <Link href={"/"} className="max-md:mt-6">
+        <Link href={"/"} className="max-md:mt-6 mb-6">
           <Button onClick={() => setHomeClick(true)} variant="default">
             {homeClick ? (
               <LoaderCircle className="text-gray-400 animate-spin" />
