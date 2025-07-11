@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Bookmark, Heart, MessageSquareMore, SearchX } from "lucide-react";
+import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
