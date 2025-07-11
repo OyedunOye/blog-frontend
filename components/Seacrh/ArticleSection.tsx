@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Bookmark, Heart, MessageSquareMore } from "lucide-react";
+import { Bookmark, Heart, MessageSquareMore, SearchX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
@@ -140,6 +140,27 @@ const ArticleSection = ({
       <div className="mt-8 flex items-center gap-8 flex-wrap">
         {!errorStatus &&
         !loadingStatus &&
+        state.searching &&
+        state.displayBlogArray.length < 1 ? (
+          <div className=" flex max-md:flex-col max-md:h-[fit] h-[300px] max-lg:h-[380px] w-full gap-6">
+            <div className="w-[60%] h-[120%] max-md:w-full p-2 flex content-center">
+              <Image
+                src={"/emptySearchImg.jpg"}
+                alt="empty search result"
+                width={100}
+                height={90}
+                className="object-cover w-[100%] h-full rounded-md"
+              />
+            </div>
+            <div className="flex content-center py-5 max-md:py-1 max-md:mb-2">
+              <p className="font-bold text-lg flex h-fit my-auto">
+                There is no matching blog result for your search
+              </p>
+            </div>
+          </div>
+        ) : null}
+        {!errorStatus &&
+        !loadingStatus &&
         (!allBlogs || allBlogs.length < 1) ? (
           <CleanSlate message="There are no blogs on the site at the moment. You can register, login and create the first blog for the site!" />
         ) : (
@@ -254,28 +275,31 @@ const ArticleSection = ({
         />
       )}
 
-      {!errorStatus && !loadingStatus && (
-        <div className="flex justify-between mt-6 pr-4">
-          <Pagination className="justify-start mx-0 w-1/2">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+      {!errorStatus &&
+        !loadingStatus &&
+        state.searching &&
+        state.displayBlogArray.length > 0 && (
+          <div className="flex justify-between mt-6 pr-4">
+            <Pagination className="justify-start mx-0 w-1/2">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
 
-          <Button variant="default">See more</Button>
-        </div>
-      )}
+            <Button variant="default">See more</Button>
+          </div>
+        )}
     </MaxWidth>
   );
 };

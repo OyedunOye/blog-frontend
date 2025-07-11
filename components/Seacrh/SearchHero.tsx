@@ -28,19 +28,17 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
   );
 
   useEffect(() => {
-    if (searchText !== "Search text") {
+    if (searchText !== "Search for A Blog by Its Title") {
+      const payload = {
+        displayBlogArray: filteredBlogs,
+        searching: true,
+      };
       dispatch({
-        payload: filteredBlogs,
+        payload: payload,
         type: "DISPLAY_BLOG_ARRAY",
       });
     }
-    if (searchText === "Search for A Blog by Its Title") {
-      dispatch({
-        payload: allBlogs,
-        type: "DISPLAY_BLOG_ARRAY",
-      });
-    }
-  }, [searchText, allBlogs]);
+  }, [searchText]);
 
   return (
     <div className="w-full relative">

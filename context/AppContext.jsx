@@ -62,7 +62,8 @@ export const AppReducer = (state, action) => {
     case "DISPLAY_BLOG_ARRAY":
       return {
         ...state,
-        displayBlogArray: action.payload,
+        displayBlogArray: action.payload.displayBlogArray,
+        searching: action.payload.searching,
       };
 
     case "EDIT_COMMENT":
@@ -110,6 +111,7 @@ const initialState = {
   commentId: null,
   editCommentClicked: false,
   updatedCommentArray: null,
+  searching: false,
 };
 
 //create the context. This is the thing that the components import and use to get the state
