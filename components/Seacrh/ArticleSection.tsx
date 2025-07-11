@@ -141,7 +141,8 @@ const ArticleSection = ({
         {!errorStatus &&
         !loadingStatus &&
         state.searching &&
-        state.displayBlogArray.length < 1 ? (
+        state.displayBlogArray.length < 1 &&
+        activeTab === "ARTICLES" ? (
           <div className=" flex max-md:flex-col max-md:h-[fit] h-[300px] max-lg:h-[380px] w-full gap-6">
             <div className="w-[60%] h-[120%] max-md:w-full p-2 flex content-center">
               <Image
