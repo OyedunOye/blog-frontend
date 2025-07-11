@@ -38,7 +38,17 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
         type: "DISPLAY_BLOG_ARRAY",
       });
     }
-  }, [searchText]);
+    if (searchText === "Search for A Blog by Its Title") {
+      const payload = {
+        displayBlogArray: allBlogs,
+        searching: false,
+      };
+      dispatch({
+        payload: payload,
+        type: "DISPLAY_BLOG_ARRAY",
+      });
+    }
+  }, [searchText, allBlogs]);
 
   return (
     <div className="w-full relative">
