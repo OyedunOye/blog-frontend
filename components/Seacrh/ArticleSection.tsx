@@ -95,6 +95,16 @@ const ArticleSection = ({
     ? Math.ceil(listToPaginate?.length / blogsPerPage)
     : 0;
 
+  useEffect(() => {
+    if (
+      listToPaginate.length < blogsPerPage ||
+      listToPaginate.length === blogsPerPage ||
+      state.searching
+    ) {
+      setCurrentPage(1);
+    }
+  }, [listToPaginate]);
+
   return (
     <MaxWidth className="mb-24 mt-44 w-full">
       <div className=" flex flex-col">
@@ -188,10 +198,7 @@ const ArticleSection = ({
         ) : (
           <>
             {!errorStatus && allBlogs && activeTab === "ARTICLES"
-              ? (state.searching && state.displayBlogArray !== null
-                  ? listToPaginate
-                  : currentBlogs
-                ).map((data: BlogType) => (
+              ? currentBlogs.map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
