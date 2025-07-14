@@ -41,6 +41,8 @@ import { getInitials } from "@/utils/helpers";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useGetAUser } from "@/hooks/authors/useGetAUser";
+import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
+import { number } from "zod";
 
 const cookies = new Cookies(null, { path: "/" });
 
@@ -102,6 +104,13 @@ const NavBar = () => {
     return "";
   };
 
+  const getTokenExp = () => {
+    if (token) {
+      const decoded = getDecodedToken(token);
+      return decoded?.exp;
+    }
+  };
+
   const picPath = () => {
     if (!getUserIsLoading && data) {
       return data.user.authorImg;
@@ -116,6 +125,29 @@ const NavBar = () => {
     setIsLoggingOut(false);
     window.location.reload();
   };
+
+  // auto logs user out when their session expires to make them renew session by logging in again
+  const sessionExpCheck =
+    typeof getTokenExp() === "number"
+      ? new Date(getTokenExp()! * 1000)
+      : new Date();
+
+  const minutes_ms = 60000;
+  useEffect(() => {
+    if (token && token !== "") {
+      const interval = setInterval(() => {
+        if (sessionExpCheck < new Date()) {
+          console.log("session expired, clearing cookies");
+          toasterAlert("Session expired, please login again");
+          cookies.remove("token");
+          window.location.reload();
+        } else {
+          console.log("Session still valid");
+        }
+      }, minutes_ms);
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   return (
     <nav

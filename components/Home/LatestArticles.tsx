@@ -45,7 +45,7 @@ const LatestArticles = () => {
   useEffect(() => {
     if (data && isSuccess) {
       setAllBlogs(data.blogs);
-      setRemainingBlogs(data.blogs.slice(4));
+      setRemainingBlogs(data.blogs.slice(4, 10));
     }
   }, [data, isSuccess]);
 
