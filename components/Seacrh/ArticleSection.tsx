@@ -11,7 +11,6 @@ import { Button } from "../ui/button";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -73,6 +72,38 @@ const ArticleSection = ({
       setSavedCount(favouriteNSavedData.user.bookmarked.length);
     }
   }, [favouriteNSavedData, favouriteNSavedIsSuccess]);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const blogsPerPage = 12;
+
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+
+  const listToPaginate = !state.displayBlogArray
+    ? allBlogs
+    : state.displayBlogArray;
+  // console.log(listToPaginate);
+
+  const currentBlogs = listToPaginate
+    ? listToPaginate.slice(indexOfFirstBlog, indexOfLastBlog)
+    : [];
+
+  // console.log(currentBlogs);
+
+  const totalPages = allBlogs
+    ? Math.ceil(listToPaginate?.length / blogsPerPage)
+    : 0;
+
+  useEffect(() => {
+    if (
+      listToPaginate.length < blogsPerPage ||
+      listToPaginate.length === blogsPerPage ||
+      state.searching
+    ) {
+      setCurrentPage(1);
+    }
+  }, [listToPaginate]);
 
   return (
     <MaxWidth className="mb-24 mt-44 w-full">
@@ -167,10 +198,7 @@ const ArticleSection = ({
         ) : (
           <>
             {!errorStatus && allBlogs && activeTab === "ARTICLES"
-              ? (state.displayBlogArray !== null
-                  ? state.displayBlogArray
-                  : allBlogs
-                ).map((data: BlogType) => (
+              ? currentBlogs.map((data: BlogType) => (
                   <Link
                     href={`/blog/${data._id}`}
                     key={data._id}
@@ -276,31 +304,54 @@ const ArticleSection = ({
         />
       )}
 
-      {!errorStatus &&
-        !loadingStatus &&
-        state.searching &&
-        state.displayBlogArray.length > 0 && (
-          <div className="flex justify-between mt-6 pr-4">
-            <Pagination className="justify-start mx-0 w-1/2">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+      {!errorStatus && !loadingStatus && (
+        <div
+          className={`flex justify-between mt-6 pr-4 ${
+            (state.searching && state.displayBlogArray.length < 1) ||
+            activeTab !== "ARTICLES"
+              ? "hidden"
+              : ""
+          }`}
+        >
+          <Pagination className="mx-0 w-full justify-center">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => {
+                    setCurrentPage((prev) => Math.max(prev - 1, 1));
+                    window.scrollTo(0, 0);
+                  }}
+                  aria-disabled={currentPage === 1}
+                />
+              </PaginationItem>
 
-            <Button variant="default">See more</Button>
-          </div>
-        )}
+              {Array.from({ length: totalPages }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    isActive={currentPage === i + 1}
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                      setCurrentPage(i + 1);
+                    }}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => {
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                    window.scrollTo(0, 0);
+                  }}
+                  aria-disabled={currentPage === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </MaxWidth>
   );
 };

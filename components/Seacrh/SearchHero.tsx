@@ -23,9 +23,13 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
 
   const { dispatch } = useContext(AppContext);
 
-  const filteredBlogs = allBlogs.filter((blog: BlogType) =>
-    blog.title.toLowerCase().includes(searchText.toLowerCase())
-  );
+  // the logic separating the array set for when search is ongoing (filtered array obtained from all blogs) compared to when not (allblogs) was moved from conditions inside of the useEffect below into filteredBlogs. Therefore, the same array i.e. fiteredblogs array is saved in context as displayBlogArray for both cases.
+  const filteredBlogs =
+    searchText !== "Search for A Blog by Its Title"
+      ? allBlogs.filter((blog: BlogType) =>
+          blog.title.toLowerCase().includes(searchText.toLowerCase())
+        )
+      : allBlogs;
 
   useEffect(() => {
     if (searchText !== "Search for A Blog by Its Title") {
@@ -40,7 +44,7 @@ const SearchHero = ({ allBlogs }: SearchHeroProps) => {
     }
     if (searchText === "Search for A Blog by Its Title") {
       const payload = {
-        displayBlogArray: allBlogs,
+        displayBlogArray: filteredBlogs,
         searching: false,
       };
       dispatch({
