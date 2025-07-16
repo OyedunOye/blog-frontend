@@ -26,10 +26,11 @@ const DeleteAccount = () => {
         <h5 className="text-lg font-semibold">Deactivate your account</h5>
         <p>
           We&apos;re sorry to see you go. Deactivating your account locks your
-          account and you will be unable to reverse it by yourself. <br /> This
-          action will:
+          account and you will be unable to reverse it by yourself.
         </p>
         <div className="border-t border-t-gray-200 mt-4 pt-4 max-w-[80%]">
+          <p className="mb-2">This action will:</p>
+
           <ul className="flex flex-col gap-y-4 list-disc ml-6">
             <li>
               <span className="font-semibold">Data Archive:</span> When you
