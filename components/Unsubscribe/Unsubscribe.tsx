@@ -114,7 +114,7 @@ const Unsubscribe = ({ email }: UnsubscribeProps) => {
               Unsubscribe
             </Button>
             <div className="w-full justify-center mt:4 max-md:flex max-2xl:hidden 2xl:hidden">
-              <Button className="bg-indigo-600 rounded-full">
+              <Button className="bg-indigo-600 rounded-full w-full">
                 Unsubscribe
               </Button>
             </div>
