@@ -6,7 +6,6 @@ import Image, { StaticImageData } from "next/image";
 import { Bookmark, Heart, LoaderCircle, MessageSquareMore } from "lucide-react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate, loggedInUserId } from "@/utils";
-import Loader from "../common/Loader";
 
 import DotDivider from "../common/DotDivider";
 import { useGetAllBlogs } from "@/hooks/blog/useGetBlogs";
@@ -14,6 +13,7 @@ import { wordLimit } from "@/utils/helpers";
 import { ArticleCards } from "./ArticleCards";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 import CleanSlate from "../common/CleanSlate";
+import LatestArticlesSkeleton from "../LoadingSkeletons/LatestArticlesSkeleton";
 
 export interface BlogType {
   _id: string;
@@ -49,16 +49,12 @@ const LatestArticles = () => {
     }
   }, [data, isSuccess]);
 
-  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
-
   return (
     <section id="latest" className="mb-6 max-lg:h-fit">
       <MaxWidth className="my-6 w-full min-h-60">
         <>
           <h3 className="font-bold text-xl mb-6 pt-0.5">🎈 Latest Articles</h3>
-          {isLoading && !isError ? (
-            <Loader message="Loading blogs' section" />
-          ) : null}
+          {isLoading && !isError ? <LatestArticlesSkeleton /> : null}
           {isError ? (
             <NoServerConnectionWarning
               message="Server is unreachable, unable to load the blog section at the

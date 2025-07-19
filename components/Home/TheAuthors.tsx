@@ -5,12 +5,12 @@ import { Button } from "../ui/button";
 import MaxWidth from "../common/MaxWidthWrapper";
 
 import { useGetAllAuthors } from "@/hooks/authors/useGetAllAuthors";
-import Loading from "../common/Loader";
 import AvatarRenderer from "../common/Avatar";
 import { useEffect, useState } from "react";
 import { getInitials } from "@/utils/helpers";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 import CleanSlate from "../common/CleanSlate";
+import HomeAuthorsSectionSkeleton from "../LoadingSkeletons/HomeAuthorsSectionSkeleton";
 
 interface Blogs {
   _id: string;
@@ -37,8 +37,6 @@ const TheAuthors = () => {
   const [allAuthors, setAllAuthors] = useState<Authors[]>([]);
   const [topFifteenAuthors, setTopFifteenAuthors] = useState<Authors[]>([]);
   const [allClicked, setAllClicked] = useState<boolean>(false);
-
-  // const baseUrl = process.env.NEXT_PUBLIC_UPLOAD_URL;
 
   useEffect(() => {
     if (data) {
@@ -83,9 +81,7 @@ const TheAuthors = () => {
                 ) : null}
               </div>
 
-              {isLoading && !isError ? (
-                <Loading message="Loading blog's authors section" />
-              ) : null}
+              {isLoading && !isError ? <HomeAuthorsSectionSkeleton /> : null}
               {isError ? (
                 <NoServerConnectionWarning
                   className="h-[80%]]"
