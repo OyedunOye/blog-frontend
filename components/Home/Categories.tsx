@@ -4,8 +4,8 @@ import { categories } from "@/constants";
 import Image from "next/image";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { useGetBlogCategoryCount } from "@/hooks/blog/useGetBlogCategoryCount";
-import Loading from "../common/Loader";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
+import HomeCategoriesSkeleton from "../LoadingSkeletons/HomeCategoriesSkeleton";
 
 const Categories = () => {
   const { data, isLoading, isSuccess, isError } = useGetBlogCategoryCount();
@@ -19,9 +19,7 @@ const Categories = () => {
     >
       <MaxWidth className="w-full min-h-30 bg-[#F3F4F6]  dark:bg-slate-900">
         <h3 className="font-bold text-xl mb-6">📚 Categories</h3>
-        {isLoading && !isError ? (
-          <Loading message="Loading categories" />
-        ) : null}
+        {isLoading && !isError ? <HomeCategoriesSkeleton /> : null}
         {isError ? (
           <NoServerConnectionWarning
             message="Server is unreachable, unable to load the categories section at the moment. Please try again later."

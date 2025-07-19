@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
       </div>
       <MaxWidth className="h-fit py-10 w-3/4 max-lg:w-[88%] max-md:w-[95%] justify-center relative -top-24 bg-white dark:bg-slate-900 border rounded-lg shadow-md">
         <div className="gap-4">
-          <p>Last updated: June 26, 2025</p>
+          <p>Last updated: July 16, 2025</p>
           <p className="my-2">
             This Privacy Policy describes Our policies and procedures on the
             collection, use and disclosure of Your information when You use the
@@ -164,6 +164,9 @@ const PrivacyPolicy = () => {
               <p>First name and last name</p>
             </li>
             <li>
+              <p>Profile picture (optional)</p>
+            </li>
+            <li>
               <p>Usage Data</p>
             </li>
           </ul>
@@ -198,8 +201,8 @@ const PrivacyPolicy = () => {
           </p>
           <ul className="list-disc">
             <li>Google</li>
-            <li>Facebook</li>
-            <li>GitHub</li>
+            {/* <li>Facebook</li>
+            <li>GitHub</li> */}
           </ul>
           <p className="mt-2">
             If You decide to register through or otherwise grant us access to a
