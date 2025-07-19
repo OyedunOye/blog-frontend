@@ -42,7 +42,6 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
-import { number } from "zod";
 
 const cookies = new Cookies(null, { path: "/" });
 
