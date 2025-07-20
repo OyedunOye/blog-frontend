@@ -9,10 +9,10 @@ import { poppins } from "@/lib/fonts";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { useGetAllAuthors } from "@/hooks/authors/useGetAllAuthors";
 import { useEffect, useState } from "react";
-import Loader from "../common/Loader";
 import CleanSlate from "../common/CleanSlate";
 import { Authors } from "../Home/TheAuthors";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
+import DiscoverAuthorsSectionSkeleton from "../LoadingSkeletons/DiscoverAuthorsSectionSkeleton";
 
 const ExploreAuthors = () => {
   const { data, isLoading, isSuccess, isError } = useGetAllAuthors();
@@ -44,12 +44,7 @@ const ExploreAuthors = () => {
           </p>
         </div>
 
-        {isLoading && !isError ? (
-          <Loader
-            message="Loading authors' section"
-            className="w-full h-[480px]"
-          />
-        ) : null}
+        {isLoading && !isError ? <DiscoverAuthorsSectionSkeleton /> : null}
 
         {isError ? (
           <NoServerConnectionWarning

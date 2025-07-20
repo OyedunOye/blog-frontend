@@ -21,7 +21,6 @@ import MaxWidth from "../common/MaxWidthWrapper";
 import AvatarRenderer from "../common/Avatar";
 import { BlogType } from "../Home/LatestArticles";
 import CleanSlate from "../common/CleanSlate";
-import Loader from "../common/Loader";
 
 import { formatDate, loggedInUserId } from "@/utils";
 import { wordLimit } from "@/utils/helpers";
@@ -31,6 +30,7 @@ import { useGetAUser } from "@/hooks/authors/useGetAUser";
 import Cookies from "universal-cookie";
 import NoServerConnectionWarning from "../common/NoServerConnectionWarning";
 import { AppContext } from "@/context/AppContext";
+import DiscoverArticlesSectionSkeleton from "../LoadingSkeletons/DiscoverArticlesSectionSkeleton";
 
 const cookies = new Cookies(null, { path: "/" });
 
@@ -157,7 +157,7 @@ const ArticleSection = ({
       </div>
 
       {loadingStatus && !errorStatus ? (
-        <Loader message="Loading blogs section." className="w-full h-[480px]" />
+        <DiscoverArticlesSectionSkeleton />
       ) : null}
 
       {errorStatus ? (
