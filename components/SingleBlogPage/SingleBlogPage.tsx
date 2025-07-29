@@ -4,7 +4,6 @@ import { useGetASingleBlog } from "@/hooks/blog/useGetBlogs";
 import React, { useContext } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
 import { formatDate, toasterAlert } from "@/utils";
-import Loader from "../common/Loader";
 import AvatarRenderer from "../common/Avatar";
 import { getDecodedToken } from "@/hooks/getDecodeToken/getDecodedToken";
 import { getCookie } from "cookies-next/client";
@@ -32,6 +31,7 @@ import { useRouter } from "next/navigation";
 import { useToggleBookmarkABlog } from "@/hooks/blog/useToggleBookmarkABlog";
 import EditComment from "../modals/EditComment";
 import DeleteComment from "../modals/DeleteComment";
+import SingleBlogPageSkeleton from "../LoadingSkeletons/SingleBlogPageSkeleton";
 
 type NewCommentFormData = z.infer<typeof newCommentFormSchema>;
 
@@ -298,7 +298,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
       {state.openEditModal ? <QuillEditBlogModal /> : null}
       {state.deleteModal ? <DeleteConfirmation /> : null}
       {singleBlogLoading ? (
-        <Loader message="Loading single page" />
+        <SingleBlogPageSkeleton />
       ) : (
         <div className="pb-15">
           <div className="w-full mb-6 bg-[linear-gradient(48deg,_rgba(75,_0,_130,_1)_0%,_rgba(214,_191,_255,_1)_35%,_rgba(75,_0,_130,_1)_75%)]">
