@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import MaxWidth from "../common/MaxWidthWrapper";
-import LoginButtons from "./LoginButtons";
 import LoginForm from "./LoginForm";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -35,7 +34,6 @@ const LoginPage = () => {
       </div>
 
       <MaxWidth className="h-contain py-10 w-2/3 max-lg:w-[80%] justify-center divide-y gap-8 absolute top-36 border z-50 bg-white dark:bg-slate-900 rounded-lg shadow-md">
-        <LoginButtons />
 
         <div className="w-1/2 max-md:w-[100%] max-lg:w-[80%] justify-center mx-auto">
           <LoginForm />
