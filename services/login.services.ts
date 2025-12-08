@@ -29,3 +29,13 @@ export const resendOtp =async(credentials:any)=>{
         return error
     }
 }
+
+export const googleAuth =async()=>{
+    try {
+        const res = await axios.get(`${BASE_URL}login/auth/google`)
+        return res.data
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
