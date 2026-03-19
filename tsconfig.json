@@ -18,12 +18,10 @@
         "name": "next"
       }
     ],
+    "types": ["jest", "node", "@testing-library/jest-dom"],
     "paths": {
       "@/*": ["./*"]
-    },
-    "typeRoots": [
-      "./declarations.d.ts"
-    ]
+    }
   },
   "include": [ "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "context/AppContext.jsx"],
   "exclude": ["node_modules"]

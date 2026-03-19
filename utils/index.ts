@@ -42,11 +42,8 @@ export const getToken = async () => {
   return token;
 };
 
-const token = await getToken();
-
-// const token = getCookie("token");
-
 export const userName = () => {
+  const token = cookies.get("token");
   if (token) {
     const decoded = getDecodedToken(token);
     console.log(decoded);
@@ -59,6 +56,7 @@ export const userName = () => {
 };
 
 export const loggedInUserId = () => {
+    const token = cookies.get("token");
     if (token) {
       const userDetails = getDecodedToken(token);
       // toggleLike.updatedBlog.loves.indexOf(userDetails.id) !== -1

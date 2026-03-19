@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -85,29 +85,11 @@ const NavBar = () => {
     }
   }, [pathname]);
 
-  useEffect(() => {
-    const getToken = async () => {
-      if (typeof window !== "undefined") {
-        const token = await cookies.get("token");
-        setToken(token);
-      }
-    };
-
-    getToken();
-  }, []);
-
   const userName = () => {
     if (!getUserIsLoading && data) {
       return data.user.firstName + " " + data.user.lastName;
     }
     return "";
-  };
-
-  const getTokenExp = () => {
-    if (token) {
-      const decoded = getDecodedToken(token);
-      return decoded?.exp;
-    }
   };
 
   const picPath = () => {
@@ -126,10 +108,27 @@ const NavBar = () => {
   };
 
   // auto logs user out when their session expires to make them renew session by logging in again
-  const sessionExpCheck =
-    typeof getTokenExp() === "number"
-      ? new Date(getTokenExp()! * 1000)
-      : new Date();
+  const sessionExpCheck = useMemo(() => {
+    if (!token) {
+      return new Date();
+    }
+
+    const decoded = getDecodedToken(token);
+    const tokenExp = decoded?.exp;
+
+    return typeof tokenExp === "number" ? new Date(tokenExp * 1000) : new Date();
+  }, [token]);
+
+  useEffect(() => {
+    const getToken = async () => {
+      if (typeof window !== "undefined") {
+        const nextToken = await cookies.get("token");
+        setToken(nextToken);
+      }
+    };
+
+    getToken();
+  }, []);
 
   const minutes_ms = 60000;
   useEffect(() => {
@@ -146,7 +145,7 @@ const NavBar = () => {
       }, minutes_ms);
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [sessionExpCheck, token]);
 
   return (
     <nav

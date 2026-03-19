@@ -164,7 +164,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const onLove = async () => {
     if (!token) {
       toasterAlert(
-        "You are offline, please login to be able to like this blog."
+        "You are offline, please login to be able to like this blog.",
       );
       router.push("/login");
     }
@@ -179,7 +179,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
   const onClickBookmark = async () => {
     if (!token) {
       toasterAlert(
-        "You are offline, please login to be able to bookmark this blog."
+        "You are offline, please login to be able to bookmark this blog.",
       );
       router.push("/login");
     }
@@ -350,7 +350,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                       fallBack={getInitials(
                         singleBlogData.blog[0].author.firstName +
                           " " +
-                          singleBlogData.blog[0].author.lastName
+                          singleBlogData.blog[0].author.lastName,
                       )}
                       className="h-30 w-30 max-md:h-24 max-md:w-24 text-4xl"
                     />
@@ -516,7 +516,7 @@ const SingleBlogPage = ({ blogId }: BlogPageProps) => {
                           fallBack={getInitials(
                             eachComment.commenter.firstName +
                               " " +
-                              eachComment.commenter.lastName
+                              eachComment.commenter.lastName,
                           )}
                           className="h-8 w-8"
                         />
