@@ -5,8 +5,9 @@ export const userLogin = async (credentials: any) => {
     try {
         const res = await axios.post(`${BASE_URL}login`, credentials, {headers:{"Content-Type": "application/json"}})
         return res.data
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
+        return error.response.data || {error: "Something went wrong, please attempt to login again."}
     }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ import { toasterAlert } from "@/utils";
 import { setCookie } from "cookies-next/client";
 import { LoaderCircle } from "lucide-react";
 import TwoFA from "../modals/TwoFaModal";
+import ReCAPTCHA from "react-google-recaptcha";
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
@@ -31,6 +32,8 @@ const LoginForm = () => {
   const [twoFa, setTwoFa] = useState<boolean>(false);
   const { isPending, mutateAsync, data } = useLogUserIn();
   const [userEmail, setUserEmail] = useState<string>("");
+  const [recaptchaValue, setreCaptchaValue] = useState<null | string>(null);
+  const recaptchaRef = useRef(null);
 
   const router = useRouter();
 
@@ -39,12 +42,19 @@ const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      recaptchaValue: recaptchaValue,
     },
   });
 
   const onSubmit = async (values: LoginFormData) => {
     try {
+      if (!recaptchaValue) {
+        toasterAlert("Please verify reCAPTCHA to proceed.");
+        return;
+      }
       setUserEmail(values.email);
+      form.setValue("recaptchaValue", recaptchaValue);
+      console.log("form values are", values);
       const res = await mutateAsync(values);
       // console.log("response is", res);
 
@@ -61,11 +71,16 @@ const LoginForm = () => {
       // if(error?.status?===401)
       if (data === undefined && !isPending) {
         toasterAlert(
-          "There is either a mismatch of email and password or, unable to connect to the server. Make sure your internet connection is okay and retry logging in."
+          "There is either a mismatch of email and password or, unable to connect to the server. Make sure your internet connection is okay and retry logging in.",
         );
       }
       console.log(error);
     }
+  };
+
+  const handleReCaptchaChange = (value: string | null) => {
+    setreCaptchaValue(value);
+    // form.setValue("recaptchaValue", value);
   };
 
   return (
@@ -114,6 +129,12 @@ const LoginForm = () => {
             )}
           </Button>
         </form>
+
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+          onChange={handleReCaptchaChange}
+        />
       </Form>
     </div>
   );

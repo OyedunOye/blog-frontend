@@ -8,6 +8,7 @@ export const loginFormSchema = z.object({
   password: z.string().min(8, {
     message: "The password must be at least 8 characters",
   }),
+  recaptchaValue: z.string().nullable(),
 });
 
 export const signUpFormSchema = z
