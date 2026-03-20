@@ -32,7 +32,7 @@ const EditComment = () => {
           commentId: null,
           updatedCommentArray: res.updatedBlog.comments,
         };
-        dispatch({
+        await dispatch({
           type: "EDIT_COMMENT",
           payload: payload,
         });
