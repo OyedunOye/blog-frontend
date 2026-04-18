@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft ==
+      false
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      NEXT_PUBLIC_BASE_URL: ${{ variables.NEXT_PUBLIC_BASE_URL }}
+      NEXT_PUBLIC_RECAPTCHA_SITE_KEY: test-site-key${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test -- --runInBand
+
+      - name: Build application
+        run: npm run build

@@ -54,7 +54,7 @@ const LoginForm = () => {
       }
       setUserEmail(values.email);
       form.setValue("recaptchaValue", recaptchaValue);
-      console.log("form values are", values);
+      // console.log("form values are", values);
       const res = await mutateAsync(values);
       // console.log("response is", res);
 
