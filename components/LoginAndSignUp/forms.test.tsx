@@ -25,6 +25,29 @@ jest.mock("cookies-next/client", () => ({
   setCookie: (...args: unknown[]) => mockSetCookie(...args),
 }));
 
+jest.mock("react-google-recaptcha", () => ({
+  __esModule: true,
+  default: ({
+    onChange,
+  }: {
+    onChange?: (value: string | null) => void;
+  }) => {
+    const MockReCAPTCHA = () => (
+      <button
+        type="button"
+        onClick={() => {
+          onChange?.("recaptcha-token");
+        }}
+      >
+        Verify reCAPTCHA
+      </button>
+    );
+
+    MockReCAPTCHA.displayName = "MockReCAPTCHA";
+    return <MockReCAPTCHA />;
+  },
+}));
+
 jest.mock("@/components/modals/TwoFaModal", () => ({
   __esModule: true,
   default: ({ email }: { email: string }) => (
@@ -72,12 +95,14 @@ describe("LoginAndSignUp forms", () => {
       "user@example.com",
     );
     await user.type(screen.getByLabelText(/password/i), "password123");
+    await user.click(screen.getByRole("button", { name: /verify recaptcha/i }));
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     await waitFor(() => {
       expect(mockLoginMutateAsync).toHaveBeenCalledWith({
         email: "user@example.com",
         password: "password123",
+        recaptchaValue: "recaptcha-token",
       });
     });
     expect(mockSetCookie).toHaveBeenCalledWith("token", "token-123");
@@ -98,10 +123,29 @@ describe("LoginAndSignUp forms", () => {
       "user@example.com",
     );
     await user.type(screen.getByLabelText(/password/i), "password123");
+    await user.click(screen.getByRole("button", { name: /verify recaptcha/i }));
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     expect(await screen.findByTestId("two-fa-modal")).toHaveTextContent(
       "2FA modal for user@example.com",
+    );
+  });
+
+  it("blocks login submission until reCAPTCHA is completed", async () => {
+    const user = userEvent.setup();
+
+    render(<LoginForm />);
+
+    await user.type(
+      screen.getByRole("textbox", { name: /email address/i }),
+      "user@example.com",
+    );
+    await user.type(screen.getByLabelText(/password/i), "password123");
+    await user.click(screen.getByRole("button", { name: /continue/i }));
+
+    expect(mockLoginMutateAsync).not.toHaveBeenCalled();
+    expect(mockToasterAlert).toHaveBeenCalledWith(
+      "Please verify reCAPTCHA to proceed.",
     );
   });
 

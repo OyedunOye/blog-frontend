@@ -7,8 +7,15 @@ jest.mock("jwt-decode", () => ({
 }));
 
 describe("getDecodedToken", () => {
+  let consoleErrorSpy: jest.SpyInstance;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
   });
 
   it("returns decoded payloads", () => {
@@ -33,5 +40,9 @@ describe("getDecodedToken", () => {
     });
 
     expect(getDecodedToken("bad")).toBeNull();
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Invalid token:",
+      expect.any(Error)
+    );
   });
 });
