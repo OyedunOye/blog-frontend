@@ -42,7 +42,7 @@ const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      recaptchaValue: recaptchaValue,
+      recaptchaValue: null,
     },
   });
 
@@ -53,9 +53,11 @@ const LoginForm = () => {
         return;
       }
       setUserEmail(values.email);
-      form.setValue("recaptchaValue", recaptchaValue);
-      // console.log("form values are", values);
-      const res = await mutateAsync(values);
+      const payload: LoginFormData = {
+        ...values,
+        recaptchaValue,
+      };
+      const res = await mutateAsync(payload);
       // console.log("response is", res);
 
       if (res.token && !isPending) {
@@ -80,7 +82,6 @@ const LoginForm = () => {
 
   const handleReCaptchaChange = (value: string | null) => {
     setreCaptchaValue(value);
-    // form.setValue("recaptchaValue", value);
   };
 
   return (

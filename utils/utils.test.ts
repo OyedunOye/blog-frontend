@@ -1,6 +1,14 @@
-const mockGet = jest.fn();
+const mockGetImpl = jest.fn();
 const mockToast = jest.fn();
-const mockGetDecodedToken = jest.fn();
+const mockGetDecodedTokenImpl = jest.fn();
+
+function mockGet(...args: unknown[]) {
+  return mockGetImpl(...args);
+}
+
+function mockGetDecodedToken(...args: unknown[]) {
+  return mockGetDecodedTokenImpl(...args);
+}
 
 jest.mock("universal-cookie", () => ({
   __esModule: true,
@@ -20,7 +28,9 @@ jest.mock("@/hooks/getDecodeToken/getDecodedToken", () => ({
 import {
   formatDate,
   formatDate2,
+  loggedInUserId,
   toasterAlert,
+  userName,
 } from "@/utils";
 import {
   blogReadTime,
@@ -32,8 +42,17 @@ import {
 } from "@/utils/helpers";
 
 describe("utils", () => {
+  let consoleLogSpy: jest.SpyInstance;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetImpl.mockReset();
+    mockGetDecodedTokenImpl.mockReset();
+    consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
   });
 
   it("formats dates in both helpers", () => {
@@ -75,5 +94,31 @@ describe("utils", () => {
         theme: "light",
       })
     );
+  });
+
+  it("returns the logged-in user's name and id from the token", () => {
+    mockGetImpl.mockReturnValue("token-123");
+    mockGetDecodedTokenImpl.mockReturnValue({
+      id: "user-1",
+      firstName: "Ada",
+      lastName: "Lovelace",
+    });
+
+    expect(userName()).toBe("Ada Lovelace");
+    expect(loggedInUserId()).toBe("user-1");
+    expect(mockGetImpl).toHaveBeenCalledWith("token");
+    expect(mockGetDecodedTokenImpl).toHaveBeenCalledWith("token-123");
+  });
+
+  it("returns empty user details when the token is missing or invalid", () => {
+    mockGetImpl.mockReturnValueOnce(undefined);
+
+    expect(loggedInUserId()).toBeNull();
+    expect(userName()).toBeUndefined();
+
+    mockGetImpl.mockReturnValue("token-123");
+    mockGetDecodedTokenImpl.mockReturnValue(null);
+
+    expect(userName()).toBe("");
   });
 });

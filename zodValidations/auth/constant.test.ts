@@ -15,12 +15,22 @@ describe("zod auth constants", () => {
       loginFormSchema.safeParse({
         email: "user@example.com",
         password: "password123",
+        recaptchaValue: "recaptcha-token",
       }).success
     ).toBe(true);
     expect(subscribeFormSchema.safeParse({ email: "user@example.com" }).success).toBe(
       true
     );
     expect(validateOtpFormSchema.safeParse({ otp: "123456" }).success).toBe(true);
+  });
+
+  it("rejects login payloads that omit the recaptcha value", () => {
+    const result = loginFormSchema.safeParse({
+      email: "user@example.com",
+      password: "password123",
+    });
+
+    expect(result.success).toBe(false);
   });
 
   it("rejects mismatched signup passwords", () => {
