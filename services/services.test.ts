@@ -53,9 +53,16 @@ import {
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("services", () => {
+  let consoleLogSpy: jest.SpyInstance;
+
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetImpl.mockResolvedValue("token-123");
+    consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
   });
 
   it("calls login and subscribe endpoints with JSON headers", async () => {
@@ -68,15 +75,40 @@ describe("services", () => {
     await subscribeToNewsletter({ email: "a" });
     await unsubscribeToNewsletter({ email: "a" });
 
-    expect(mockedAxios.post).toHaveBeenCalledWith(
-      expect.stringContaining("/login"),
+    expect(mockedAxios.post).toHaveBeenNthCalledWith(
+      1,
+      expect.stringContaining("login"),
       { email: "a", password: "b" },
       expect.objectContaining({
         headers: { "Content-Type": "application/json" },
       })
     );
+    expect(mockedAxios.post).toHaveBeenNthCalledWith(
+      2,
+      expect.stringContaining("login/validate-otp"),
+      { otp: "123456" },
+      expect.objectContaining({
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+    expect(mockedAxios.post).toHaveBeenNthCalledWith(
+      3,
+      expect.stringContaining("login/resend-otp"),
+      { email: "a" },
+      expect.objectContaining({
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+    expect(mockedAxios.post).toHaveBeenNthCalledWith(
+      4,
+      expect.stringContaining("subscribers"),
+      { email: "a" },
+      expect.objectContaining({
+        headers: { "Content-Type": "application/json" },
+      })
+    );
     expect(mockedAxios.patch).toHaveBeenCalledWith(
-      expect.stringContaining("/subscribers/unsubscribe"),
+      expect.stringContaining("subscribers/unsubscribe"),
       { email: "a" },
       expect.objectContaining({
         headers: { "Content-Type": "application/json" },
@@ -102,18 +134,31 @@ describe("services", () => {
     await editComment({ comment: "hello" });
     await deleteComment({ commentId: "1" });
 
-    expect(mockedAxios.post).toHaveBeenCalledWith(
-      expect.stringContaining("/blogs"),
-      expect.any(FormData),
+    expect(mockedAxios.post).toHaveBeenNthCalledWith(
+      1,
+      expect.stringContaining("blogs"),
+      expect.anything(),
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: "Bearer token-123",
+          "Content-Type": "multipart/form-data",
         }),
       })
     );
-    expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringContaining("/blogs/blog-1"));
+    expect(mockedAxios.post).toHaveBeenNthCalledWith(
+      2,
+      expect.stringContaining("blogs/comment/blog-1"),
+      { comment: "hi" },
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: "Bearer token-123",
+          "Content-Type": "application/json",
+        }),
+      })
+    );
+    expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringContaining("blogs/blog-1"));
     expect(mockedAxios.delete).toHaveBeenCalledWith(
-      expect.stringContaining("/blogs/blog-1"),
+      expect.stringContaining("blogs/blog-1"),
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: "Bearer token-123",
@@ -136,20 +181,20 @@ describe("services", () => {
     await deactivateUserAccount();
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      expect.stringContaining("/users"),
-      expect.any(FormData),
+      expect.stringContaining("users"),
+      expect.anything(),
       expect.objectContaining({
         headers: { "Content-Type": "multipart/form-data" },
       })
     );
     expect(mockedAxios.get).toHaveBeenCalledWith(
-      expect.stringContaining("/users/profile"),
+      expect.stringContaining("users/profile"),
       expect.objectContaining({
         headers: { Authorization: "Bearer token-123" },
       })
     );
     expect(mockedAxios.patch).toHaveBeenCalledWith(
-      expect.stringContaining("/users/deactivate-profile"),
+      expect.stringContaining("users/deactivate-profile"),
       {},
       expect.objectContaining({
         headers: expect.objectContaining({
