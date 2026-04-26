@@ -17,13 +17,13 @@ A blog app where you could write and share your articles in all categories and p
 Clone the project
 
 ```bash
-  git clone https://github.com/OyedunOye/note-app-frontend
+  git clone https://github.com/OyedunOye/blog-frontend
 ```
 
 Go to the project directory
 
 ```bash
-  cd note-app-frontend
+  cd blog-frontend
 ```
 
 Install dependencies
